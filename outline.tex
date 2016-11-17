@@ -1,0 +1,355 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: Latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% uhtest-body.tex -- 
+%% Author          : Robert Brewer
+%% Created On      : Fri Oct  2 16:30:37 1998
+%% Last Modified By: Robert Brewer
+%% Last Modified On: Mon Oct  5 16:01:29 1998
+%% RCS: $Id: uhtest-body.tex,v 1.1 1998/10/06 02:07:14 rbrewer Exp $
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   Copyright (C) 1998 Robert Brewer
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%!NOTE: This example file has been prepared according to the University of
+%!      Hawaii Style & Policy Manual for Theses and Dissertations dated
+%!      "Revised September 2010". If you have one with a later date, you may
+%!      need to make revisions to this document as well. In any event, making
+%!      sure your thesis complies with Graduate Education guidelines is
+%!      ultimately your responsibility. Caveat LaTeXtor. :)
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+\documentclass[11pt]{uhthesis}
+
+%%% Load some useful packages:
+%% New LaTeX2e graphics support
+\usepackage{graphicx}
+%% Package to linebreak URLs in a sane manner.
+\usepackage{url}
+
+%%% Declarations for Front Matter. Capitalize all of these values
+%%% "normally". This allows the document class to format them properly.
+%% Full title of thesis or dissertation, capitalized like a title should be.
+\title{Neutrino Astrophysics with the ANITA3 Telescope}
+%% Your name, capitalized normally. Do not include any titles like Dr.
+\author{Benjamin J. Rotter}
+%% Month in which you intend to receive your degree (i.e. graduation).
+%% Presumably this will be one of: May, August, or December.
+\degreemonth{April}
+%% Year of expected graduation.
+\degreeyear{2016}
+%% Type of degree to be conferred.
+\degree{Doctor of Philosophy}
+%% This is the chairperson of your committee. Do not use titles like Dr.
+\chair{Peter Gorham}
+%% The other members of your committee, seperated by "\\". Again, no titles,
+%% and it is customary to list the outside committee member (if you have one)
+%% last.
+\othermembers{Gary Varner\\
+Bob Morse\\
+Jelena Maricic\\
+Richard Mills
+}
+%% The field in which you are obtaining your degree, capitalized normally.
+\field{Physics}
+%% If your discipline allows subfields, you can add it here. Note that this
+%% is strictly controlled, so consult the Style & Policy guide before adding
+%% a subfield.
+%\subfield{Bioinformatics}
+%% 4-6 optional keywords/phrases for use in indexing or as search terms
+\keywords{theses, dissertations, graduating, misery}
+%% The version number of your document. Consistent use of this will enable you
+%% to tell old drafts from new ones. Final actual documents omit this
+%% automatically so you can use it without fear of submission problems at the
+%% end. If you do not define this parameter, it defaults to "1.0.0".
+\versionnum{4.0.0}
+
+%%% End of preamble
+\begin{document}
+\maketitle
+
+\begin{frontmatter}
+
+%%% Note, there is no longer a signature page included in the document, it
+%%% has been replaced by Form IV
+
+%%% Create the copyright page (optional)
+%\copyrightpage
+
+%%% Bring in the dedication page from external file (optional)
+%\include{dedication}
+
+%%% Bring in the acknowledgments section from external file (optional)
+%\include{acknowledgments}
+
+%%% Bring in the abstract section from external file
+\include{abstract}
+
+%%% Generate table of contents
+\tableofcontents
+
+%%% Generate list of tables
+%\listoftables
+
+%%% Generate list of figures
+%\listoffigures
+
+\end{frontmatter}
+
+%%% Switch to appendix mode
+%\appendix
+
+%%% Bring in any appendices from external file (optional)
+%\include{appendix}
+
+%% Just for demo purposes, include all entries from bib file
+%\nocite{*}
+
+%%% Input file for bibliography
+%\bibliography{example}
+%% Use this for an alphabetically organized bibliography
+%\bibliographystyle{plain}
+%% Use this for a reference order organized bibliography
+%\bibliographystyle{unsrt}
+
+
+
+%%%%%%%%%%%% 1 %%%%%%%%%%%
+\chapter{Introduction and Motivation}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Cosmological Theory}
+	\subsection{Cosmic Ray Detection History}
+	
+	\subsection{Cosmic Ray Physics and Cosmology}
+	
+	\subsection{Unexplained UHE Source Mystery}
+
+	\subsection{GZK interaction}
+		
+\section{Cosmic Ray Detection on Earth}
+	\subsection{Air Showers}
+	
+	\subsection{Askaryan Effect}
+
+\section{UHE Neutrino detection on earth}
+	\subsection{Neutrino hadronic interactions}
+
+	\subsection{Tau-$\nu$ Specific Detection Prospects}
+
+
+%%%%%%%%%%%%% 2 %%%%%%%%%%%%%
+\chapter{ANITA3 Telescope Platform}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Overview}
+
+\section{Quad Ridge Horn Antennas}
+	
+	\subsection{Antenna Theory}
+		
+	\subsection{Antenna Response Angle Justification}
+	
+\section{Analog Filtering}
+	\subsection{Importance}
+	
+	\subsection{Technical Details}
+		
+	\subsection{Bandwidth Selection Justification} 
+		
+\section{Amplification}
+	\subsection{Expected Signal Power}
+	
+	\subsection{Dynamic Range}
+	
+	\subsection{Gain Justification}
+	
+	\subsection{Noise Figure} 
+	
+	
+	
+\section{Digitization}
+
+	\subsection{LABRADOR ASIC}
+
+	\subsection{Limitations}
+
+	\subsection{Impulse Response}
+	
+	\subsection{Future development (?)}
+		
+		
+\section{Triggering}
+	
+	\subsection{Trigger Hierarchy Overview}
+	
+	\subsection{SHORT square-law power integrator}
+		
+	\subsection{L0 Tiggering efficiency and quality}
+		
+	\subsection{L0 Optimization}
+	
+	\subsection{L1 Trigger}
+	
+	\subsection{L1 Trigger Window Delay Limitations}
+		
+	\subsection{Phi Sector Masking}
+	
+\section{Power Monitor}
+
+	\subsection{Sensitivity}
+
+	\subsection{Improvement over ANITA2}
+
+\section{GPS tracking and orientation sensors}
+
+	\subsection{Magnetometer}
+	
+	\subsection{Sun Sensors}
+	
+\section{CPU, CPCI, and Data Readout}
+	
+\section{Data Storage and Telemetry}
+	
+	\subsection{Redundant data storage}
+	
+	\subsection{Telemetry}
+		
+	\subsection{GPU prioritization}
+			
+%%%%%%%%%%%% 3 %%%%%%%%%%%%%
+\chapter{Instrument Calibration}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{LABRADOR voltage}
+
+	\subsection{Chip to Chip Variation}
+	
+	
+\section{LABRADOR time}
+	\subsection{Time Domain Bin Width Matrix}
+
+	\subsection{Wraparound Time ($\epsilon$)}
+	
+	\subsection{RCO Phase and determination}
+	
+	\subsection{Temperature Dependance}
+	
+	\subsection{dT Variance and Timing Results}
+	
+	\subsection{Inter-SURF Timing for Waveform Alignment}
+	
+\section{Antenna location photogrammetry}
+
+\section{Phase center optimization}
+
+	\subsection{WAIS Divide Calibration Pulses}
+	
+	\subsection{LDB Calibration Pulses}
+
+\section{System Impulse Response}
+	\subsection{Effect of signal chain}
+	
+	\subsection{Convolution with Antenna response}
+	
+	\subsection{Effect of uneven time sampling}
+
+\section{Triggering Sanity Check}
+
+	\subsection{Angular response characteristics from data}
+
+\section{Non-uniform channels and Outliers}
+
+%%%%%%%%%%%%% 4 %%%%%%%%%%%%%
+\chapter{Cosmic Ray Search with ANITA3 Flight Data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ANITA3 Flight Overview}
+	\subsection{In Flight modifications}
+
+\section{Blinding Procedure}
+
+	\subsection{Philosophical Reasoning For Blinding}
+	
+	\subsection{Threshold for Unblinding Request}
+
+	\subsection{Polarization Specific Blinding}
+
+\section{Event Quality Cuts}
+
+\section{Constant wave source filtering}
+
+	\subsection{Bookkeeping and Filtering Decision Heuristic}
+
+	\subsection{Fourier Domain Band Filtering}
+	
+	\subsection{Sine Wave Subtraction}
+
+\section{De-dispersion (or maybe just template correlation cut?)}
+	\subsection{Wiener Deconvolution}
+	
+	\subsection{Comparison to simple template correlation cut}
+
+\section{Polarization cuts}
+	\subsection{Stokes Parameter Requirements on Signal Events}
+	
+\section{Event Reconstruction}
+	\subsection{Radio Interferometric Pointing}
+	
+	\subsection{Ray tracing to continent (with index of refraction)}
+	
+	\subsection{Log-Likelihood two dimensional gaussian pointing error}
+
+	\subsection{Immediate pointing cuts}
+
+
+\section{Known object categorization}
+	\subsection{Sun and its Reflection, Thermal Noise Effect}
+
+	\subsection{Satellites, Bases, and other Anthropogenic Sources}
+
+
+\section{Thermal noise separation results}
+	\subsection{Cut Efficiency}
+	
+	\subsection{Cut Quality}
+
+\section{Base and non-base clustering}
+	\subsection{Clustering Purity and Efficiency}
+
+	
+
+%%%%%%%%%%%%% 5 %%%%%%%%%%%%%
+\chapter{Simulation of air shower event in time domain and expected event rate from analysis techniques}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Air Shower Simulation Overview}
+	
+			
+			
+%%%%%%%%%%%%% 6 %%%%%%%%%%%%%	
+\chapter{Results of Analysis and Limits}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			
+			
+%%%%%%%%%%%%%%% 7 %%%%%%%%%%%%%%%
+\chapter{Quick and Dirty Reanalysis of ANITA2 Data Using Corrected dTs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			
+			
+			
+%%%%%%%%%%%%%% 8 %%%%%%%%%%%%%%%%%%%%		
+\chapter{Conclusion and Discussion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%		
+\chapter{Appendix A: Anti Quark Nuggets}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Theory Overview}
+
+\section{Possible Interaction Characteristics}
+
+\section{Detection Prospects With ANITA}
+	
+	
+	
+\end{document}
+
