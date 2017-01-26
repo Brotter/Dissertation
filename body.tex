@@ -26,37 +26,54 @@
 %%%%%%%%%%%%%%%%%%%%%%%
 \section{Cosmological Theory}
 	\subsection{Cosmic Ray Detection History}
-	Cosmic rays (CRs) were first observed over a century ago, when an unexpected increase in ionizing radiation was observed as altitude increased.\cite{HessCosmicRay}  Previously, it was expected that the measured radiation was caused by radioactive decays within the earth's crust, however this additional radiative component was indicative of a extra-terrestrial source.  This discovery spawned a search for the sources of these particles raining down from the heavens.  In the subsequent hundred years, hundreds of experiments have taken up the task of measuring and characterizing cosmic rays incident on the atmosphere utilizing a variety of techniques.\cite{Olive:2016xmw}  
+	Cosmic rays (CRs) were first observed over a century ago, when an unexpected increase in ionizing radiation was observed as altitude increased (Figure \ref{fig:HessKol}).  Previously, it was expected that the measured radiation was caused by radioactive decays within the earth's crust, however this additional radiative component was indicative of a extra-terrestrial source.\cite{HessCosmicRay}  This discovery spawned a search for the sources of these particles raining down from the heavens.  In the subsequent hundred years, hundreds of experiments have taken up the task of measuring and characterizing cosmic rays incident on the atmosphere utilizing a variety of techniques.\cite{Olive:2016xmw}
+	
+\begin{figure}
+\begin{centering}
+\label{fig:HessKol}
+	\includegraphics[width=\textwidth]{figures/HessKol}
+	\caption{Measurements of increasing ionizing radiation as a function of energy which provided strong evidence for an extra-terrestrial particle flux \cite{HessKolPic} }
+\end{centering}
+\end{figure}
 	
 	\subsection{Cosmic Ray Physics and Cosmology}
-	Cosmic rays present numerous unsolved questions to the world of physics, and open up many doors to the cosmological phenomenon that happen at extreme distances from Earth an at extreme energies.  The observed energy spectrum of these hadronic particles introduces the first mystery.   As their energy increases, the number of candidate sources for cosmic rays diminishes, leaving few to no exceptional intra-galactic candidates.\cite{RevModPhys.71.S33}  Flux density as a function of energy, shown in Figure \ref{fig:cosmicrayflux} is well measured up to high energies with modern experiments, however at the highest energies above $10^{18}$eV, statistical analysis of cosmic rays becomes increasingly difficult due to their extremely limited interaction rate.  This limits the \\
-	
-	Additionally, using cosmic rays as a astronomical messenger particle presents difficulties.  At lower energies, charged particles such as cosmic rays will be effected by the Lorentz-force while transiting magnetic fields of inter-steller objects. Subsequently, inverting their incoming detection vector will no longer point back to the source accelerator.  Higher energy cosmic rays are proportionally less effected by magnetic fields, however their extremely low statistics make it impossible to point to objects with any certainty\\
-	
-	The makeup of cosmic rays is also poorly understood, further limiting their usefulness is characterizing source candidates.  The extended air shower resulting from a CR interaction whether it be heavy ions or protons.  Additional experimental observations of these cosmological particles will yield a better understanding of both the structure of the matter within the universe at large, as well as fundamental physics processes energetically unachievable from existing collider experiments.  The creation and propagation of ultra high energy cosmic rays through the universe opens a window to understanding of extreme high energy physics.
+	Cosmic rays present numerous unsolved questions to the world of physics, and open up many doors to the cosmological phenomenon that happen at extreme distances from Earth and at extreme energies.  much of the universe is opaque to the traditional astronomical messenger particle, the photon, when probing energies high enough for pair production to occur spontaneously during transit to earth.     
 
-\noindent		
 \begin{figure}
+\begin{centering}
 \label{fig:observableUniverse}
 	\includegraphics[width=\textwidth]{figures/ObservableUniverse}
 	\caption{Interaction distances for photons and protons.  Shaded regions represent regions of the universe which are opaque to an astronomical particle.}
-\end{figure}		
+\end{centering}
+\end{figure}
+	
+	The observed energy spectrum of these hadronic particles introduces additionally puzzles.   As their energy increases, the number of candidate sources for cosmic rays diminishes, leaving few to no intra-galactic candidates.\cite{RevModPhys.71.S33}  Flux density as a function of energy, shown in Figure \ref{fig:cosmicrayflux} is well measured up to high energies with modern experiments, however at the highest energies above $10^{18}$eV, statistical analysis of cosmic rays becomes increasingly difficult due to their extremely limited interaction rate.  \\
+
+		
+
+	Additionally, using cosmic rays as a astronomical messenger particle presents difficulties.  At lower energies, charged particles such as cosmic rays will be effected by the Lorentz-force while transiting magnetic fields of inter-steller objects. Subsequently, inverting their incoming detection vector will no longer point back to the source accelerator as depicted in Figure \ref{fig:CosmicRayDeviation}.  Higher energy cosmic rays are proportionally less effected by magnetic fields, however their extremely low statistics make it impossible to point to objects with any certainty \\
+	
+	The makeup of cosmic rays is also poorly understood, further limiting their usefulness is characterizing source candidates.  The extended air shower resulting from a CR interaction whether it be heavy ions or protons.  Additional experimental observations of these cosmological particles will yield a better understanding of both the structure of the matter within the universe at large, as well as fundamental physics processes energetically unachievable from existing collider experiments.  The creation and propagation of ultra high energy cosmic rays through the universe opens a window to understanding of extreme high energy physics. \\
+
+		
 	
 
 \noindent		
 \begin{figure}
-\label{fig:cosmicrayDeviation}
-	\includegraphics[width=\textwidth]{figures/CosmicRayDeviation}
-	\caption{A diagram of lorentz-force induced curvature in low energy cosmic rays}
-\end{figure}		
+\label{fig:CosmicRayDeviation}
+	\includegraphics[width=\textwidth]{figures/CosmicRayDeflection}
+	\caption{Top: A diagram of lorentz-force induced curvature in low energy cosmic rays.  Bottom: An example of why magnetic deflection distorts the observed CR source location}
+\end{figure}
 		
 
 \noindent		
+%\begin{wrapfigure}{L}{0.5\textwidth}
 \begin{figure}
 \label{fig:cosmicrayflux}
 	\includegraphics[width=\textwidth]{figures/CosmicRayFluxMeasurements}
 	\caption{The all-particle spectrum as a function of energy-per-nucleus from measurements\cite{Olive:2016xmw}}
-\end{figure}		
+\end{figure}
+%\end{wrapfigure}		
 		
 		
 		
@@ -70,17 +87,21 @@
 \end{figure}
 
 
-\section{GZK internation}
-		The flux of cosmic ray particles as a function of energy, the energy spectrum.  This spectrum, though quite smooth throughout most, has several characteristic decreases in flux at high energies.  One such flux decrease coincides with the delta resonance rest energy.  This fits nicely with the theory of a relativistic proton colliding with the cosmic microwave background radiation (CMB).  This interaction was predicted by Greisen–Zatsepin–Kuzmin, and represents a theoretical high energy limit on particles coming from outside of the galaxy, known as the GZK limit, at 5x10$^{19}$ eV.\cite{GZK}  Confoundingly, cosmic ray particles have been observed exceeding this limit, suggesting an intra-galactic source of unknown origin.  The low statistics of particles observed at this energy prevent identification of a specific source.  However, as particles are present at these high energies, it is expected that other regions of the universe also contain accelerators capable of creating cosmic rays in excess of the GZK limit.  The GZK process has multiple channels, neutral current and charged current, each of which produce ultra high energy neutrino messenger particles that can be detected on earth.
+\section{Neutrino astrophysics and the GZK interaction}
+		The steep decline in observed flux measured by detectors alludes to an interaction mechanism that opens up a new detection prospect for cosmic rays.  Dubbed, "the ankle" in Figure \ref{cosmicrayflux}, the sharp decrease at 10$^{19}$eV corresponds to an interaction of a rest proton with a high energy gamma ray.  Shifting the frame of reference to a relativistic proton colliding with a low energy photon, one arrives at an accurate description of a cosmic ray transiting the cosmic microwave background (CMB) radiation that isotropically\ref{WMAPCMBResults} pervades the universe.  This interaction was predicted by Greisen–Zatsepin–Kuzmin, and represents a theoretical high energy limit on particles coming from outside of the galaxy, known as the GZK limit, at 5x10$^{19}$ eV, above which particles will scatter off the CMB and decline in energy.\cite{GZK}  Observatories measuring UHE cosmic rays have detected a decrease in the quantity of observed particles consistant with a GZK induced suppression.\cite{GZKMeasurement} Cosmic ray particles were also observed exceeding this limit, suggesting an intra-galactic source of unknown origin.  The low statistics of particles observed at this energy prevent identification of a specific source.  As particles are present at these high energies, it would also be expected that other regions of the universe also contain accelerators capable of creating cosmic rays in excess of the GZK limit.  \\
+		
+		The GZK process has multiple channels, neutral current and charged current, each of which produce an ultra high energy neutrino (UHE$\nu$) messenger particle that could subsequently be detected on earth.\cite{GZK}  The cross section of neutrinos has been measured in accelerator facilities to be vanishingly small at modern accelerator scale energies.\cite{neutrinoCrossSectionMeasurements}  However, at energies out of reach of modern accelerators, cosmic accelerators could illuminate our understanding of neutrino cross section.  The neutrino cross section at energies above those measured by accelerator facilities has been estimated by using standard model particle physics.\cite{neutrinoCrossSectionExtrapolation} This small cross section allows the GZK interaction messenger neutrino to traverse unimpeded through the interstellar medium before subsequently interacting with earth.  Additionally, the uncharged nature of neutrinos allow them to travel in a straight vector from their source locations without bending from intervening magnetic fields.  Cosmologically propagating neutrinos have an extremely small cross section, such that their path length through empty space is essentially infinite, allowing an unparalleled view into the depths of the cosmos.
 
-\section{Cosmic Ray Detection on Earth}
-		Cosmologically propagating neutrinos have an extremely small cross section, such that their path length through empty space is essentially infinite.  This yields a messenger particle that can transmit information about ultra high energy cosmic ray quantity, flux, and energy from regions of the universe not probe-able by classical photon telescopes.  Neutrino telescope observations have been carried out at lower energies for nearly a century, with a recent increase in energies and scale in the past few decades.  Since the term "cosmic ray" describes any high energy particle incident on earth (including gamma rays).  For the purposes of this dissertation, neutrinos fit the description of cosmic rays.
-	\subsection{Extensive Air Showers}
-		A highly energetic particle interacting with the hadronic matter present in Earth's atmosphere creates an extended series of particle production and interactions.  This extensive shower of particles emanating from a single extra-terrestrial high energy transient source particle has been appropriately dubbed an Extensive Air Shower (EAS).  These showers produce both traveling messenger particles that can be observed through light interacting secondary interactions in instrumented transparent scintillating media, as well as primary radiation from the created moving charged particles that travel along the principle shower axis.  There are two main radiative effects that can be observed in the UHF and VHF bands of the electromagnetic spectrum, a region in which ANITA has high sensitivity.  These down going events can be both observed by the payload directly, or as reflections off the ice that covers the Antarctic continent.  These reflected pulses will have an inverted phase from the theoretical models of an EAS.
+\section{Neutrino Detection on Earth}
+		  The neutrinos produced in GZK interactions yield a strongly motivated messenger particle that transmit information about ultra high energys at energies above the suppression effect.  Astronomical neutrino telescope observations have been carried out at lower energies nearly since the discovery of the particle itself. Recently however, there has been a noted increase in scale and energy sensitivity.  Since the term "cosmic ray" describes any high energy particle incident on earth (including gamma rays).  For the purposes of this dissertation, neutrinos fit the description of cosmic rays.  \\
+		  The largest notable difference between observations of neutrino observations and cosmic rays is the medium in which they are most likely to interact.  While cosmic rays have large cross sections and are predicted to interact with even low density media, such as the atmosphere, neutrinos require a medium with far higher density.  Interestingly, both particle interaction lengths can be described with a traversed density unit, or specifically for the case of cosmic rays the atmospheric depth, $\frac{g}{cm^{2}}$.  For UHE$\nu$s however, this term becomes larger than the integrated total density of the atmosphere regardless of incoming slant angle.  The neutrino will therefore either skim the earth and atmosphere entirely if shallow enough, or interact within the earth.  However, if a dense dielectric solid is introduced at the Earth's surface by an opportunistic experimenter, it is possible to capture neutrino interactions within the field of view of detection equiptment.  This equiptment can capture the induced electromagnetic showers from a high energy particle shower.
+		
+	\subsection{Extensive Air/Ice Showers}
+		A highly energetic particle interacting with the hadronic matter present in Earth's atmosphere, or in a dense solid, creates an extended series of particle production, scatterings, and decays.  This extensive shower of particles emanating from a single extra-terrestrial high energy transient source particle has been appropriately dubbed an Extensive Air Shower (EAS).  These showers produce both traveling messenger particles, mainly muons, that can be observed through weakly interacting secondary scatterings in instrumented transparent scintillating media, as well as through primary radiation from the appearance of moving charged particles that travel along the principle shower axis.  There are two main radiative effects that can be observed in the UHF and VHF bands of the electromagnetic spectrum, a region in which ANITA has high sensitivity.  
 	\subsection{Geomagnetic Radiation}
-		The primary and strongest radiative effect in an EAS is from a longitudinal charge separation created from a Lorentz force as the charged particles created in the shower move through the geomagnetic field of the Earth.  This charge separation emits an impulse with a linear polarization orthogonal to the magnetic field and the shower axis.
+		The primary and strongest radiative effect in an EAS is from a longitudinal charge separation created from a Lorentz force as the newly created mass of charged particles move through the geomagnetic field of the Earth.  As the shower is required to have zero net charge (A CR will have a total charge of +1 and a neutrino will be neutral), an equal number of positively and negatively charged particles is expected to be generated.  The Lorentz force is $F=q(\vec{E}+\vec{v}\times\vec{B})$, so oppositely charged particles will move in opposite directions, inducing the spacial separation.  This charge separation emits an impulse with a linear polarization orthogonal to the magnetic field and the shower axis with an intensity proportional to the incoming shower energy and magnetic field.
 	\subsection{Askaryan Effect}
-		A secondary radiation component was theorized by Gurgen Askaryan as a build up of negative charge at the front of the shower core as electrons are created and scattered forward, but their positron pairs are annihilated.  This relativistic velocity charge buildup will radiate coherently at critical off angles where their created wavelengths constructively interfere.  This is visible as a sharp broad spectrum impulse, as a stationary viewer observes a enormous charge flux.
+		A secondary radiation component, theorized by Gurgen Askaryan in 1962, as a build up of negative charge at the front of the shower core as electrons are created and scattered forward, but their positron pairs are annihilated.\cite{Askaryan:1962hbi}  This relativistic velocity charge buildup will radiate coherently at critical off angles where their created wavelengths constructively interfere.  This is visible as a sharp broad spectrum impulse, as a stationary viewer observes a enormous charge flux.  This effect has much more recently been measured at particle accelerators in a variety of materials, including ice,\cite{PhysRevLett.99.171101} salt\cite{PhysRevD.72.023002}, silica sand\cite{PhysRevLett.86.2802}.  
 
 \section{UHE Neutrino Detection on Earth}
 	The primary science motivator for ANITA is to observe neutrinos created via the GZK interaction, which due to their low flux require a large instrumented volume-time.  
@@ -90,14 +111,14 @@
 	\subsection{Tau-$\nu$ Specific Detection Prospects}
 		Though the Earth becomes opaque to neutrinos at high energies, secondarily created particles such as a Tau lepton from a similarly flavored neutrino have a path length that opens a larger field of view than just the sliver of ice at the horizons.  These Taus, which have a relatively short half-life, will then decay in the atmosphere, initiating an EAS that travels upwards from the surface of the Earth.
 
+\section{ANITA}
+	Up to this point, I have merely motivated a detectable physics hypothesis from established theories and measurements.  From here, I can introduce a detection platform for these physics phenomenon, the ANtarctic Impulsive Transient Antenna (ANITA).  EASs present in the atmosphere or in the dense, radio transparent, dielectric solid glacier covering of the souther continent of Antarctica will produce unique and characteristic signals through the above methods.  A high altitude, long duration, telescope platform would have an extremely large field of view, and thus a possibility of observing one of these rate interactions.  Additionally, downwardly moving atmospheric CR shower events can be both observed by the payload directly, or as reflections off the ice that covers the Antarctic continent.  These reflected pulses will have an inverted phase from the theoretical models of an EAS.
 
 
 
-
-
-%%%%%%%%%%%% 2 %%%%%%%%%%%%%%
+%%%%%%%%%%%% 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{ANITA Telescope Platform}
-%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Overview}
 	The ANITA telescope platform is, in essence, a passive broad-band radio frequency electromagnetic field transient detector and time domain digitizer.  The main structure consists of a collection of radially positioned, outwardly facing, broad-band, highly-directional quad-ridge horn antennas.  The antennas are separated into three different rings, with each ring separated into 16 different "phi-sectors."  This yields several (2-3 for ANITA2, 3 for ANITA3) antennas pointing in the same direction with a physics baseline offset between them. These antennas' feeds are filtered and amplified by a series of low noise-figure signal-chain components, discussed later, before being digitized by custom on board high-speed digitizer chips and readout electronics.  The digitization is triggered on-board, with a separate square-law integrating power detector before being read out to on board redundant data storage.  The payload is capable of reading out ~50Hz of full payload waveforms with low (\textless 5\% ) deadtime to disk through a CPCI interconnect backplane.  Additional position and orientation data is also recorded, as well as multiple diagnostic and in-situ relevant physics measurements.
 	
@@ -119,7 +140,7 @@
 	\subsection{Technical Details}
 		This band pass filtering is done in two stages, one immediately after the antenna, before the pre-amplifier, in order to prevent saturation of the pre-amplifier from out of band signals.  This filter must have an extremely low in-band loss, as any loss introduced by the filter is gained in full system noise temperature, a value which is cascaded through the entire amplification chain.  This was accomplished with a custom made LARK band pass filter.  The second is done after the full amplification chain in order to remove the added out of band electronic amplifier noise introduced from the system.  This was accomplished with two separate low-pass/high-pass filters.
 	\subsection{Bandwidth Selection Justification}	
-		The LABRADOR digitizer also influences the selection of the band edges.  At the high frequency end, the maximum sampling rate of 2.6GS/s yields a 1.3GHz nyquist samling rate.  Any out of band power will be aliased into the signal band and present as increased noise.\cite{something}  On the low end, the 100ns SCA buffer length would only allow a minimum 10MHz full period oscillation to be observed.  In reality, the major limitation at lower frequencies is from the antennas, which low frequency response scale with size.
+		The LABRADOR digitizer also influences the selection of the band edges.  At the high frequency end, the maximum sampling rate of 2.6GS/s yields a 1.3GHz nyquist samling rate.  Any out of band power will be aliased into the signal band and present as increased noise.  On the low end, the 100ns SCA buffer length would only allow a minimum 10MHz full period oscillation to be observed.  In reality, the major limitation at lower frequencies is from the antennas, which low frequency response scale with size.
 		
 \section{Amplification}
 	Due to the small emitted signal from Askaryan or Geomagnetic radiation, a high level of amplifier gain must be utilized to elevate it into the range observable by the precision of the LABRADOR digitizer.
@@ -148,7 +169,7 @@
 	The time between samples is controlled by a charge starved transistor chain that controls the connection between the sampling capacitor and the input RF signal.  Due to process inconsistencies in the manufacturing of the ASICs, the timing between subsequent samples is not well controlled.  This yields a variable delta T that needs to be corrected in calibration of each chip individually.  In addition, it leads to an unevenly sampled time domain waveform, which introduces a difficult to correct frequency response, and requires interpolation between points before creating interferometric maps.  This is processing intensive, an issue that makes doing on board interferometry difficult.
 	
 	\subsection{Impulse Response}
-	The filtering and amplification chain has a dispersive effect on the signal, which requires a calibration of the system impulse response in order to fully understand the incident electromagnetic field.  An impulse response is the reaction of the system to a brief input signal.\cite(something) This impulse response phase shifts different frequencies of the signal which causes the signal power to be temporally spread.  As correlation between channels is dependent on the full complex parameters of the signal, significant differences between channels will cause a mismatch in digitized correlation even if a coherent electromagnetic impulse was present at the antennas.  \\
+	The filtering and amplification chain has a dispersive effect on the signal, which requires a calibration of the system impulse response in order to fully understand the incident electromagnetic field.  An impulse response is the reaction of the system to a brief input signal. This impulse response phase shifts different frequencies of the signal which causes the signal power to be temporally spread.  As correlation between channels is dependent on the full complex parameters of the signal, significant differences between channels will cause a mismatch in digitized correlation even if a coherent electromagnetic impulse was present at the antennas.  \\
 	The impulse response was measured by comparing the pulse at the input of the full signal chain to that digitized by the LABRADOR chips, then using Fourier deconvolution to determine the introduced gain and phase offsets.  Though Wiener 
 	
 	
@@ -228,7 +249,7 @@
 \noindent		
 \begin{figure}
 	\includegraphics[width=\textwidth]{figures/LAB3BTimingGenerator}
-	\caption{Diagram of LAB3B Timing Generator\cite{LABASICPAPER}}
+	\caption{Diagram of LAB3B Timing Generator\cite{LABASICPAPER} }
 \end{figure}
 
 	\subsection{Time Domain Bin Width Matrix}
