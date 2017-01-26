@@ -1,0 +1,42 @@
+/*
+
+Notes.txt
+
+Just things that I think of while I'm writing that I need to do or fix or whatever that I can't just put directly into the text.  It's probably easier to keep that sort of stuff here than in the notebook.
+
+*/
+
+
+
+December 29th 2016
+
+-> I need to make a really clear differentiation between proton/heavy ion extended air showers and neutrino interactions I think.  Really they big difference is the medium in which they occur, (one inside the ice sheet and one in the atmosphere).  Theres probably an extent difference (shower development length?  Sort of an xMax thing where you can specify it by transit density and then you don't have to define length?).  The interesting thing about doing this of course is that Tau neutrinos are going to be air showers after regeneration, which I also have to talk about.
+
+-> Once I make this differentiation, I can just refer to both as showers most likely.
+
+
+
+January 24th 2017
+
+-> OH MY GOD I CANNOT FOCUS AT ALL.  What is wrong with me.  It is so annoying to be so easily distracted like this.
+
+-> I need to make a schedule so i know when I need to get stuff done.  So I'm gonna do that real quick.  Lets just say I have eight chapters that I want Peter (and others) to review.  So if I did one per week for TWO MONTHS then I would be done.  That is the END OF MARCH.  I only really have four months, so lets shoot for that I guess...
+
+-> Okay, now that I made it, i need to STICK WITH IT.  Basically it really is a chapter a week.  Lots are already filled out so this might not be the most difficult thing in the world.  Plus I have three weeks at the end for revisions, so that is a bit of a buffer.
+
+-> FOR THIS WEEK: I need to finish the intro.  This will be good and will probably make me feel better about the whole thing.
+-> ALSO FOR THIS WEEK: I need to come up with a "blinding scheme" and then finish the analysis.  I think I am closer to finishing than i think.
+	->Blinding:  I need to remain blind to two things:
+			1) The polarity of the signal, so basically does it match with a cosmic ray impulse or a flipped impulse
+			2) The polarization of the signal?  This would also keep me blind to neutrinos which might be nice, so I'm not making cuts that throw out neutrinos because I don't expect to see any
+			3) Base singlets.  Basically I shouldn't do clustering until I am done with the rest of the stuff.
+			
+-> It is amazing how doing a little bit of work makes me more motivated.  To bad I started at nearly 4pm :( Also I am still not super focused lol.  I need to make another doctors appointment to get more adderall because I need at least two more months to finish this dissertation.
+
+-> Also I need to turn in that one form!!  OH NO!!  okay I sent it so whatever happens happens
+
+-> I also "goofed" around a bit by fixing my webpage so it looks a ~little~ more presentable
+
+-> Got some stuff done at home though :)  For tomorrow, I should, after I finish more of the chapter, print it out and see how "wrapfigure" looks like that.  
+
+
