@@ -40,3 +40,25 @@ January 24th 2017
 -> Got some stuff done at home though :)  For tomorrow, I should, after I finish more of the chapter, print it out and see how "wrapfigure" looks like that.  
 
 
+February 1st
+
+-> Got a lot done!  Still having some problems focusing, not as bad maybe?  I keep playing Krew.io and Hordes.io which is a waste of time (B1EyjNl_g)  
+
+
+-> Peter had some good notes about how to do a "blind" analysis.  Basically, we have two sort of "knobs".
+1) Thermal event cuts.  Basically we can use things like Peak Interferometric Map and Peak Hilbert (coherently summed or deconvolved waveform) to cut out a huge portion of thermal events.  From there, we have signal-like events that point well (respectively to those two cuts).
+2) We then can do _clustering_, since we basically have a list of things that should point to bases.  We can then look to see how well they actually DO point to bases.  We need to do this because the next cut will probably mask us to too many pseudo bases.
+3) From there, we can do something like a "pattern match" cut.  This pattern match should give us a total of maybe only 30 events, which would be pointless to do clustering wUGith.  We can also maybe do some sort of polarization cut.  (geomagnetic is the primary radiation source and it will be linearly polarized around the geomagnetic field.)  Askaryan is a secondary effect.
+
+
+->Also: I finished the first chapter to first order and sent it to Peter and Rick,
+      . I also need to send it to -> Bob, Jelena, Gary
+      . I need to set up a time for the dissertation defense.
+      
+      
+->Also: I am teaching classes and stuff and need to make sure I know Bragg diffraction before tomorrow I guess?  And I have to make a quiz for the dude.
+
+
+February 2nd
+-> One more day to finish the section about the instrument.  I still have a lot of plots to make and things to shore up :(  Also I'm going camping this weekend for Dan's 30th birthday so I gotta finish the analysis stuff soon.  I am running over the full data set right now on the anita servers
+bchn
