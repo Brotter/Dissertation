@@ -175,7 +175,18 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 \chapter{ANITA Telescope Platform}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Overview}
-	The ANITA telescope platform is, in essence, a passive broad-band radio frequency electromagnetic field transient detector and time domain digitizer.  There have been four ANITA flights at the time of this thesis, numbered one through four.  ANITA1 flew in the 2006-2007 Antarctic balloon campaign\cite{ANITA1}, ANITA2 in 2007-2008\cite{ANITA2}, ANITA3 in 2014-2015 (and is the topic of this thesis) and most recently ANITA4 in 2016-2017.  The main instrument structure consists of a collection of radially positioned, outwardly facing, broad-band, highly-directional quad-ridge horn antennas.  The antennas are separated into three different vertically separated rings, with each ring separated into 16 different azimuthally facing "phi-sectors."  This yields several (two for ANITA1, two or three for ANITA2, and three for ANITA3) antennas pointing in the same direction with a physical baseline offset between them. These antennas couple the electromagnetic radiation incident on them into a coaxial signal line, which is then amplified by a series of low noise-figure signal-chain components, discussed later, filtered via analoge compound filters into the relevant frequency bandwidth, before finally being digitized by custom on board high-speed digitizer chips and readout electronics.  The digitization is triggered on-board from incident RF signals, with a parallel square-law integrating power detector circuit, before being read out to a CPU writing to board redundant data devices.  The payload is capable of reading out ~50Hz of full payload waveforms with low (\textless 5\% ) deadtime to disk through a CPCI interconnect backplane.  Additional position and orientation data is also recorded, as well as multiple diagnostic and in-situ relevant physics measurements.
+	The ANITA telescope platform is a passive broad-band radio frequency electromagnetic field transient detector and time domain voltage digitizer.  There have been four ANITA flights at the time of this thesis, numbered one through four.  ANITA1 flew in the 2006-2007 Antarctic balloon campaign\cite{ANITA1}, ANITA2 in 2007-2008\cite{ANITA2}, ANITA3 in 2014-2015 (the topic of this thesis) and most recently ANITA4 in 2016-2017.  
+	
+	The main instrument structure consists of a collection of radially positioned, outwardly facing, broad-band, highly-directional quad-ridge horn antennas.  The antennas are separated into three different vertically spaced rings, with each ring separated into 16 different azimuthally facing "phi-sectors." (see Figure \ref{fig:phiSectors})  Between ANITA1 and ANITA2 an additional 8 nadir ring antennas were added.  Between ANITA2 and ANITA3 an additional 8 antennas were added to the lower ring, bringing the total count to 48.  ANITA4 flew the same number of antennas as ANITA3.  These co-pointing antennas allow multiple observations of a signal event with a physical distance baseline offset between them. These antennas couple the incident electromagnetic radiation into a coaxial signal line, which is then amplified by a series of low noise-figure components, discussed later, filtered via analoge compound filters into the relevant frequency bandwidth, before finally being digitized by custom on board high-speed digitizer chips and readout electronics.  The digitization is self-triggered by parallel square-law integrating power detector circuits driving a readout decision (Figure \ref{RFChainBlockDiagram}) After digitization, waveforms are read out to a CPU writing to on board redundant data devices.  The payload is capable of reading out ~50Hz of full payload waveforms with low (\textless 5\% ) deadtime to disk through a CPCI interconnect backplane.  Additional position and orientation data is also recorded, as well as multiple diagnostic and in-situ relevant physics measurements.  These measurements are telemetered down to ground servers at a low rate for in-flight diagnostics, however full recovery of the data vaults is desired for a complete analysis.
+	
+	
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/phiSectors}
+	\caption{A top down diagram depicting a single ring layout of the horn antennas used to achieve complete azimuthal coverage assuming a 30$^{\circ}$  opening angle.  The antenna gain pattern is discussed further in the Calibration section.}
+	\label{fig:phiSectors}
+\end{figure}
+
 	
 \begin{figure}
 \centering
@@ -184,12 +195,18 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 	\label{fig:ANITA3_hangtest}
 \end{figure}
 
-	
 \begin{figure}
 \centering
 	\includegraphics[width=\textwidth]{figures/ANITA3_dancefloor}
 	\caption{An image of the ANITA3 during GPS calibration on the "dance-floor" at the Long Duration Balloon (LDB) facility at McMurdo Station in Antarctica prior to launch in 2014.  In the background is Mt. Erebus.  In this image the solar panels are in their retracted state, the instrument crate is visible on the left hand side of the central column, and the NASA Small Instrument Package (SIP) is visible on the right hand side. The orange structure seen under the payload is a stand used during construction and testing of the instrument.}
 	\label{fig:ANITA3_dancefloor}
+\end{figure}
+
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/ANITA3_layout_asBuilt}
+	\caption{A top-down diagram detailing the locations of various components on the ANITA3 instrument as it was flown.  Visible are the locations of the NASA Small Instrument Package (SIP) and ANITA instrument box as they relate to the GPS antennas and measurement antenna phi sectors.}
+	\label{fig:ANITA3_asBuilt}
 \end{figure}
 
 \begin{figure}
@@ -200,20 +217,16 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 \end{figure}
 
 	
-\section{Quad Ridge Horn Antennas}
-	The ANITA instrument utilizes dual polarized quad ridge horn antennas to convert the electromagnetic field incident to the payload into an electrical signal that can be digitized and stored for later analysis.  The main requirements of the antennas are: equal sensitivity over a large range of frequencies, high directionality in order to reduce noise and boost signal fidelity, dual polarizations with co-located phase centers, low dispersion, and light weight.
+\section{Antennas}
+	The ANITA instrument utilizes dual polarized quad ridge horn antennas to convert the electromagnetic field incident on the payload into an electrical signal that can be digitized and stored for later analysis.  The main requirements of the antennas are: equal sensitivity over a large range of frequencies, high directionality in order to reduce noise and boost signal fidelity, dual polarizations with co-located phase centers, low dispersion, and light weight.
 	
-	Antennas are located to maximize baseline distance between pairs pointing to similar regions of sky in order to maximize angular resolution recovered from interferometric pointing.  Each successive ANITA flight has added additional antennas to the nadir (bottom) ring in order to increase the number of baselines, as well as provide an additional $\frac{1}{\sqrt{N}}$ noise reduction for coherently summed waveforms.  The total size of the antennas are dictated by the minimum desired frequency (f=1/$\lambda$), a term dominated by both physical payload constraints as well as anthropogenic CW noise, such as FM radio transmissions, in the VHF band.  Additionally, dual orthogonally facing polarization measurements are desired to map out the complete Stokes parameters of any incident signal.  The polarization convolved with the refractive index of the ice will yield an entirely vertically polarized field transient at the payload for shower interactions within the ice, and an entirely horizontally polarized transient for showers above the ice viewed via a reflection off its surface.  The dispersion of the antennas must also be low, as the digitization window is small and the square-law power trigger is dependent on all power being within its short analog integration window.
+	Antennas are located to maximize baseline distance between pairs pointing at similar regions of the field of view in order to maximize angular resolution recovered from interferometric pointing.  The additional antennas added in each ANITA flight increase the number of baselines possible for interferometry, as well as provide an additional $\frac{1}{\sqrt{N}}$ incoherent noise reduction for coherently summed waveforms.  The size of the antennas is dictated by the minimum desired frequency (f=1/$\lambda$), a term dominated by both physical payload constraints (low frequency signals require large antennas) as well as anthropogenic CW noise, such as FM radio transmissions, in the VHF band.  
+	
+	Additionally, dual orthogonally facing polarization measurements are desired to map out the complete Stokes parameters of any incident signal.  The measured polarization is effected by transition between air and ice at the surface of the continent.  This interaction is expected to yield an entirely vertically polarized field transient at the payload for shower interactions within the ice, and an entirely horizontally polarized transient for showers above the ice viewed via a reflection off its surface.  
+	
+	Low dispersion induced from the antennas is also desired, as the digitization window is small and the square-law power trigger is dependent on all power being within its short analog integration window.
 	
 	
-\begin{figure}
-\centering
-	\includegraphics[width=\textwidth]{figures/phiSectors}
-	\caption{A top down diagram depicting a single ring layout of the horn antennas used to achieve complete azimuthal coverage assuming a 30$^{\circ}$  opening angle.  The antenna gain pattern is discussed further in the Calibration section.}
-	\label{fig:phiSectors}
-\end{figure}
-
-		
 \begin{figure}
 \centering
 	\includegraphics[width=\textwidth]{figures/AntennaPol}
@@ -223,11 +236,32 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 
 	
 	
-	Calibrations of the antennas was performed over a wide range of angles in order to determine the full beam-pattern of the horns in both the E-field and B-field for each polarization. See Figure \ref{fig:AntennaPol} for relation between physical antenna and field orientation.  These measurements were taken for the boresight of every antenna in order to determine stability of the manufacturing process.  These measurements and variations are discussed later in the Calibration chapter.
-	\subsection{Antenna Theory}
-		An antenna is a physical object that couples the impedance of free space to that of a a coaxial transmission wire, thus effectively converting an electric field present in a medium into a voltage that can be measured.  The principle figure of interest is in this case the antenna height, which is a mathematical construct that describes the efficiency of an antenna coupling a field into a voltage.
+	Calibrations of the antennas was performed over a wide range of angles in order to determine the full beam-pattern of the horns in both the E-field and B-field for each polarization. See Figure \ref{fig:AntennaPol} for relation between the physical antenna and field orientation.  These measurements were taken for the boresight of every antenna in order to determine stability of the manufacturing process.  These measurements and variations are discussed later in the Calibration chapter.
+	
+%	\subsection{Antenna Theory} %seems unnecessary here?  Maybe in calibration
+%		An antenna is a physical object that couples the impedance of free space to that of a a coaxial transmission wire, thus effectively converting an electric field present in a medium into a voltage that can be measured.  The principle figure of interest is in this case the antenna height, which is a mathematical construct that describes the efficiency of an antenna coupling an incident electromagnetic field into a voltage on a wire.  
+
 	\subsection{Antenna Response Angle Justification}
-		The ANITA instrument can utilize its geometric symmetry to reduce the response angle of the antennas and subsequently improve their signal gain.  ANITA is very much limited by thermal background noise created from the 250K surface of the Antarctic continent, the 3K CMB, and randomly placed anthropogenic sources.  Any decrease in angular response for the antenna both increases the signal gain from a EAS pulse and decreases the noise from these noise sources.  The two minimum gain requirements that each antenna must satisfy is that they overlap with a neighboring phi sector pair to establish phi-directionality from interferometric baselines, and that their elevation must encompass both up going reflected cosmic ray and neutrino signals, as well as have some sensitivity to down-going air showers.  The desire to have each antenna symmetrical leads to an opening angle of 30$/degrees$
+		The ANITA instrument can utilize its geometric symmetry and full azimuthal coverage to reduce the response angle of the antennas and subsequently improve their signal response while keeping their noise figure constant.  ANITA is very much limited by thermal background noise created from the 250K surface of the Antarctic continent, the 3K CMB, and randomly placed possibly unkown anthropogenic sources.  Assuming a constant efficiency, an increase in the directivity of an antenna is linearly related to its gain by equation \ref{eqn:antGain}, where G is the antenna gain, $E_{antenna}$ is the efficiency and D is the directivity.
+		
+\begin{equation}
+	\label{eqn:antGain}
+	G = E_{antenna} * D
+\end{equation}
+		
+		The two minimum gain requirements that each antenna must satisfy is that they overlap with a neighboring phi sector pair to establish phi-directionality from interferometric baselines, and that their elevation must encompass both up going reflected cosmic ray and neutrino signals, as well as have some sensitivity to down-going air showers.  The desire to have each antenna symmetrical leads to an opening angle of $30^{/circ}$.  Additionally, the antennas are pointed at a $10^{/circ}$ downward angle to put their maximum directivity pointed slightly below the horizon of the Earth where signals are most likely to appear.
+	
+	\subsection{A Low Frequency Antenna (ALFA)}
+		In addition to the quad ridge horn antennas that accomplish the main science goal of the ANITA instrument, ANITA3 had an additional VHF deployable "quad-slot" antenna with an omni-directional azimuthal response (see Figure \ref{fig:ALFA}.  As many radio frequency EAS experimental measurements are done at lower frequencies, this antenna was added to allow direct comparison between ANITA's observed particle track radiation events and those at ground based observatories.  Due to a lack of additional digitization channels in the system, as well as on-board high-pass analog filtering on the SURF board, this antenna was heterodyned with a 900MHz Local Oscillator (LO) to up-convert the signal to a measurable frequency before being combined with channel 05TH.  05TH in turn was low-pass filtered to remove it's signal and noise contribution in this signal region.  This non-symmetry in the system must be remembered in all analysis steps, and is discussed further in the Calibration section.
+		
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/ALFA_gainPattern}
+	\includegraphics[width=\textwidth]{figures/ALFA_gain}
+	\caption{Top: Simulations of the expected antenna gain pattern for the ALFA antenna.  Image provided by Andres Romero-Wolf.  Bottom: Measured in flight frequency response of the ALFA antenna.  Image provided by Stephanie Wissel}
+	\label{fig:ALFA}
+\end{figure}
+
 	
 \section{Filtering}
 	\subsection{Importance}
@@ -235,29 +269,88 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 		
 		At the high frequency end of the spectrum, above 1.2GHz, the individual radiative particles in the shower core begin to be resolved, resulting in a loss of coherence of radiated power above that band (See Figure \ref{fig:AskaryanSimulation}.  This effect is stronger at angles further from the peak Cherenkov angle away from the shower axis.\cite{PhysRevD.84.103003}  This lack of coherent signal power in the UHF region provides a high frequency suppression to the total signal bandwidth.
 
-
 		On the low frequency end of the spectrum, the radiated power from the shower is expected to rise as a function of frequency up to 1GHz.  Manufacturing and design limitations of a long wavelength antenna coupled with the high utilization of the VHF band by radio transmitters on satellites and ground stations lead to a requirement that lower frequencies, below 180MHz in the case of ANITA3, be removed.
 		
 	\subsection{Technical Details}
 		This band pass filtering is done in two stages, one immediately after the antenna, before the pre-amplifier in order to prevent saturation of the pre-amplifier from out of band signals, and one after the amplification chain in order to remove out of band amplifier noise.  The primary filter must have an extremely low in-band loss, as any loss introduced by the filter is gained in full system noise temperature, a value which is cascaded through the entire amplification chain.  This was accomplished with a custom made LARK band pass filter.  The secondary filtering was accomplished with two discrete low-pass/high-pass filters that do not require such a low in band loss characteristic due to their position in the signal chain.
 		
 	\subsection{Digitizer Bandwidth}
-		The LABRADOR digitizer also influences the selection of the band edges.  The maximum sampling rate of 2.6GS/s yields a 1.3GHz nyquist sampling frequency.  Any out of band power will be aliased into the signal band and present itself as increased in-band noise.  Additionally, the 100ns SCA buffer length would only allow a minimum 10MHz full period oscillation to be observed.  However in reality the major limitation at lower frequencies remains to be the antennas.  The effect of the limited trigger window is visible in the ALFA low frequency 
+		The LABRADOR digitizer also influences the selection of the band edges.  The maximum sampling rate of 2.6GS/s yields a 1.3GHz nyquist sampling frequency utilyzing .  Any out of band power will be aliased into the signal band and present itself as increased in-band noise.  Additionally, the 100ns SCA buffer length would only allow a minimum 10MHz full period oscillation to be observed.  However in reality the major limitation at lower frequencies remains to be the antennas.  The effect of the limited trigger window is visible in the ALFA low frequency antenna, as much of the 
 		
 \section{Amplification}
-	Due to the small emitted signal from Askaryan or Geomagnetic radiation, a high level of amplifier gain must be utilized to elevate it into the range observable by the precision of the LABRADOR digitizer.
-	\subsection{Expected Signal Power}
-		The power of an Askaryan signal from the continent is proportional to the energy of the incident cosmic ray particle.  The 
-
-	\subsection{Dynamic Range}
-		
+	Expected signal strength output from the coupling of the antennas to the 50-ohm RF transmission network requires that signal amplification occurs to be detectible by the available electronic instruments.  The amplification for the ANITA3 instrument was accomplished with two stages, one close to the antenna within the custom built AMPA module, and one upon entering the instrument crate itself within the iRFCM (internal radio frequency conditioning module).  
 	
-	\subsection{Gain Justification}
-		The gain of the system can be arrived at by determining the level of thermal noise that is present at the digitizer chips in ADC counts.  Having too little gain would result in a noise floor that is dominated by digitizer noise and remove sensitivity to low SNR signals, while the reverse would result in high SNR signals saturating the digitizer and being equally unusable.
+	The four custom built iRFCM enclosures, one of which can be seen in figure \ref{fig:IRFCMpic} and is described in \ref{fig:IRFCM}, handle the second stage amplification for twenty four of the RF signal channels.  There are three major active RF components for each signal chain present within the module. The AmpLite, a high gain, high dynamic range amplifier built by Patrick Allison of OSU, a tuning attenuator for gain balancing of the 96 different channels, and a bias-tee which, as its name suggests, adds a DC bias to the center conductor of the coaxial transmission cable between the AMPA and the iRFCM.  
+
+	
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/IRFCM}
+	\caption{A block diagram of a single iRFCM RF channel.  The bias-tee, as its name suggests, adds a DC bias to the signal }
+	\label{fig:IRFCM}
+\end{figure}
+	
+	
+\begin{figure}
+\centering
+	\includegraphics[height=0.9\textheight]{figures/IRFCMpic}
+	\caption{An image of the internals of an iRFCM module after assembly}
+	\label{fig:IRFCMpic}
+\end{figure}
+	
+	
+
+
+	
+	\subsection{Expected electromagnetic field variations}
+		Depending on the radiation mechanism being observed, the power of an EAS signal measurable at the detector is proportional to the energy of the incident cosmic ray particle.\cite{EASSignalPower}  This signal power is superimposed on the thermal and anthropogenic background noise present in the field of view of the detector.  The constant thermal emission of matter in the field of view of an antenna introduces a Johnson-Nyquist thermal noise component, which is calculated in Equation \ref{eqn:NyquistNoise}
+
+\begin{equation}
+	\label{eqn:NyquistNoise}
+	P = k_{b}T\delta F
+\end{equation}
+
+Where P is the thermal noise power observed across a termination resistor in watts, $k_{b}$ is Boltzmanns constant, T is the absolute temperature observed temperature in kelvin, and $\delta F$ is the frequency bandwidth in Hz.  The antenna, creating a smooth transition between the complex impedance of free space and that of the coaxial transmission network, has a noise temperature dictated by the integral of the temperature of objects in its field of view $(T(\theta,\phi))$, weighted by the gain pattern of the antenna $(G(\theta,\phi,\omega))$, shown in equation \ref{eqn:antTemp}.
+
+\begin{equation}
+	\label{eqn:antTemp}
+	\int_{-\pi}^{\pi}\int_{\theta}^{2\pi}\int_{0}^{\infty} G(\theta,\phi,\omega)*T(\theta,\phi)sin^{2}\theta d\theta d\phi d\omega
+\end{equation}
 
 
 	\subsection{Noise Figure} 
-	The extremely low signal power of an Askaryan pulse necessitates a minimum of additional electronics noise from the detector.  Besides a background of thermal noise, the dominant continuous noise source is electronics noise from the amplifiers.  This noise is a byproduct of the non-ideal coupling of the amplifier to the input signal that results in the amplification of internal thermal noise seen as a resistance on the front of the amplifier.  The noise figure is increased by any loss of power in front of the amplifiers.  Since the noise figure cascades through an amplifier chain, it is imperative to reduce any additional noise figure at the front of the signal chain, and less important in the subsequent amplifiers.
+	The requirement of amplifier chains leads to a minimum of additional electronics noise introduced by the detector.  Besides a background of thermal noise, the dominant continuous noise source is electronics noise from the amplifiers.  This noise is a byproduct of the non-ideal coupling of the amplifier to the input signal that results in the amplification of internal thermal noise seen as a resistance on the front of the amplifier.   This noise, unlike the thermal noise incident on co-pointing antennas, is not coherent as each amplifier adds its own uncorrelated noise component.  The noise figure is additionally increased by any loss of power in front of the amplifiers.  Since the noise figure cascades through an amplifier chain, it is imperative to reduce any additional noise figure at the beginning of the signal chain, and less important in the subsequent amplifiers.  The cascading noise can be calculated using Frii's Formula (Equation \ref{eqn:noiseCascade}), where $T_{total}$ is the resulting noise temperature of the entire signal chain, $T_{n}$ is the noise temperature of a specific element, and $G_{n}$ is the gain magnitude of a specific element.
+	
+\begin{equation}
+	\label{eqn:noiseCascade}
+	T_{total} = T_{1} + \frac{T_{2}}{G_{1}} + \frac{T_{3}}{G_{1}G_{2}} + ... + \frac{T_{n}}{G_{1}G_{2}...G_{n-1}}
+\end{equation}
+	
+	From this, one can see that the +38dB of gain from the first stage amplifier reduces any subsequent noise figure from components by a factor of $38dB = 10*log(G) \rightarrow 10^{38/10} =  6309 = G$. alleviating the requirement for low noise amplifiers in subsequent stages.
+
+
+	\subsection{Dynamic Range}
+		The absolute power level of the signal travelling through the system is dependent on the end-of-chain termination and instrumental device, and must be tuned appropriately.  For example, the digitizer ASIC can cover a 2.5V full dynamic range.  An observed voltage with peak amplitude significantly below that level would never exercise the range boundaries of the digitizer.  A negative drawback to this wasted range is that the lesser significance bits lose sensitivity to low voltage oscillations, as fewer total levels fully encompass the full signal.  Equally and oppositely, too high an input power signal would become distorted at high peak amplitudes. Other systems at termination ends of the branching signal chain have similar dynamic range limitations and must be tuned appropriately.
+		
+		
+	\subsection{Gain Justification}
+		The required gain of the system can be arrived at by determining the maximum terminal instrumentation requirement input power, then calculating what additional amplification is required to meet that specification.  Any terminal instruments that require lower input power are achieved by in-line, flat spectrum, fixed attenuator components.  \ref{tab:rfLinkBudget} is a table of the terminal components, their dynamic ranges, and the required gain necessary to put observed thermal noise from the antenna into a measurable power region.  Components not yet mentioned in this thesis are covered in subsequent sections in this chapter.
+	
+\begin{figure}
+	\centering
+	\label{tab:rfLinkBudget}
+	\begin{tabular}{| l | c | c |}
+		\hline
+		Component & Dynamic Range & Gain Requirement\\
+		\hline
+		LABRADOR digitizer & 20dBm & 80dB \\
+		RF Power Monitor & -10dBm & 50dB \\
+		SHORT Tunnel Diode & 0dBm & 60dB \\
+		\hline
+	\end{tabular}
+	\caption{A description of the required input power and gain requirements for the three terminal instrumentation components of the ANITA3 system}
+\end{figure}
+	
 	
 \section{Digitization}
 	The electric field variations incident as a function of time is digitized using an array of fast analog to digital converters (ADCs), custom designed application specific integrated circuits (ASICs).  The ANITA3 instrument utilizes a LABRADOR (Large Analog Bandwidth Recorded And Digital Ordered Readout) chip, designed by Gary Varner.  It is a 12-bit, 2.4GS/s, 256 sample long ADC, yielding a window size of ~100ns.  This is accomplished with a sample and hold ring buffer read out with a wilkinson clock comparing the stored charge in a storage capacitor against a ramp signal driven by a constant current source.  Each chip receives 8 RF analog inputs, as well as a 9th clock channel coincidently propagated to all LAB chips.  The SURF (Signal Unit for Radio Frequency) Board consists of 4 LABRADOR chips in order to create a buffer for continuous sampling.  
@@ -285,29 +378,47 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 			
 		
 \section{Triggering}
-	As the time domain digitization window is extremely small (100ns is one ten millionth (1e-7) of a second), it is necessary to selectively trigger on segments of time that have a high probability of containing a signal event.  The physics signal created by a UHE particle interaction within the field of view of, and directed towards, the instrument exhibits itself as a picosecond duration high electrical potential emanating from a specific direction.  The background is random incoherent thermal noise or single band constant power anthropogenic sources.  Thus, the triggering system must group together information from several RF channels without full digitization and form a decision before the waveform is overwritten in the ring buffer of the LABRADOR digitizer.  For the ANITA3 system, these triggering decisions were made in the TURF (Triggering Unit for Radio Frequency), which received L1 trigger time and antenna information from the SURFs through the CPCI backplane passthrough connectors.
-	\subsection{Trigger Heirarchy Overview}
-		The triggering system is divided into several sub-triggers that layer hierarchically to arrive at a global trigger decision.  Utilyzing this method it is possible to tune each channel individually as to give each an even weight in the ultimate trigger decision.  These range from the individual power law thresholding to a time windowed combinatoric trigger between multiple channels.  The trigger is split into a vertical (Vpol) and Horizontal (Hpol) trigger system, as the two differing particle shower sources (in ice neutrino interactions vs geomagnetically dominated air showers) will have mostly orthogonal polarization.
-
+	As the time domain digitization window is extremely small (100ns is one ten millionth (1e-7) of a second) and ANITA is limited to a 50Hz readout rate, it is necessary to selectively trigger on segments of time that have a high probability of containing a signal event.  The physics signal created by a UHE particle interaction within the field of view of, and directed towards, the instrument exhibits itself as a picosecond duration impulsive electrical potential emanating from a specific direction.  The background is random incoherent thermal noise or single band constant power anthropogenic sources.  As there is no digitizer buffering or analog delay lines, the triggering system must combine together information from several RF channels without full digitization and form a decision quickly, before the waveform is overwritten in the ring buffer of the LABRADOR digitizer.  For the ANITA3 system, these triggering decisions were made in the Triggering Unit for Radio Frequency (TURF), which receives trigger information for each channel from FPGA comparator electronics on each SURF through the CPCI backplane passthrough connectors.
+	
 	\subsection{SHORT square-law power integrator}
 		A solution to triggering employed in many RF transient detector experiments is to utilize a square-law integrating power detector.  An Ezaki diode (or tunnel diode), is a nonlinear semiconductor circuit that, in a specific input power region, essentially rectifies and integrates an incoming RF signal through the quantum mechanical effect of electron tunneling.  The diode is capable of taking the extremely fast impulsive signal, with a pulse width of under 1ns, and distributes the power over a longer time scale while simultaneously increasing the signal to noise power ratio.  This allows a clocked comparator circuit, usually running with a max of 4ns/cycle, to latch a electrical signal that crosses a certain threshold.  These L1 triggers can be tuned to a reasonable rate, the specifics of which is detailed below, by altering the comparison voltage with an on board DAC, and each channel can be kept running at a similar rate with a PID loop.  Comparing the timing of these "L1" triggers between antennas with similar pointing directions allows a massive decrease in overall trigger rate dictated by combinatorics.
+		
+	
+	\subsection{Trigger Heirarchy Overview}
+		The triggering system is divided into several sub-triggers that layer hierarchically to arrive at a global trigger decision.   These range from the individual power law thresholding to a time windowed combinatoric trigger between multiple channels.  In ANITA3, the trigger is split into a vertical (Vpol) and Horizontal (Hpol) trigger system, as the two differing particle shower sources (in ice neutrino interactions vs geomagnetically dominated air showers) will have mostly orthogonal polarization.  These two trigger paths are identical and have equal weighting in the final global trigger decision.  
+		
+		The first trigger level, or L0 trigger, is a comparator circuit on the FPGA between the output of the SHORT and a tunable DAC. It is thus possible to tune each channel individually to give an even weighting in the ultimate trigger decision.  This is done by measuring the number of threshold crossing counts per time fraction observed by each comparator circuit, also called the scalar rate.  This scalar rate is monitored by a software PID servo loop that attempts to keep all channels equal.
+		
+		The secondary trigger level is a time 
+		
+		
+
 	\subsection{L0 Tiggering efficiency and quality}
 		The trigger must make a trade off between efficiency, the ratio of signals selected for digitization over the total number of signals incident on the detector, and quality, the ratio of the number of true signal event over total selected events.  This trade off is a function of the total maximum readout rate for the detector, which both puts a maximum limit on the number of events capable of being detected, and is related directly to the dead time, the time where the detector is unable to observe an event.  As an example, if the trigger constantly selected all moments in time it would be perfectly efficient, but the quality of the signal would be horrific.  Inversely, if the trigger was set to have perfect quality and only select extremely high power impulsive events, it would have horrible efficiency.  The efficiency of the detector can be statistically measured by injecting signals of varying signal to noise ratio (SNR) at a known rate and observing the rate of measured signals.  This will produce a curve (as seen in a plot I will add) which has a characteristic shape, of which the 50\% efficiency point is the defining metric.  This point will be directly related to the allowable incidental noise trigger rate, which was decided to be set at a rate where the payload would be "dead" for approximately 5\% of the time.  I have to add plots for these things!
+		
 	\subsection{L0 Optimization}
 		What little room lies in optimizing the SHORT circuit is entirely in tuning the input power to the tunnel diode circuit.  The inverse-resistance region, where a decrease in voltage yields an increase in current flow, is the primary region where additional input power yields an output that is a square of the input.  This occurs at an extremely low power level, much below the minimum quantization level of the LABRADOR ADC, and thus the power must be attenuated in the signal chain after the split between the trigger and digitizer paths.  In addition, the output power of a fully optimized tunnel diode circuit is extremely small,	requiring amplification to produce a working range for the comparator circuit commensurate to the output of a DAC.  The resolution ( (trig rate)/(DAC count) ) dictates the stability of the trigger system.  If this value is too high, changing the trigger threshold setting for a specific channel would cause a large jump in the overall trigger rate of the system, and possibly allow a channel to dominate (or be excluded from) the global triggers.
-	\subsection{L1 Trigger}
+		
+		
+	\subsection{L1 Pseudo-Pattern Trigger}
 		The L1 trigger consists of a time windowed and multiple antenna combinatoric selection.  As a real signal pulse will have a correlated plane wave that passes across the physical locations of each antenna, a time coincidence of the signal is required.  This helps to reduce thermal noise triggers, which will be uncorrelated to the locations of the antennas.  In addition, this allows us to use the narrow opening angle of the antennas and their high gain to make a rough directional cut on the incoming signal.
+		
 	\subsection{L1 Trigger Window Delay Limitations}
 		As the physical offsets between the rings of antennas exceeds one clock period for most of the angles of interest, it is possible to require a timing separation between the arrival of pulses between the separate antennas.  This modification, made between the ANITA2 and ANITA3 flights, decreases the incidental rate of the trigger, increasing the quality, while maintaining the signal rate and efficiency.  The end result of this (and actually what was done exactly) needs to be written up here, but I'm not sure anyone actually knows!  In the end I think what happens is that a threshold crossing in the bottom rings opens a gate in the upper rings in which a threshold crossing will trigger the full system.  It has the unfortunate side effect of allowing the top ring of antennas to unfairly bais the system, as a noise event there is more likely to trigger the system.  I need to detail this better though.
 
 	\subsection{Phi Sector Masking}
 		In the ANITA1 flight, it was discovered that noise sources on the continent had the capability to effectively blind the entire payload during periods when only one side of the payload observes significant noise.  To alleviate this issue, a system where an antenna or collection (phi sector) of antennas experiences a comparative increase in trigger rate in comparison to the rest of the payload, it will be excluded from forming the global system trigger.  This allows the instrument to continue observing quiet areas of the continent and increasing the total livetime of the system.  There are additional nuances to this subsystem, including the possibility of very high power noise (or signal) events continuing to leak into the back and side lobes of the antennas from non-masked phi sectors, that need to be taken into account when making a measurement of the total instrumented area for a flight.
 		
-	\subsection{Removal of banded trigger in ANITA3 (maybe)}
+	\subsection{Differences between previous ANITA flight trigger systems}
+		In addition to changing the number of antennas, each ANITA flight has made modifications to the trigger subsystem in an attempt to increase the efficiency and purity of measured events.
+		
 		The ANITA2 instrument separated each signal channel into 3 frequency sub-bands and one full banded trigger within the SHORT boards, before the tunnel diodes.  The reasoning for this was that neutrino signals are full band; a signal with power dominating a single band would be enough to disqualify an event from being a true signal event.  The requirement for a global trigger was several (how many?) bands, in addition to the full band.  It was decided after the flight that this did not did not decrease the quantity of triggers by a significant amount, and the banding scheme was removed in favor of accommodating additional channels (ANITA2 did not trigger on Hpol and had 8 less antennas than ANITA3, so 56 additional trigger channels were required).  This had the unwanted effect of allowing CW signals from northern satellites to overwhelm the detector during the ANITA3 flight.
 		
+	\subsection{Unbiased triggers}
+		Any waveform read out after the 
+		
 \section{RF Power Monitor}
-	The second digitization of the RF signal was done by a RF power detector circuit.  The fast waveform data only provides 100ns of unbiased noise data per second (the software trigger paired with the gps trigger, discussed later), so a monitor that digitized a larger fractional percentage of time was desired.  This was accomplished on the SURF board using a commercial RF power monitor IC that converted the RMS voltage of the input signal into a log-magnitude proportional DC output that was digitized by an ADC and read out with the slow read out housekeeping data.  This system, and the additional physics it provides is discussed at length in appendix A.
+	An additional digitization of the RF signal is done by a broad band radio frequency power detector circuit.  The fast waveform data only provides 200ns of non-triggered unbiased noise data per second (a 1Hz software trigger and a 1Hz gps trigger), so a monitor that digitized a larger fractional percentage of time was desired.  This was accomplished on the SURF board using a commercial RF power monitor IC that converted the RMS voltage of the input signal into a log-magnitude proportional DC output that was digitized by an ADC and read out with the slow read out housekeeping data.  This system, and the additional physics it provides is discussed at length in appendix A.
 
 	
 \section{GPS tracking and orientation sensors}
@@ -329,7 +440,7 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 		
 	
 	\subsection{Telemetry}
-		Iridium, Openport, TDRSS.  Data and control mentioned here too?
+		Commands to change flight configuration and data taken during flight is transmitted to ground receivers over several transmissions systems.  In order of data trasmission speed, they are the Line Of Sight (LOS) transmitter, an Iridium Pilot\textregistered Openport UDP link, a NASA Tracking and Data Relay Satellite System (TDRSS), and an Iridium\textregistered low rate downlink.    
 		
 	\subsection{GPU prioritization}
 		The data limitations of the various telemetry downlink systems allow only a fraction of the total data rate to be transmitted.  This limitation infers a prioritization system in order to only send down events that pass a limited set of post-digitization analysis cuts.  This would allow a limited set of analyzable signals in the event of a catastrophic system failure or recovery.
@@ -342,12 +453,17 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 %%%%%%%%%%%% 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Instrument Calibration}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	The values read out by the ADC are related to the electromagnetic plane wave incident on the payload, however to calculate it all channels need to be individually corrected for the response of the system.  This correction will give us a physical measurement that can be compared against simulation of the physical shower interaction in the atmosphere or ice, and its propagation through the intervening medium between the shower core and the payload.
+
+	The measurements recorded by the ANITA3 digitizing electronics need to be calibrated in order for them to be directly relatable to the electromagnetic field present at the instrument.  There are several major considerations that have to be taken into account in order to properly calibrate the instrument.  The LABRADOR ADC counts need to be scaled to voltage, the sampling time base has to be corrected for uneven sampling rate, the gain and phase of the impulse response to the system has to be measured, and the actual physical locations of the antennas has to be corrected.  The following chapter details the steps taken and results of calibrating these aspects of the ANITA3 instrument.
+	
+	
 \section{LABRADOR voltage calibration}
 	
 		The LAB3 ASCIC uses a ring buffer storage capacitor array (SCA) to store a time series of voltages arriving at the chip, before being digitized with a wilkinson clock and ramp signal comparator coupled system.  The digital value read out by the acquisition software is actually measuring a time between when the ramp signal begins, and when it passes the stored charged in the storage capacitor.  This value must therefore be converted into a voltage that can be propagated back through the signal chain and inform us on the induced potential on the antenna fins.  For this, a pulse was measured immediately before entering the SURF RF input, and then compared against the pulse read out by the acquisition software.
+		
 	\subsection{Chip to Chip Variation}
 		Each chip suffers from manufacturing non-idealities introduced by the nano-lithography process.  Due to this, each chip must be calibrated independently.  The time base generator, the write pointer strobe propagation and RCO phase dependance, as well as the ADC to absolute voltage values must all be independently measured for each chip.
+
 
 
 \section{LABRADOR timing calibration}
@@ -361,26 +477,40 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 
 	\subsection{Time Domain Bin Width Matrix}
 		The time base generator is comprised of a series of 260 current starved transistors that propagate a write strobe across the entire SCA.  Since each transistor has differing characteristics due to the non-idealities of ASIC manufacturing, this strobe does not evenly pass from time bin to bin.  This necessitates a "dT" calibration constant for each of the 260 samples, as well as for each phase of the write strobe (up-going or down-going), leaving us with 520 total calibration constants.
+		
 	\subsection{Wraparound Time ($\epsilon$)}
 		The propagation time of the write strobe between the end of the SCA and the beginning is longer than a single bin.  As the SCA acts as a ring buffer, and the pulse can occur at any time within the SCA, the write strobe must begin its transition back to the first bin before the end of the SCA, at bin 256.  The remaining four bins are then used to fill in the "wraparound" time, which has been colloquially called $\epsilon$.  These epsilon values also differ with each RCO phase, and so each chip receives two $\epsilon$ correction constants. In addition, four dT periods is often longer than the wraparound time, and as such the 260th sample is often treated as a duplicate and discarded.
+		
 	\subsection{RCO Phase and Determination}
 		The RCO phase is sent as an output to the FPGA as a buffered copy of the wraparound voltage.  Using this, it is possible to determine the current phase of the chip when a hold was placed.  This has issues at the boundaries of the SCA, as the FPGA may not have latch the current RCO value when returning the digitized values.  A correction for this can be made by measuring the period of the ninth channel sync clock, which will differ between each RCO phase.
-	\subsection{Temperature Dependance}
+
+	\subsection{Temperature Dependance}	
 		All transistors react differently to temperature, and those present in the time base generator are no exception.  As the payload cools and warms due to rotation, time of day, and latitude, the sampling frequency will increase and decrease.  To alleviate this, a temperature correction must be applied to the final data. This is done via an average of the CP30 number reported by the FPGA over multiple events.
-	\subsection{dT Variance and Timing Results}
+	\subsection{dT Variance and Timing Results}	
 		The variance in the timing from bin to bin has a strong effect on the measured bandwidth of the system.  Bins that are sampled too far apart will be unable to digitize frequencies that are higher than the Nyquist frequency of the region.  Similarly, samples spaced closer together than the nominal sampling frequency will act to alias in high frequency noise and dilute the signal.  The variance between the ANITA1 and ANITA2 flights increased by a factor of 3.5 to 25\%, which reduces the signal power in the high end of the spectrum significantly.
-	\subsection{Inter-SURF Timing for Waveform Alignment}
+		
+	\subsection{Inter-SURF Timing for Waveform Alignment}	
 		As each LAB3 runs independently of each other, and the hold signal must propagate through separate SURF boards, each of them must be aligned in time with each other.  This is done with a "sync" clock that is propagated amongst the boards and constantly digitized in the 9th LAB3 channel.
 
-	\subsection{Antenna location photogrammetry}
+
+
+\section{Ground based in-flight calibration pulses}
+	Several ground pulser stations were set up on the Antarctic continent for the ANITA3 flight.  These transmitted a GPS synchronized broad spectrum pulse that closely mimics an EAS radiation signature.  These pulses can be used both for determining the overall sensitivity and efficiency of the trigger system, but can also be used as known-source measurements for doing antenna location calibrations. 
+	
+	\subsection{WAIS Divide}
+
+
+	\subsection{LDB}
+
+
+
+\section{Antenna Location Measurements}
+	\subsection{Photogrammetry}
 		An initial measurement of the locations of each of the antennas in respect to each other, to the instrument box, and to the GPS antennas, was done by analyzing a series of standardized photos of the payload taken from a variety of angles and rotations.
 		
 		
 	\subsection{Phase center optimization}
 		The electrical center-point of the antennas, though directly related to the physical position and orientation of the antenna, requires an additional calibration.  The phase center, or point at which the electromagnetic field couples to the antenna and begins propagating through the signal cables, is a function of frequency and incident wave direction, so the calibration must consider a large phase space.  The calibration measurements are done in-situo by a ground pulser at WAIS divide sending a pulse to the payload as it passes overhead.  This pulse can be used to determine  the relative phase center offsets between nearby antennas.  The positional error of the phase centers relates directly to the pointing error for events seen later in the flight.
-
-	\subsection{WAIS Divide Calibration Pulses}
-	\subsection{LDB Calibration Pulses}
 
 \section{System Impulse Response}
 		The signal observed by the digitizers is strongly effected by the band limiting filters and 
@@ -395,6 +525,8 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 	The uneven sampling produced by the non-idealities of the LABRADOR sampling timebase requires the waveform to be evenly resampled before it can be properly compared to other waveforms in each event.  In addition, the timing offsets induced by the physical baseline delays between antennas as well as the internal asynchronous hold times are not quantized to the sample bins, and thus must be up-sampled to be properly correlated and averaged.  There are several methods that can be used to accomplish this, each with drawbacks and positives.
 
 	
+
+	
 	
 \section{Triggering Sanity Check}
 		Before flight, a programmable delay line was used to input picosecond precision delayed impulses into channels within neighboring phi sectors to test for the true angular response of the payload.  Due to the opaque nature of firmware, it is important to discern the exact L0 coincidence regions in which a global trigger will be generated.
@@ -403,9 +535,13 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 \section{Non-uniform Channels and Outliers}
 	There are several channels in the ANITA3 instrument that are non-uniform.  The first, and most obvious, is the channel in which the ALFA is digitized.  The desire to have a 97th low frequency drop down omni-azimuthal responce digitizing antenna required an additional channel, however there were none available.  To accommodate this, a modified filter was placed on channel 05TH that limited the nominal input signal to 800Mhz.  The low frequency (40-80MHz) antenna was then heterodyned with a 900Mhz local oscillator (LO) which produces a upsampled beat pattern at $f_(LO)-f_(ALFA)$ and $f_(LO)+f_(ALFA)$. This channel must be treated slightly differently than the rest in a few ways.  First, the signal must be digitally filtered to remove the ALFA component before it is correlated or averaged with similar antennas.  Secondly, in simulation the reduced bandwidth (and subsequent lower noise and signal power) must be taken into account.
 
-%%%%%%%%%%%%% 4 %%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%% 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Cosmic Ray Search with ANITA3 Flight Data}
-%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ANITA3 Flight Overview}
 	The data recorded by the ANITA3 flight instrument requires a significant analysis effort to extract a meaningful physics result.  In our case, we need to use the raw digital values read out for each channel to determine the analog electromagnetic environment surrounding the payload during brief moments the trigger system determined a physics event may be occurring.  From this, we can use an understanding of the physical geometry of the antennas mounted on the payload, including their orientation and electrical responses, to determine the cause of any incident wave patterns read out by the digitizers.  Once these wave patterns are identified and classified, they can be sorted into signal and background thermal or anthropogenic noise sources via a series of procedural cuts.  This section details the process and results of this analysis.
 	
