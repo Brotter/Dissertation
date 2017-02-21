@@ -177,12 +177,12 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 \section{Overview}
 	The ANITA telescope platform is a passive broad-band radio frequency electromagnetic field transient detector and time domain voltage digitizer.  There have been four ANITA flights at the time of this thesis, numbered one through four.  ANITA1 flew in the 2006-2007 Antarctic balloon campaign\cite{ANITA1}, ANITA2 in 2007-2008\cite{ANITA2}, ANITA3 in 2014-2015 (the topic of this thesis) and most recently ANITA4 in 2016-2017.  
 	
-	The main instrument structure consists of a collection of radially positioned, outwardly facing, broad-band, highly-directional quad-ridge horn antennas.  The antennas are separated into three different vertically spaced rings, with each ring separated into 16 different azimuthally facing "phi-sectors." (see Figure \ref{fig:phiSectors})    These co-pointing antennas allow multiple observations of a signal event with a physical distance baseline offset between them. These antennas couple the incident electromagnetic radiation into a coaxial signal line, which is then amplified by a series of low noise-figure amplifiers, band-pass filtered via analoge compound filters into the relevant frequency bandwidth, before finally being digitized by custom on board high-speed digitizer chips and readout electronics.  The digitization is self-triggered by parallel square-law integrating power detector circuits driving a hold and read decision (Figure \ref{RFChainBlockDiagram}) After digitization, waveforms are read out to a CPU writing to on board redundant data devices.  The payload is capable of reading out ~50Hz of full payload waveforms with low (\textless 5\% ) deadtime to disk through a CPCI interconnect backplane.  Additional position and orientation data is also recorded, as well as multiple diagnostic and in-situ relevant physics measurements.  Selections of these measurements are telemetered down to ground servers for in-flight diagnostics, however full recovery of the data vaults is desired for a complete analysis.  The following chapter will expand upon these systems and the theoretical basis for their design and construction.
+	The main instrument structure consists of a collection of radially positioned, outwardly facing, broad-band, highly-directional quad-ridge horn antennas.  The antennas are separated into three different vertically spaced rings, with each ring separated into 16 different azimuthally facing "phi-sectors." (see Figures \ref{fig:phiSectors} and \ref{fig:ANITA3_hangtest})    These co-pointing antennas allow multiple observations of a signal event with a physical distance baseline offset between them. These antennas couple the incident electromagnetic radiation into a coaxial signal line, which is then amplified by a series of low noise-figure amplifiers, band-pass filtered via analoge compound filters into the relevant frequency bandwidth, before finally being digitized by custom on board high-speed digitizer chips and readout electronics (Figure \ref{fig:RFChainBlockDiagram}).  The digitization is self-triggered by a parallel square-law integrating power detector circuit which arrives at a decision with minimal analog waveform buffering.  After digitization, waveforms are read out via a CPCI interconnect backplane to a ruggedized conductively cooled CPU writing to on-board redundant storage devices.  The payload is capable of reading out ~50Hz of full payload waveforms with low (\textless 5\% ) deadtime to disk.  Additional position and orientation data, as well as multiple diagnostic and in-situ relevant physics measurements, are recorded and precisely time-stamped by a GPS disciplined clock.  Selections of the waveforms and housekeeping measurements are telemetered down to ground servers for in-flight diagnostics, however full recovery of the data vaults is desired for a complete analysis.  The following chapter will expand upon these systems and the theoretical basis for their design and construction.
 	
 	
 \begin{figure}
 \centering
-	\includegraphics[width=\textwidth]{figures/phiSectors}
+	\includegraphics[width=\textwidth]{figures/phiSectors} 
 	\caption{A top down diagram depicting a single ring layout of the horn antennas used to achieve complete azimuthal coverage assuming a 30$^{\circ}$  opening angle.  The antenna gain pattern is discussed further in the Calibration section.}
 	\label{fig:phiSectors}
 \end{figure}
@@ -190,8 +190,8 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 	
 \begin{figure}
 \centering
-	\includegraphics[height=0.9\textheight]{figures/ANITA3_hangtest}
-	\caption{An image of the ANITA3 telescope during the test deployment in Palestine TX, 2014.  Visible are the deployed solar panels and a deployed low frequency ALFA antenna.}
+	\includegraphics[height=0.9\textheight]{figures/ANITA3_hangtest2_annotated}
+	\caption{An image of the ANITA3 telescope during the test deployment in Palestine TX, 2014.  Marked from top to bottom are two of the nine GPS antennas, the three vertically separated rings, the deployed solar panel array, and a deployed ALFA antenna.  The solar panels visible at the top of the payload are those used by the NASA Small Instrument Package (SIP).  Not visible are the ANITA instrument crate and other objects on the deck of the experiment (between middle and top antenna rings).}
 	\label{fig:ANITA3_hangtest}
 \end{figure}
 
@@ -289,20 +289,27 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 	Expected signal strength output from the coupling of the antennas to the 50-ohm RF transmission network requires that signal amplification occurs to be detectible by the available electronic instruments.  The amplification for the ANITA3 instrument was accomplished with two stages, one close to the antenna within the custom built module, and one upon entering the instrument crate itself within the iRFCM (internal radio frequency conditioning module).  
 	
 	\subsection{First Stage Amplifier: The AMPA and DDAMPA}
-		The front end amplification was accomplished by two similar custom built modules named the Antenna Mounted Pre-Amplifier (AMPA) and the (historically named) Drop Down AMPA (DDAMPA).  Depicted in Figure \ref{fig:AMPAandDDAMPA}, each 
+		The front end amplification was accomplished by two similar custom built modules named the Antenna Mounted Pre-Amplifier (AMPA) and the (historically named) Drop Down AMPA (DDAMPA).  Depicted in Figure \ref{fig:AMPAandDDAMPA}, each enclosure contains components for filtering, amplification, and a bias network power trasmission component.  
 		
 		
 \begin{figure}
 \centering
 	\includegraphics[width=0.45\textwidth]{figures/AMPA}
 	\includegraphics[width=0.45\textwidth]{figures/DDAMPA}	
-	
 	\caption{The AMPA (left) and DDAMPA (right) internals.  Thanks to Jarred Roberts for AMPA picture}
 	\label{fig:AMPAandDDAMPA}
 \end{figure}	
+
+\begin{figure}
+\centering
+	\includegraphics[height=0.45\textheight]{figures/ampas_std}
+	\includegraphics[height=0.45\textheight]{figures/ddampas_std}	
+	\caption{Mean and standard deviation of gain and noise figure measurements for the AMPA (top) and DDAMPA (bottom) amplifier modules.  From Elog 560}
+	\label{fig:AMPAandDDAMPA_std}
+\end{figure}	
 	
 	\subsection{iRFCM}
-	The four custom built iRFCM enclosures, one of which can be seen in figure \ref{fig:IRFCMpic} and is described in \ref{fig:IRFCM}, handle the second stage amplification for twenty four of the RF signal channels.  There are three major active RF components for each signal chain present within the module. The AmpLite, a high gain, high dynamic range amplifier built by Patrick Allison of OSU, a tuning attenuator for gain balancing of the 96 different channels, and a bias-tee which, as its name suggests, adds a DC bias to the center conductor of the coaxial transmission cable between the AMPA and the iRFCM.  
+	The four custom built iRFCM enclosures, one of which can be seen in figure \ref{fig:IRFCMpic} and is described in \ref{fig:IRFCM}, handle the second stage amplification for twenty four of the RF signal channels.  There are three major active RF components for each signal chain present within the module. The AmpLite, a high gain, high dynamic range amplifier built by Patrick Allison of OSU, a tuning attenuator for gain balancing of the 96 different channels, and a bias-tee which, as its name suggests, adds a DC bias to the center conductor of the coaxial transmission cable between the AMPA and the iRFCM.  This bias is used to power the AMPA and DDAMPA amplifier modules.
 
 	
 \begin{figure}
@@ -320,9 +327,6 @@ a field strength capable of accelerating protons to $10^{18}$ eV. \cite{RevModPh
 	\label{fig:IRFCMpic}
 \end{figure}
 	
-	
-
-
 	
 	\subsection{Expected electromagnetic field variations}
 		Depending on the radiation mechanism being observed, the power of an EAS signal measurable at the detector is proportional to the energy of the incident cosmic ray particle.\cite{EASSignalPower}  This signal power is superimposed on the thermal and anthropogenic background noise present in the field of view of the detector.  The constant thermal emission of matter in the field of view of an antenna introduces a Johnson-Nyquist thermal noise component, which is calculated in Equation \ref{eqn:NyquistNoise}
@@ -376,28 +380,27 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	
 \section{Digitization}
 	The electric field variations incident as a function of time is digitized using an array of fast analog to digital converters (ADCs), custom designed application specific integrated circuits (ASICs).  The ANITA3 instrument utilizes a LABRADOR (Large Analog Bandwidth Recorded And Digital Ordered Readout) chip, designed by Gary Varner.  It is a 12-bit, 2.4GS/s, 256 sample long ADC, yielding a window size of ~100ns.  This is accomplished with a sample and hold ring buffer read out with a wilkinson clock comparing the stored charge in a storage capacitor against a ramp signal driven by a constant current source.  Each chip receives 8 RF analog inputs, as well as a 9th clock channel coincidently propagated to all LAB chips.  The SURF (Signal Unit for Radio Frequency) Board consists of 4 LABRADOR chips in order to create a buffer for continuous sampling.  
+
 	\subsection{LABRADOR3 ASIC}
-		The third iteration of the Large Analog Bandwidth Recorder And Digitizer with Ordered Readout (LABRADOR, or LAB3) has been in use on ANITA flights due to its extremely low power and high precision.  It consists of a nine RF channels fed into separate 260 cell capacitor ring buffer and can operate at sampling frequencies of 2.6GS/s, or a Nyquist limit of 1.3GHz.  In addition, it has a large dynamic range and a gigahertz of bandwidth in the UHF spectrum.  The sampling time base is driven by a phase inverting Ripple Carry Out pulse that propagates internally to the chip.  The continuous sampling is broken however when a trigger is issued to the chip, and a Wilkinson Clock measuring the Time To Threshold of a constant current ramp voltage converts the stored charge in each capacitor to a digital value that is read out in parallel to an FPGA for storage.  Due to the dead time related to the digitization process, four LAB3 chips are placed in parallel in order to ensure continuous sampling even when a single LAB3 is reading out its values.  When a hold is issued, the LAB3 chip returns both an estimate of which RCO phase it is in (which is incorrect near the wraparound region), as well as the locations of the "HitBus", or samples that are currently connected to the RF input. The procedure and results of calibrating this readout is detailed in the Analysis section.
+		The third iteration of the Large Analog Bandwidth Recorder And Digitizer with Ordered Readout (LABRADOR, or LAB3) has been in use on ANITA flights due to its extremely low power and high precision.  It consists of a nine RF channels fed into separate 260 cell capacitor ring buffer and can operate at sampling frequencies of 2.6GS/s, or a Nyquist limit of 1.3GHz.  In addition, it has a large dynamic range and a gigahertz of bandwidth in the UHF spectrum.  The sampling time base is driven by a phase inverting Ripple Carry Out pulse that propagates internally to the chip.  The continuous sampling is broken however when a trigger is issued to the chip, and a Wilkinson Clock measuring the Time To Threshold of a constant current ramp voltage converts the stored charge in each capacitor to a digital value that is read out in parallel to an FPGA for storage.  Due to the dead time related to the digitization process, four LAB3 chips are placed in parallel in order to ensure continuous sampling even when a single LAB3 is reading out its values.  When a hold is issued, the LAB3 chip returns both an estimate of which RCO phase it is in (which is incorrect near the wraparound region), as well as the locations of the "HitBus", or samples that are currently connected to the RF input. The procedure and results of calibrating this readout is detailed in the Calibration section.
 	
 	
 	\subsection{Limitations}
-	After a hold is issued to a chip, the digitization freezes the ring buffer and yields the chip unable to sample until readout is complete, a process that can take ~1us.
+	After a hold is issued to a chip, the digitization freezes the ring buffer and yields the chip unable to sample until readout is complete, a process that can take ~1us.  During a readout, no new data can be captured by the LABRADOR chip.  To alleviate this, the RF input chain is separated into four separate chips which are read out one at a time.  This provides a buffer depth of four which allows the instrument to remain live even while reading out several repetitive events.
 	
-	The analog bandwidth of the LAB3B (used in the ANITA3 and ANITA2 experiments) did not fully cover the full bandwidth of the antennas and signal chain due to coupling into the chip through the bond wires in the package.  This yields a drop-off in sensitivity to high frequency signals.
+	The analog bandwidth of the LAB3B (used in the ANITA3 and ANITA2 experiments) did not fully cover the full bandwidth of the antennas and signal chain due to coupling into the chip through the bond wires in the package.  This yields a drop-off in sensitivity to high frequency signals.  
 	
-	The time between samples is controlled by a charge starved transistor chain that controls the connection between the sampling capacitor and the input RF signal.  Due to process inconsistencies in the manufacturing of the ASICs, the timing between subsequent samples is not well controlled.  This yields a variable delta T that needs to be corrected in calibration of each chip individually.  In addition, it leads to an unevenly sampled time domain waveform, which introduces a difficult to correct frequency response, and requires interpolation between points before creating interferometric maps.  This is processing intensive, an issue that makes doing on board interferometry difficult.
+	The time between samples is controlled by a charge starved transistor chain that controls the connection between the sampling capacitor and the input RF signal.  Due to process inconsistencies in the manufacturing of the ASICs, the timing between subsequent samples is not well controlled.  This yields a variable delta T that needs to be corrected in calibration of each chip individually.  In addition, it leads to an unevenly sampled time domain waveform, which introduces a difficult to correct frequency response, and requires interpolation between points before creating interferometric maps.  This is processing intensive, an issue that makes doing on board interferometry more difficult.
+	
+ 	Since each LAB chip can only digitize eight channels concurrently, a total of twelve total SURF boards are required to read out any particular event simultaneously.  The dispersal of the readout HOLD signal from the FPGA, and its subsequent latching on each LAB, adds jitter that needs to be corrected out.  The ninth channel on each lab observes a 33.3MHz analog clock signal propagated through the CPCI backplane to each SURF.  By measuring the relative phase of this clock between SURFs, a correction for this jitter can be done.  This is discussed further in the Calibration section.
 	
 	\subsection{Impulse Response}
-	The filtering and amplification chain has a dispersive effect on the signal, which requires a calibration of the system impulse response in order to fully understand the incident electromagnetic field.  An impulse response is the reaction of the system to a brief input signal. This impulse response phase shifts different frequencies of the signal which causes the signal power to be temporally spread.  As correlation between channels is dependent on the full complex parameters of the signal, significant differences between channels will cause a mismatch in digitized correlation even if a coherent electromagnetic impulse was present at the antennas.
-	
-	The impulse response was measured by comparing the pulse at the input of the full signal chain to that digitized by the LABRADOR chips, then using Fourier deconvolution to determine the introduced gain and phase offsets.  Though Wiener deconvolution 
-	
-	
+	The filtering and amplification chain has a dispersive effect on the signal, which requires a calibration of the system impulse response in order to fully understand the incident electromagnetic field.  An impulse response is the phase and gain distortion created by the RF network to an input signal.  In the ANITA system, an band limited case, the phase shift increases as a function of frequency, which causes the signal power to be temporally spread.  As a cross-correlation between multiple channels is dependent on the full complex parameters of the signal, significant variation between the impulse responses of channels will result in a reduced maximum correlation value regardless of the electromagnetic impulse present at the antennas.  The ANITA instrument is designed to be identical and symmetrical across all 96 channels, making this effect small and constant.  Measurements of this response and calibration are done in the Calibration section, and the effect and deconvolution is detailed in the Analysis section.
+
 	
 	\subsection{Future development}
-	Since the LAB3B was developed in 2005, there has been significant development in the LABRADOR architecture.  The current generation of chip, the LAB4D, is a single channel readout that improves upon the previous generations by both vastly increasing the storage buffer through use of a Storage Capacitor Array (SCA) to increase the record length or buffer depth of the chip.  It also allows for the correction of dT offsets iteratively onboard the chip, minimizing the requirement for post-digitization correction of the waveform.  The issues created from a large dT variance is discussed in a later section.
+	Since the LAB3B was developed in 2005, there has been significant development in the LABRADOR architecture.  The most modern generation of chip, the LAB4D, is a single channel readout that improves upon the previous generations by both vastly increasing the storage buffer through use of a Storage Capacitor Array (SCA) to increase the record length or buffer depth of the chip.  It also allows for the correction of dT offsets iteratively onboard the chip, minimizing the requirement for post-digitization correction of the waveform and the subsequent high-frequency signal loss.  The quantitative effects created from a large dT variance are discussed later in this thesis.
 	
-			
 		
 \section{Triggering}
 	As the time domain digitization window is extremely small (100ns is one ten millionth (1e-7) of a second) and ANITA is limited to a 50Hz readout rate, it is necessary to selectively trigger on segments of time that have a high probability of containing a signal event.  The physics signal created by a UHE particle interaction within the field of view of, and directed towards, the instrument exhibits itself as a picosecond duration impulsive electrical potential emanating from a specific direction.  The background is random incoherent thermal noise or single band constant power anthropogenic sources.  As there is no digitizer buffering or analog delay lines, the triggering system must combine together information from several RF channels without full digitization and form a decision quickly, before the waveform is overwritten in the ring buffer of the LABRADOR digitizer.  For the ANITA3 system, these triggering decisions were made in the Triggering Unit for Radio Frequency (TURF), which receives trigger information for each channel from FPGA comparator electronics on each SURF through the CPCI backplane passthrough connectors.
@@ -432,10 +435,12 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	\subsection{Phi Sector Masking}
 		In the ANITA1 flight, it was discovered that noise sources on the continent and in the sky had the capability to dominate the trigger rate and effectively blind the entire payload despite a large fraction of the payload observing a thermal environment. To alleviate this issue, a system where an antenna or collection (phi sector) of antennas experiences a comparative increase in trigger rate in comparison to the rest of the payload, it will be excluded from forming the global system trigger.  This allows the instrument to continue observing quiet areas of the continent and increasing the total livetime of the system.  There are additional nuances to this subsystem, including the possibility of very high power noise (or signal) events continuing to leak into the back and side lobes of the antennas from non-masked phi sectors, that need to be taken into account when making a measurement of the total instrumented area for a flight.  During the ANITA3 flight, several unexpected in-band satellite CW signals caused the phi masking to be heavily utilized, which is discussed further in the Cosmic Ray Search chapter.
 		
-	\subsection{Differences between previous ANITA flight trigger systems}
-		In addition to changing the number of antennas, each ANITA flight has made modifications to the trigger subsystem in an attempt to increase the efficiency and purity of measured events.
+%	\subsection{Differences between previous ANITA flight trigger systems}
+%		In addition to changing the number of antennas, each ANITA flight has made modifications to the trigger subsystem in an attempt to increase the efficiency and purity of measured events.
 		
-		The ANITA2 instrument separated each signal channel into 3 frequency sub-bands and one full banded trigger within the SHORT boards, before the tunnel diodes.  The reasoning for this was that neutrino signals are full band; a signal with power dominating a single band would be enough to disqualify an event from being a true signal event.  The requirement for a global trigger was several (how many?) bands, in addition to the full band.  It was decided after the flight that this did not did not decrease the quantity of triggers by a significant amount, and the banding scheme was removed in favor of accommodating additional channels (ANITA2 did not trigger on Hpol and had 8 less antennas than ANITA3, so 56 additional trigger channels were required).  This had the unwanted effect of allowing CW signals from northern satellites to overwhelm the detector during the ANITA3 flight.
+%		The ANITA1 instrument 
+		
+%		The ANITA2 instrument separated each signal channel into 3 frequency sub-bands and one full banded trigger within the SHORT boards, before the tunnel diodes.  The reasoning for this was that neutrino signals are full band; a signal with power dominating a single band would be enough to disqualify an event from being a true signal event.  The requirement for a global trigger was several (how many?) bands, in addition to the full band.  It was decided after the flight that this did not did not decrease the quantity of triggers by a significant amount, and the banding scheme was removed in favor of accommodating additional channels (ANITA2 did not trigger on Hpol and had 8 less antennas than ANITA3, so 56 additional trigger channels were required).  This had the unwanted effect of allowing CW signals from northern satellites to overwhelm the detector during the ANITA3 flight.
 		
 	\subsection{Unbiased triggers}
 		Any waveform readout caused by a global trigger has the systematic bias that it passed the trigger selection parameters.  To measure the thermal noise environment during the flight, two triggers that were uncorrelated to the trigger circuit were employed.  These were a software trigger (also know as the soft-trig) that was issued by the CPU at a frequency of 1Hz, as well as a GPS synced 1Hz trigger controlled by the Pulse-Per-Second (PPS) output of the G12 GPS unit.
@@ -448,9 +453,11 @@ Where P is the thermal noise power observed across a termination resistor in wat
 
 	
 \section{GPS tracking and orientation sensors}
-	Since the payload is attached to a free rotation balloon, the orientation and location of the payload was completely uncontrolled and thus needed to be constantly monitored.  This was primarily accomplished with two co-located ADU5 GPS heading receivers in conjunction with a single G12 GPS system.  These 9 GPS antennas, read out once a second, provide a constant update for the location and orientation of the payload with a resolution of a fraction of a degree.
+	Since the payload is attached to a free rotation balloon, the orientation and location of the payload was completely uncontrolled and thus needed to be constantly monitored.  This was primarily accomplished with two co-located ADU5 GPS heading receivers in conjunction with a single G12 GPS system.  These 9 total GPS antennas, read out once a second, provide a constant update for the location and orientation of the payload with a resolution of a fraction of a degree.
+	
 	\subsection{Magnetometer}
-		In addition to the heading information provided by the GPS systems, a magnetometer was attached to the payload and used to measure the vector components of the magnetic field throughout the flight.  This system, coupled with a model for the geomagnetic field, could be used as a functional compass assuming an accurate position.  John Russell did a lot of work on this, like a whole summer of work, so I can summarize his work here (and cite him or something).
+		In addition to the heading information provided by the GPS systems, a magnetometer was attached to the payload and used to measure the vector components of the magnetic field throughout the flight.  This system, coupled with a model for the geomagnetic field, could be used as a functional compass, assuming an accurate position, that would corroborate the pointing information returned by the GPS systems.
+		
 	\subsection{Sun Sensors}
 		Many space borne experiments that require very high pointing and location precision, however are above the altitude where GPS has significant accuracy (is this a thing?), use star sensors to orient themselves.  ANITA's flight path over Antarctica during the austral summer, specifically the continual daylight, is able to use just one star to obtain accurate heading information.  With an accurate time and knowledge of the earth's rotation around the sun, one can use a simple pinhole camera and the four mounted angular sun sensors to determine the heading information for regions of time when the GPS is unavailable or unreliable.
 		
@@ -466,12 +473,13 @@ Where P is the thermal noise power observed across a termination resistor in wat
 		
 	
 	\subsection{Telemetry}
-		Commands to change flight configuration and data taken during flight is transmitted to ground receivers over several transmissions systems.  In order of data trasmission speed, they are the Line Of Sight (LOS) transmitter, an Iridium Pilot\textregistered Openport UDP link, a NASA Tracking and Data Relay Satellite System (TDRSS), and an Iridium\textregistered low rate downlink.    
+		Downlink of data taken during flight and uplink of commands to change flight configuration are transmitted to and from ground receivers over several systems.  In order of decreasing data trasmission speed, they are the Line Of Sight (LOS) transmitter, an Iridium Pilot\textregistered Openport UDP link, a NASA Tracking and Data Relay Satellite System (TDRSS), and an Iridium\textregistered low rate downlink.  These systems allow in-flight diagnostics of the ANITA3 instrument, as well as an ability to make pre-defined alterations to instrument control configurations depending on need.  Shortly after flight, the Iridium Pilot\textregistered Openport link failed for unknown reasons.  However, the remaining systems were successful in allowing flight operators to debug and fix several issues that cropped up during the flight.
 		
 	\subsection{GPU prioritization}
-		The data limitations of the various telemetry downlink systems allow only a fraction of the total data rate to be transmitted.  This limitation infers a prioritization system in order to only send down events that pass a limited set of post-digitization analysis cuts.  This would allow a limited set of analyzable signals in the event of a catastrophic system failure or recovery.
-			
-			
+		The data limitations of the various telemetry downlink systems allow only a fraction of the total data rate to be transmitted.  This limitation motivates a prioritization system in order to only send down events that pass a limited set of post-digitization analysis cuts.  This would allow a limited set of analyzable signals in the event of a catastrophic system failure or non-recovery of the payload.  The two major figures of merit for discriminating between incidental thermal noise events and impulsive signal-like events is the normalized peak height of an interferometric pointing map, and the peak of the Hilbert envelope of the coherently summed waveform for the respective map peak incidence angle.  These time-consuming, computationally intensive, physical baseline dependent, multiple channel correlation processes are nominally done offline in the analysis phase of the experiment, and is likewise further discussed in the analysis chapter of this thesis.  However, to accomplish the task in real time as events are streaming from the instrument, a Graphical Processing Unit (GPU) linked with the flight CPU was utilized to parallelize the computations and reduce any specific event readout's required processing time to that of the minimum instrument readout time.  These values were then used to determine a priority for each event and placed in an appropriate telemetry queue.  The main work on this system was done by Ben Strutt of University College London, and details on its operation and results can be found in his thesis at \cite{BenSThesis}.  Since the instrument was recovered, these computations are re-done for this thesis, and the priority value was not used.
+		
+	\subsection{Balloon}
+		The ANITA instrument is suspended by a NASA zero pressure long duration high altitude balloon.  This balloon is cool.
 			
 			
 			
@@ -480,12 +488,21 @@ Where P is the thermal noise power observed across a termination resistor in wat
 \chapter{Instrument Calibration}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	The measurements recorded by the ANITA3 digitizing electronics need to be calibrated in order for them to be directly relatable to the electromagnetic field present at the instrument.  There are several major considerations that have to be taken into account in order to properly calibrate the instrument.  The LABRADOR ADC counts need to be scaled to voltage, the sampling time base has to be corrected for uneven sampling rate, the gain and phase of the impulse response to the system has to be measured, and the actual physical locations of the antennas has to be corrected.  The following chapter details the steps taken and results of calibrating these aspects of the ANITA3 instrument.
+	The measurements recorded by the ANITA3 digitizing electronics need to be calibrated and the instrument geometry must be precisely measured in order for observed events to be directly relatable to the electromagnetic field present at the instrument.  There are several major considerations that have to be taken into account in order to properly calibrate the instrument.  The LABRADOR ADC counts need to be scaled to voltage, the sampling time base has to be corrected for uneven sampling rate, the gain and phase of the impulse response to the system has to be measured, and the actual physical locations of the antennas has to be measured and corrected from the engineering model.  The end goal of any calibration is to relate the measured and recorded quantities, by parameterizing the observation instrument and using known values to calculate those parameters, to the actual physical effect that is being observed.  The following chapter details the steps taken and results of calibrating these aspects of the ANITA3 instrument.
 	
 	
 \section{LABRADOR voltage calibration}
 	
-		The LAB3 ASCIC uses a ring buffer storage capacitor array (SCA) to store a time series of voltages arriving at the chip, before being digitized with a wilkinson clock and ramp signal comparator coupled system.  The digital value read out by the acquisition software is actually measuring a time between when the ramp signal begins, and when it passes the stored charged in the storage capacitor.  This value must therefore be converted into a voltage that can be propagated back through the signal chain and inform us on the induced potential on the antenna fins.  For this, a pulse was measured immediately before entering the SURF RF input, and then compared against the pulse read out by the acquisition software.
+		The LAB3 ASCIC uses a ring buffer storage capacitor array (SCA) to store the charge from the electrical potential arriving at the chip as a function of time, before being digitized with a wilkinson clock and ramp signal comparator coupled system (see Figure \ref{fig:Lab_digitization}.  The digital values read out by the acquisition software is actually measuring a time between when the ramp signal begins and when it passes the stored charged in the storage capacitor.  This value must therefore be converted into a voltage that can be propagated back through the signal chain and inform us on the induced potential on the antenna fins.  For this, a pulse was measured immediately before entering the SURF RF input, and then compared against the pulse read out by the acquisition software.
+		
+			
+\begin{figure}
+	\includegraphics[width=\textwidth]{figures/LAB_Digitization}
+	\caption{Simplified diagram of the digitization chain for the LABRADOR3 digitizer}
+	\label{fig:Lab_Digitization}
+\end{figure}
+		
+		
 		
 	\subsection{Chip to Chip Variation}
 		Each chip suffers from manufacturing non-idealities introduced by the nano-lithography process.  Due to this, each chip must be calibrated independently.  The time base generator, the write pointer strobe propagation and RCO phase dependance, as well as the ADC to absolute voltage values must all be independently measured for each chip.
@@ -493,7 +510,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 
 
 \section{LABRADOR timing calibration}
-		The LAB3's storage capacitors are controlled by a series of starved transistors which causes each cell to be periodically and sequentially connected to the input signal.  This input controller (name?) is effected by non-idealities of the ASIC manufacturing process and thus do not equally sample in time.  The time separation, or delta-time (dT for short), of each sample is constant for all eight channels of each LAB chip. 
+		The LAB3's storage capacitors are controlled by a series of starved transistors which causes each cell to be periodically and sequentially connected to the input signal.  This timing generator circuit is effected by non-idealities of the ASIC manufacturing process as well and thus does not create equally spaced time separations between capacitors in the sampling array.  The timing separation, or delta-times (dTs for short), of each sample is shared between all eight channels of each LAB chip as it is generated by the same timing generator, however it can have significant variance between the different chips within a single SURF as well as between the SURFs.  There are 96 total lab chips actively recording data in the ANITA3 instrument, and each must be calibrated for this dT variance.
 
 \noindent		
 \begin{figure}
@@ -502,16 +519,17 @@ Where P is the thermal noise power observed across a termination resistor in wat
 \end{figure}
 
 	\subsection{Time Domain Bin Width Matrix}
-		The time base generator is comprised of a series of 260 current starved transistors that propagate a write strobe across the entire SCA.  Since each transistor has differing characteristics due to the non-idealities of ASIC manufacturing, this strobe does not evenly pass from time bin to bin.  This necessitates a "dT" calibration constant for each of the 260 samples, as well as for each phase of the write strobe (up-going or down-going), leaving us with 520 total calibration constants.
+		The time base generator is comprised of a series of 260 current starved transistors that propagate a write strobe across the entire SCA.  Since each transistor has differing characteristics due to the non-idealities of ASIC manufacturing, this strobe does not evenly pass from time bin to bin.  This necessitates a "dT" calibration constant for each of the 260 samples, as well as for each phase of the write strobe (up-going or down-going), leaving us with 520 total calibration constants per LAB.
 		
 	\subsection{Wraparound Time ($\epsilon$)}
-		The propagation time of the write strobe between the end of the SCA and the beginning is longer than a single bin.  As the SCA acts as a ring buffer, and the pulse can occur at any time within the SCA, the write strobe must begin its transition back to the first bin before the end of the SCA, at bin 256.  The remaining four bins are then used to fill in the "wraparound" time, which has been colloquially called $\epsilon$.  These epsilon values also differ with each RCO phase, and so each chip receives two $\epsilon$ correction constants. In addition, four dT periods is often longer than the wraparound time, and as such the 260th sample is often treated as a duplicate and discarded.
+		The propagation time of the write strobe between the end of the SCA and the beginning is longer than a single bin.  As the SCA acts as a ring buffer, and the pulse can occur at any time within the SCA, the write strobe must begin its transition back to the first bin before the end of the SCA, at bin 256.  The remaining four bins are then used to fill in the "wraparound" time, which has been colloquially called $\epsilon$.  These epsilon values also differ with each RCO phase, and so each chip receives two $\epsilon$ correction constants. In addition, four dT periods is often longer than the wraparound time, and as such the 260th sample is often treated as a duplicate and discarded.  
 		
 	\subsection{RCO Phase and Determination}
-		The RCO phase is sent as an output to the FPGA as a buffered copy of the wraparound voltage.  Using this, it is possible to determine the current phase of the chip when a hold was placed.  This has issues at the boundaries of the SCA, as the FPGA may not have latch the current RCO value when returning the digitized values.  A correction for this can be made by measuring the period of the ninth channel sync clock, which will differ between each RCO phase.
+		The RCO phase is sent as an output to the FPGA as a buffered copy of the wraparound voltage.  Using this, it is possible to determine the current phase of the chip when a hold was placed.  This has issues at the boundaries of the SCA, as the FPGA may not have latch the current RCO value when returning the digitized values.  A correction for this can be made by measuring the period of the ninth channel sync clock, which will differ between each RCO phase.  Using the firmware reported value in conjunction with the sync clock period allows for correctly determining the RCO phase with high accuracy.
 
 	\subsection{Temperature Dependance}	
 		All transistors react differently to temperature, and those present in the time base generator are no exception.  As the payload cools and warms due to rotation, time of day, and latitude, the sampling frequency will increase and decrease.  To alleviate this, a temperature correction must be applied to the final data. This is done via an average of the CP30 number reported by the FPGA over multiple events.
+		
 	\subsection{dT Variance and Timing Results}	
 		The variance in the timing from bin to bin has a strong effect on the measured bandwidth of the system.  Bins that are sampled too far apart will be unable to digitize frequencies that are higher than the Nyquist frequency of the region.  Similarly, samples spaced closer together than the nominal sampling frequency will act to alias in high frequency noise and dilute the signal.  The variance between the ANITA1 and ANITA2 flights increased by a factor of 3.5 to 25\%, which reduces the signal power in the high end of the spectrum significantly.
 		
@@ -521,13 +539,20 @@ Where P is the thermal noise power observed across a termination resistor in wat
 
 
 \section{Ground based in-flight calibration pulses}
-	Several ground pulser stations were set up on the Antarctic continent for the ANITA3 flight.  These transmitted a GPS synchronized broad spectrum pulse that closely mimics an EAS radiation signature.  These pulses can be used both for determining the overall sensitivity and efficiency of the trigger system, but can also be used as known-source measurements for doing antenna location calibrations. 
+	Several ground pulser stations, and one trailing balloon source (HiCal), were set up on the Antarctic continent for the ANITA3 flight.  These transmitted a high power GPS synchronized broad spectrum pulse that closely mimics an EAS impulsive radiation signature.  These pulses can be used both for determining the overall sensitivity and efficiency of the trigger system, but can also be used as known-source measurements for doing precise in flight antenna phase center location calibrations.
+	
+	Two autonomous pulser stations were deployed at field camps in east Antarctica, and an additional manned pulser pulser was deployed at the launch site, also known as the Long Duration Balloon (LDB) facility.  The remote stations were located at WAIS Divide and Siple Dome, however the payload only passed within line of cite of the WAIS divide pulser location. 
+	
+	All ground based calibration pulsers and the payload timing were synchronized to the GPS second.  This was done to ensure that any calibration pulse signature could be discriminated from physics signal events easily.  The HiCal pulser system was unable to employ a GPS synchronization due to cost and weight limitations, and their existence can only be derived from the reported location telemetry from its payload.
 	
 	\subsection{WAIS Divide}
-
+		The autonomous station deployed at WAIS divide consisted of two antennas, one vertically and one horizontally polarized, pulsing at a repetition rate of 1Hz.  An unknown system failure yielded only horizontally polarized pulses measured at the ANITA3 instrument.  The WAIS calibration pusles give us our best estimate for the locations of in flight antenna horizontally polarized phase centers.
 
 	\subsection{LDB}
-
+		The LDB pulser was observed twice during both the initial launch period, as well as during the second pass on the subsequent orbit around the continent.  This pulser provided the only vertically polarized calibration signals.  A drawback of this pulser location is the high level of non-thermal anthropogenic noise generated by McMurdo Station and the surrounding field camps.  Subsequently, a high power level and high repetition rate of the pulser was required in order for the payload to self trigger on the signals.  Additionally, as the signals were arriving from the same direction as the noise sources, trigger phi-masking had to be turned off for these measurements, a parameter not characteristic to the majority of the flight.  Figure \ref{fig:LDBPulserNsTimes} shows the 
+		
+	\subsection{HiCal}
+		As real cosmic ray EAS radiation signals are emitted in the atmosphere, it is desired to have a calibration source that mimics this source location.  HiCal utilizes a piezoelectric spark generator driven by a small DC motor attached to a horizontally polarized fat dipole antenna hanging from a balloon payload.
 
 
 \section{Antenna Location Measurements}
@@ -547,6 +572,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 		These antennas have several measurements that describe the complex response (antenna gain and group delay as a function of frequency) of the flight antennas.  One was done by the manufacturer, and several were done by us on the ground.  An additional calibration was possible in flight using the calibration pulsers and the random rotations of the gondola in respect to it.  The absolute measurements are most accurate in gain, as in the far field calibration measurements the absolute timing of the pulser was not synchronized.  However, both gain and phase have relative measurements as a function of angle.
 		There are two measurements that go into the response of the antenna.  The first is the S11 (or VSWR) of the antenna.  This describes the amount of input power is actually transmitted radiatively out of the antenna as a function of frequency.  The second is the actual gain pattern, which describes \textit{where} that power is transmitted in space.  Both are invertible, and together can be used to determine the antenna height which is a relation between the electric field incident on the antenna and the voltage transmitted to the transmission line.
 		Additionally there is a polarization component.  As we have interest in the polarization components (Stokes parameters) of the signal, the antennas are designed to be measure both vertical and horizontal polarizations independently.  Each polarization of the antenna has some non-trivial response in the opposite polarization however, especially in signals that have a combined vertical and horizontal component, which must be measured and factored out when for determining incident signal polarization.  For this, we have few measurements, and it may have to be done purely with in flight observations of known circularly polarized anthropogenic sources (such as satellites), thought that has an additional ionospheric component that would need to be measured.  In the end we may need to just extend error bars for this in leu of additional chamber measurements.
+		
 	\subsection{Effect of Uneven Time Sampling}
 	The uneven sampling produced by the non-idealities of the LABRADOR sampling timebase requires the waveform to be evenly resampled before it can be properly compared to other waveforms in each event.  In addition, the timing offsets induced by the physical baseline delays between antennas as well as the internal asynchronous hold times are not quantized to the sample bins, and thus must be up-sampled to be properly correlated and averaged.  There are several methods that can be used to accomplish this, each with drawbacks and positives.
 
