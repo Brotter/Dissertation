@@ -414,7 +414,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 		
 		The first trigger level, or what I'll call the L0 trigger (it is also known as the L1 trigger depending at what value one begins counting), is a comparator circuit on the FPGA between the output of the SHORT and a tunable DAC. It is thus possible to tune each channel individually to give an even weighting in the ultimate trigger decision.  This is done by measuring the number of threshold crossing counts per time fraction observed by each comparator circuit, also called the scalar rate.  This scalar rate is monitored by a software PID servo loop that attempts to keep all channels equal.
 		
-		The secondary trigger level, or L1, is a phi sector specific time dependent windowing function that combines the L0 triggers from all three channels in a single phi sector.  A real plane wave signal incident on a phi sector will have a causal separation in time, while incidental noise threshold crossings will be uncorrelated in time.  These timing offsets are used to create a metric for discriminating on noise up to the level of precision provided by the FPGA trigger electronics.  This is accomplished by generating a 16ns (four FPGA clock cycles) high logic pulse after a bottom ring antenna L0 trigger, a 12ns (three FPGA clock cycles) high logic pulse after a middle ring L0, and a 4ns window after a top ring L0.  The requirement for a L1 trigger is that two of these windowing pulses overlaps.
+		The secondary trigger level, or L1, is a phi sector specific time dependent windowing function that combines the L0 triggers from all three channels in a single phi sector.  A real plane wave signal incident on a phi sector will have a causal separation in time, while incidental noise threshold crossings will be uncorrelated in time.  These timing offsets are used to create a metric for discriminating on noise up to the level of precision provided by the FPGA trigger electronics.  
 		
 		The final trigger, or L2 is a requirement that two neighboring phi sectors decide a L1 trigger within an 8ns window.  This leads to the ultimate requirement that four out of six like-polarized antenna channels with an overlapping field of view observe a transient power fluctuation.  Additional details of each level trigger are detailed below.
 		
@@ -429,8 +429,18 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	\subsection{L1 Pseudo-Pattern Trigger}
 		The L1 trigger consists of a time windowed and multiple antenna combinatoric selection.  As a real signal pulse will have a correlated plane wave that passes across the physical locations of each antenna, a time coincidence of the signal is required.  This helps to reduce thermal noise triggers, which will be uncorrelated to the locations of the antennas.  In addition, this allows us to use the narrow opening angle of the antennas and their high gain to make a rough directional cut on the incoming signal.
 		
+\begin{figure}
+	\centering
+	\includegraphics[height=0.8\textheight]{figures/triggerHeirarchy}
+	\caption{A depiction of the trigger hierarchy for a non-triggered (top) and triggered (bottom) series of L0 triggers.  The blue dots denote an L0 trigger, and the green box represents the time of a L1  trigger.  Note the 4ns top ring window, the 12ns middle ring window, and the 16ns bottom ring window.  Note that though in the case of the triggered event, only two of the three rings are required to be in coincidence leading to a 4 out of 6 channel L0 trigger in two neighboring phi sectors}
+	\label{fig:trigPattern}
+\end{figure}
+		
 	\subsection{L1 Trigger Window Delay Limitations}
-		As the physical offsets between the rings of antennas exceeds one clock period for most of the angles of interest, it is possible to require a timing separation between the arrival of pulses between the separate antennas.  This modification, made between the ANITA2 and ANITA3 flights, decreases the incidental rate of the trigger, increasing the quality, while maintaining the signal rate and efficiency.  The end result of this (and actually what was done exactly) needs to be written up here, but I'm not sure anyone actually knows!  In the end I think what happens is that a threshold crossing in the bottom rings opens a gate in the upper rings in which a threshold crossing will trigger the full system.  It has the unfortunate side effect of allowing the top ring of antennas to unfairly bais the system, as a noise event there is more likely to trigger the system.  I need to detail this better though.
+		As the physical offsets between the rings of antennas exceeds one clock period for most of the angles of interest, it is possible to require a timing separation between the arrival of pulses between the separate antennas.  This modification, made between the ANITA2 and ANITA3 flights, decreases the incidental rate of the trigger, increasing the quality, while maintaining the signal rate and efficiency.  This is accomplished by generating a 16ns (four FPGA clock cycles) high logic pulse after a bottom ring antenna L0 trigger, a 12ns (three FPGA clock cycles) high logic pulse after a middle ring L0, and a 4ns window after a top ring L0.  The requirement for a L1 trigger is that two of these windowing pulses overlaps (see Figure \ref{fig:trigPattern}).  This has the unfortunate side effect of allowing the bottom ring of antennas to unfairly bais the system, as a noise L0 trigger generates a pulse with four times the time weight as one from the top ring, and is thus more likely to trigger the system.
+		
+	\subsection{L2 Multiple Phi Sector Trigger}
+		The final L2 trigger is generated when two or more neighboring phi sectors report an L1 trigger within an 8 nanosecond window.  Once the L2 trigger is reported, the TURF board sends a HOLD command to all SURFS, which propagates to a single LAB and initializes a readout.
 
 	\subsection{Phi Sector Masking}
 		In the ANITA1 flight, it was discovered that noise sources on the continent and in the sky had the capability to dominate the trigger rate and effectively blind the entire payload despite a large fraction of the payload observing a thermal environment. To alleviate this issue, a system where an antenna or collection (phi sector) of antennas experiences a comparative increase in trigger rate in comparison to the rest of the payload, it will be excluded from forming the global system trigger.  This allows the instrument to continue observing quiet areas of the continent and increasing the total livetime of the system.  There are additional nuances to this subsystem, including the possibility of very high power noise (or signal) events continuing to leak into the back and side lobes of the antennas from non-masked phi sectors, that need to be taken into account when making a measurement of the total instrumented area for a flight.  During the ANITA3 flight, several unexpected in-band satellite CW signals caused the phi masking to be heavily utilized, which is discussed further in the Cosmic Ray Search chapter.
@@ -490,10 +500,10 @@ Where P is the thermal noise power observed across a termination resistor in wat
 
 	The measurements recorded by the ANITA3 digitizing electronics need to be calibrated and the instrument geometry must be precisely measured in order for observed events to be directly relatable to the electromagnetic field present at the instrument.  There are several major considerations that have to be taken into account in order to properly calibrate the instrument.  The LABRADOR ADC counts need to be scaled to voltage, the sampling time base has to be corrected for uneven sampling rate, the gain and phase of the impulse response to the system has to be measured, and the actual physical locations of the antennas has to be measured and corrected from the engineering model.  The end goal of any calibration is to relate the measured and recorded quantities, by parameterizing the observation instrument and using known values to calculate those parameters, to the actual physical effect that is being observed.  The following chapter details the steps taken and results of calibrating these aspects of the ANITA3 instrument.
 	
+
 	
 \section{LABRADOR voltage calibration}
-	
-		The LAB3 ASCIC uses a ring buffer storage capacitor array (SCA) to store the charge from the electrical potential arriving at the chip as a function of time, before being digitized with a wilkinson clock and ramp signal comparator coupled system (see Figure \ref{fig:Lab_digitization}.  The digital values read out by the acquisition software is actually measuring a time between when the ramp signal begins and when it passes the stored charged in the storage capacitor.  This value must therefore be converted into a voltage that can be propagated back through the signal chain and inform us on the induced potential on the antenna fins.  
+		The LAB3 ASCIC uses a ring buffer storage capacitor array (SCA) to store many sequential snapshots of the charge on a capacitor from a time varying electrical potential arriving at the chip.  This captured analog charge is then digitized (an analog to digital conversion, or ADC) by comparing it to a constant current source ramp signal that stops a Wilkinson clock at the time of comparator activation (see Figure \ref{fig:Lab_Digitization}.  The digital values read out by the acquisition software are then physically measuring a time between when the ramp signal begins and when it's voltage passes the voltage of the stored charged in that particular SCA bin.  This ADC count must be converted into a voltage that can be propagated back through the signal chain and inform us on the induced potential on the antenna.
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{figures/LAB_Digitization}
@@ -501,19 +511,56 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	\label{fig:Lab_Digitization}
 \end{figure}	
 		
-	To measure the voltage to ADC counts of the LABRADORs, an identical RF pulse was inserted into two AMPA channels at the front of the signal chain, then coupled out of the system immediately before entering the SURF RF input into a calibrated Tektronix oscilloscope (See Figure \ref{fig:calSetup}). This signal was then compared against the pulse read out by the acquisition software.  While keeping the reference channel constant, the test signal was then moved throughout the remaining 95 channels.
+
+
+	\subsection{Pedestal Subtraction}
+		The signal propagated through the ANITA3 system is AC-coupled by design, and as such must have a DC offset reintroduced to it before being being digitized by the LABRADOR.  The ramp voltage and comparator internal to the chip operate only at positive voltages (0 to 2.5V) , and so to get a measurement of both positive and negative voltage fluctuations the signal must nominally be set at mid-range of the ramp signal, or about 1.25V.  This is accomplished through a fixed voltage regulator external to the LABRADOR on the SURF board.  This "pedestal" voltage, visible in the data as a constant ADC count offset, must be later subtracted to correctly zero mean the signal.  A "pedestal run," in which large numbers of samples were measured and averaged to determine a mean value per capacitor bin, was done at the beginning of the flight and stored on a storage drive of the instrument.  These pedestals were then subtracted immediately after captured by the acquisition software (Acqd) before being stored, and are included in the raw data.  The pedestals used in ANITA3 are visible in Figure \ref{fig:pedestals}
+		
+\begin{figure}
+	\centering
+	\includegraphics[height=0.8\textheight]{figures/Pedestals_big2}
+	\caption{Mean pedestal values used for subtraction(left) and RMS of bin in pedestal run (right) for all LABRADOR chips for the ANITA3 flight.  The Y axis is an index describing the LABRADOR in question (SURF*36 + Chan*4 + Lab,).  The X axis is the capacitor bin number within that surf.  The Z color axis is the value of the Pedestal or RMS in ADC counts.  From this plot one can visibly see the small variance of pedestals within a single LAB, but moderate variation between SURFs.  Also visible is the clock channel and its associated large pedestal RMS, as the clock remains on during pedestal runs.}
+	\label{fig:pedestals}
+\end{figure}	
+				
+				
+	\subsection{Least Significant Bit Masking}
+		As a note, though the LABRADOR reads out a 12 bit digitized ADC value, the least significant two bits are known to be systematically biased and are thus masked.  The final ADC value stored by the acquisition software is an 11 bit signed integer, with the least significant bit determined by the pedestal correction.  This means that bins have either even or odd values, but not both.  This effect can be seen in Figure \ref{fig:evenOddPeds}.  Functionally it allows the pedestal to have half bit resolution while not requiring float arithmetic for further CPU tasks.
+		
+		
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/pedsEvenOdd}
+		\caption{A histogram of ADC count occupancy as a function of capacitor bin stored by the acquisition software.  The least significant bit from the LABRADOR is masked to zero, however the constant pedestal subtraction has a LSB addition that causes an offset.}
+		\label{fig:evenOddPeds}
+	\end{figure}
+		
+	
+	
+	\subsection{Simple Voltage to ADC Count Calibration}
+	To initially measure the voltage to ADC counts of the LABRADOR chips an identical RF pulse was inserted into two AMPA channels at the front of the signal chain, then measured both after the full signal chain immediately before entering the SURF RF input with a calibrated Tektronix oscilloscope, and using the ANITA readout software (See Figure \ref{fig:calSetup}). This signal was then compared against the pulse read out by the acquisition software.  While keeping the reference channel constant, the test signal was then moved throughout the remaining 95 channels.  The peak to peak signal height of each test channel was then compared against the reference channel's oscilloscope readout.
 		
 			
-\begin{figure}
-	\includegraphics[width=\textwidth]{figures/antarctica14_calSetup}
-	\caption{A schematic of the calibration setup used before flight in Antarctica in 2014}
-	\label{fig:calSetup}
-\end{figure}
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/antarctica14_calSetup}
+		\caption{A schematic of the calibration setup used before flight in Antarctica in 2014}
+		\label{fig:calSetup}
+	\end{figure}
+		
+	One drawback of this method is that only the reference channel is coupled out from after the signal chain for comparison with the SURF output pulse.  This pulse is dispersed by the amplification and filtering of the signal chain, and thus comparing it to the input pulse requires the full complex impulse response, which considers both gain and phase as a function of frequency of the system, an analysis that is described later in this chapter.  For a simple first-order voltage calibration, one assuming voltage to be a linear function of ADC counts with no frequency dependance and an identical complex impulse response between signal chains, the peak to peak amplitude of each test channel compared to the reference channel is sufficient.  However, since the magnitudes of the gains of the signal chains is not equal, this calibration serves best as a normalization between the full signal chains of all the channels.  In other words, after applying the simple volts to ADC counts calibration, all channels are expected to have equal peak to peak voltages for an identical input signal regardless of signal chain gain or noise figure.
 		
 		
 		
 	\subsection{Chip to Chip Variation}
-		Each chip suffers from manufacturing non-idealities introduced by the nano-lithography process.  Due to this, each chip must be calibrated independently.  The time base generator, the write pointer strobe propagation and RCO phase dependance, as well as the ADC to absolute voltage values must all be independently measured for each chip.
+		Each chip suffers from manufacturing non-idealities introduced by the nano-lithography process.  Due to this, each chip must be calibrated independently.  The time base generator, the write pointer strobe propagation and RCO phase dependance, as well as the ADC to absolute voltage values must all be independently measured for each chip.  The resulting ADC counts to mV conversion can be seen in Figure \ref{fig:adcTomV}.
+
+			
+	\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{figures/ADCtoVolts.png}
+		\caption{Simple voltage calibration values for all 96 channels of the ANITA3 instrument.  The units of the Z-axis color bar are in mV/ADC counts.  Note that each channel is digitized by four separate LAB chips.  However, the largest effect on the voltage calibration is from variations in the signal chain}
+		\label{fig:adcTomV}
+	\end{figure}
+		
 
 
 
@@ -523,11 +570,16 @@ Where P is the thermal noise power observed across a termination resistor in wat
 \noindent		
 \begin{figure}
 	\includegraphics[width=\textwidth]{figures/LAB3BTimingGenerator}
-	\caption{Diagram of LAB3B Timing Generator\cite{LABASICPAPER} }
+	\caption{Diagram of LAB3B timing generator circuit\cite{LABASICPAPER} }
 \end{figure}
 
 	\subsection{Time Domain Bin Width Matrix}
-		The time base generator is comprised of a series of 260 current starved transistors that propagate a write strobe across the entire SCA.  Since each transistor has differing characteristics due to the non-idealities of ASIC manufacturing, this strobe does not evenly pass from time bin to bin.  This necessitates a "dT" calibration constant for each of the 260 samples, as well as for each phase of the write strobe (up-going or down-going), leaving us with 520 total calibration constants per LAB.
+		The time base generator is comprised of a series of 260 current starved transistors that propagate a write strobe across the entire SCA.  Since each transistor has differing characteristics due to the non-idealities of ASIC manufacturing, this strobe does not evenly pass from time bin to bin.  This necessitates a "dT" calibration constant for each of the 260 samples, as well as for each phase of the write strobe (up-going or down-going), leaving us with 520 total calibration constants per LAB.  There are several methods that can be utilized to determine the timing separation between any two capacitor bins, two of which were used to check the calibration of the ANITA3 instrument.
+		
+		The first calibration technique I will refer to as the Bin Occupancy Fraction method.  This method involves injecting a constant periodic signal, either a digital clock or a constant frequency sine wave, into each of the LAB chips.  By recording a large number of events, we can measure the resulting number of zero crossings that occur between each capacitor bin pair.  By comparing this occupancy vs the expected occupancy for a uniformly sampled time window in which each bin observes the same number of zero crossings, it is possible to determine the fractional width of each bin.  A drawback of this method is that it requires very large statistics to reduce the uncertainty on the resulting dT.
+		
+		The second calibration technique is slightly more clever, and involves utilyzing a characteristic of phase offset sine waves and ellipses, and will be called the Ellipse method.  In this method, one can use the derivation detailed in Appendix B to determine the width of a bin by comparing the sum and difference of digitized values from neighboring bins that are offset by some time $\delta t$ both observing the same sine wave.  When plotted, the sum and difference trace out an ellipse where the ratio of the semi-major to semi-minor axis, scaled by the injected sine wave frequency, is equal to the timing separation of that capacitor bin pair.  As a thought experiment, it is useful to imagine two bins that have a very small dT separation.  In this case the measured voltage difference between them will always be small while at the crests of a sine wave the additive term will be large, yielding a ellipse with a very large eccentricity.  Inversely, bins that are separated by exactly one half wavelength will always have large differences and very small sums.  This method is useful in that it requires far less data than the Bin Occupancy Fraction method.  
+		
 		
 	\subsection{Wraparound Time ($\epsilon$)}
 		The propagation time of the write strobe between the end of the SCA and the beginning is longer than a single bin.  As the SCA acts as a ring buffer, and the pulse can occur at any time within the SCA, the write strobe must begin its transition back to the first bin before the end of the SCA, at bin 256.  The remaining four bins are then used to fill in the "wraparound" time, which has been colloquially called $\epsilon$.  These epsilon values also differ with each RCO phase, and so each chip receives two $\epsilon$ correction constants. In addition, four dT periods is often longer than the wraparound time, and as such the 260th sample is often treated as a duplicate and discarded.  
@@ -564,6 +616,8 @@ Where P is the thermal noise power observed across a termination resistor in wat
 
 
 \section{Antenna Location Measurements}
+	
+	
 	\subsection{Photogrammetry}
 		An initial measurement of the locations of each of the antennas in respect to each other, to the instrument box, and to the GPS antennas, was done by analyzing a series of standardized photos of the payload taken from a variety of angles and rotations.
 		
@@ -573,6 +627,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 
 \section{System Impulse Response}
 		The signal observed by the digitizers is strongly effected by the band limiting filters and 
+		
 	\subsection{Effect of Signal Chain}
 	
 	\subsection{Convolution with Antenna Response}
