@@ -493,13 +493,21 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	
 \section{LABRADOR voltage calibration}
 	
-		The LAB3 ASCIC uses a ring buffer storage capacitor array (SCA) to store the charge from the electrical potential arriving at the chip as a function of time, before being digitized with a wilkinson clock and ramp signal comparator coupled system (see Figure \ref{fig:Lab_digitization}.  The digital values read out by the acquisition software is actually measuring a time between when the ramp signal begins and when it passes the stored charged in the storage capacitor.  This value must therefore be converted into a voltage that can be propagated back through the signal chain and inform us on the induced potential on the antenna fins.  For this, a pulse was measured immediately before entering the SURF RF input, and then compared against the pulse read out by the acquisition software.
-		
-			
+		The LAB3 ASCIC uses a ring buffer storage capacitor array (SCA) to store the charge from the electrical potential arriving at the chip as a function of time, before being digitized with a wilkinson clock and ramp signal comparator coupled system (see Figure \ref{fig:Lab_digitization}.  The digital values read out by the acquisition software is actually measuring a time between when the ramp signal begins and when it passes the stored charged in the storage capacitor.  This value must therefore be converted into a voltage that can be propagated back through the signal chain and inform us on the induced potential on the antenna fins.  
+
 \begin{figure}
 	\includegraphics[width=\textwidth]{figures/LAB_Digitization}
 	\caption{Simplified diagram of the digitization chain for the LABRADOR3 digitizer}
 	\label{fig:Lab_Digitization}
+\end{figure}	
+		
+	To measure the voltage to ADC counts of the LABRADORs, an identical RF pulse was inserted into two AMPA channels at the front of the signal chain, then coupled out of the system immediately before entering the SURF RF input into a calibrated Tektronix oscilloscope (See Figure \ref{fig:calSetup}). This signal was then compared against the pulse read out by the acquisition software.  While keeping the reference channel constant, the test signal was then moved throughout the remaining 95 channels.
+		
+			
+\begin{figure}
+	\includegraphics[width=\textwidth]{figures/antarctica14_calSetup}
+	\caption{A schematic of the calibration setup used before flight in Antarctica in 2014}
+	\label{fig:calSetup}
 \end{figure}
 		
 		
