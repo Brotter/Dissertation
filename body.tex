@@ -50,7 +50,7 @@
 
 	Using cosmic rays as a astronomical messenger particle presents new difficulties as well.  At lower energies, charged particles such as cosmic rays will have their courses altered by the Lorentz force while transiting the magnetic fields of stellar objects. Subsequently, inverting their incoming detection vector will no longer yield accurate pointing back to the source accelerator.  This is depicted in Figure \ref{fig:CosmicRayDeviation}.  Higher energy cosmic rays are proportionally less effected by magnetic fields due their increased rigidity, however, once more, the extremely low event statistics make it impossible to point to objects with any level of certainty. 
 	
-	The composition of cosmic rays at the highest energies remains under investigation as well.  An extended air shower produced from a CR interacting with an atmospheric molecule has identical secondary detection characteristics whether the initial source particle was heavy ions or protons.  Recent measurements studying the maximum shower depth of air showers suggests a mixed composition, and possibly a hint at a transition from galactic to extragalactic source accelerator at EeV energies.\cite{AugerXmax}\cite{AugerXmaxDiscussion} Additional experimental observations of these cosmological particles will yield a better understanding of both the structure of matter and energy within the universe at large, as well as fundamental physics processes energetically unachievable from existing collider experiments.  The creation and propagation of ultra high energy cosmic rays through the universe opens a window to understanding of extreme high energy physics.
+	The composition of cosmic rays at the highest energies remains under investigation as well.  An extensive air shower produced from a CR interacting with an atmospheric molecule has identical secondary detection characteristics whether the initial source particle was heavy ions or protons.  Recent measurements studying the maximum shower depth of air showers suggests a mixed composition, and possibly a hint at a transition from galactic to extragalactic source accelerator at EeV energies.\cite{AugerXmax}\cite{AugerXmaxDiscussion} Additional experimental observations of these cosmological particles will yield a better understanding of both the structure of matter and energy within the universe at large, as well as fundamental physics processes energetically unachievable from existing collider experiments.  The creation and propagation of ultra high energy cosmic rays through the universe opens a window to understanding of extreme high energy physics.
 
 		
 \noindent
@@ -382,7 +382,15 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	The electric field variations incident as a function of time is digitized using an array of fast analog to digital converters (ADCs), custom designed application specific integrated circuits (ASICs).  The ANITA3 instrument utilizes a LABRADOR (Large Analog Bandwidth Recorded And Digital Ordered Readout) chip, designed by Gary Varner.  It is a 12-bit, 2.4GS/s, 256 sample long ADC, yielding a window size of ~100ns.  This is accomplished with a sample and hold ring buffer read out with a wilkinson clock comparing the stored charge in a storage capacitor against a ramp signal driven by a constant current source.  Each chip receives 8 RF analog inputs, as well as a 9th clock channel coincidently propagated to all LAB chips.  The SURF (Signal Unit for Radio Frequency) Board consists of 4 LABRADOR chips in order to create a buffer for continuous sampling.  
 
 	\subsection{LABRADOR3 ASIC}
-		The third iteration of the Large Analog Bandwidth Recorder And Digitizer with Ordered Readout (LABRADOR, or LAB3) has been in use on ANITA flights due to its extremely low power and high precision.  It consists of a nine RF channels fed into separate 260 cell capacitor ring buffer and can operate at sampling frequencies of 2.6GS/s, or a Nyquist limit of 1.3GHz.  In addition, it has a large dynamic range and a gigahertz of bandwidth in the UHF spectrum.  The sampling time base is driven by a phase inverting Ripple Carry Out pulse that propagates internally to the chip.  The continuous sampling is broken however when a trigger is issued to the chip, and a Wilkinson Clock measuring the Time To Threshold of a constant current ramp voltage converts the stored charge in each capacitor to a digital value that is read out in parallel to an FPGA for storage.  Due to the dead time related to the digitization process, four LAB3 chips are placed in parallel in order to ensure continuous sampling even when a single LAB3 is reading out its values.  When a hold is issued, the LAB3 chip returns both an estimate of which RCO phase it is in (which is incorrect near the wraparound region), as well as the locations of the "HitBus", or samples that are currently connected to the RF input. The procedure and results of calibrating this readout is detailed in the Calibration section.
+		The third iteration of the Large Analog Bandwidth Recorder And Digitizer with Ordered Readout (LABRADOR, or LAB3) has been in use on ANITA flights due to its extremely low power and high precision.  It consists of a nine RF channels fed into separate 260 cell capacitor ring buffer and can operate at sampling frequencies of 2.6GS/s, or a Nyquist limit of 1.3GHz.  In addition, it has a large dynamic range and a gigahertz of bandwidth in the UHF spectrum.  The sampling time base is driven by a phase inverting Ripple Carry Out pulse that propagates internally to the chip.  The continuous sampling is halted when a trigger is issued to the chip, and a Wilkinson Clock measuring the Time To Threshold of a constant current ramp voltage converts the stored charge in each capacitor to a digital value that is read out in parallel to an FPGA for storage.  Due to the dead time related to the digitization process, four LAB3 chips are placed in parallel in order to ensure continuous sampling even when a single LAB3 is reading out its values.  When a hold is issued, the LAB3 chip returns both an estimate of which RCO phase it is in (which is incorrect near the wraparound region), as well as the locations of the "HitBus", or samples that are currently connected to the RF input. The procedure and results of calibrating this readout is detailed in the Calibration section.
+		
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/waveformSnapshot}
+	\caption{An example readout of all 96 channels of the full ANITA3 detector, organized by SURF (columns) and channels (rows).  Bottom row is the synchronization clock inserted into all LAB chips.  In red are phi sectors that triggered the event.  This particular waveform is low SNR self triggered WAIS calibration pulser (ev 61326092).  Image made with MagicDisplay data visualization code.}
+	\label{fig:waveformSnapshot}
+\end{figure}
+		
 	
 	
 	\subsection{Limitations}
@@ -432,7 +440,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 \begin{figure}
 	\centering
 	\includegraphics[height=0.8\textheight]{figures/triggerHeirarchy}
-	\caption{A depiction of the trigger hierarchy for a non-triggered (top) and triggered (bottom) series of L0 triggers.  The blue dots denote an L0 trigger, and the green box represents the time of a L1  trigger.  Note the 4ns top ring window, the 12ns middle ring window, and the 16ns bottom ring window.  Note that though in the case of the triggered event, only two of the three rings are required to be in coincidence leading to a 4 out of 6 channel L0 trigger in two neighboring phi sectors}
+	\caption{A depiction of the trigger hierarchy for a non-triggered (top) and triggered (bottom) series of L0 triggers.  The blue dots denote an L0 trigger, and the green box represents the time of a L1  trigger.  Note the 4ns top ring window, the 12ns middle ring window, and the 16ns bottom ring window.  Two neighboring phi sectors with L1 triggers within a 8ns window cause a global trigger (black).  Note also that, though not the case of depicted event, only two of the three rings are required to be in coincidence leading to a 4 out of 6 channel L0 trigger in two neighboring phi sectors}
 	\label{fig:trigPattern}
 \end{figure}
 		
@@ -557,7 +565,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	\begin{figure}
 		\centering
 		\includegraphics[width=\textwidth]{figures/ADCtoVolts.png}
-		\caption{Simple voltage calibration values for all 96 channels of the ANITA3 instrument.  The units of the Z-axis color bar are in mV/ADC counts.  Note that each channel is digitized by four separate LAB chips.  However, the largest effect on the voltage calibration is from variations in the signal chain}
+		\caption{Simple voltage calibration values for all 96 channels of the ANITA3 instrument (taken from simpleVoltageCalibrationHarm.txt).  The units of the Z-axis color bar are in mV/ADC counts.  Note that each channel is digitized by four separate LAB chips.  However, the largest effect on the voltage calibration is from variations in the signal chain}
 		\label{fig:adcTomV}
 	\end{figure}
 		
@@ -577,6 +585,9 @@ Where P is the thermal noise power observed across a termination resistor in wat
 		The time base generator is comprised of a series of 260 current starved transistors that propagate a write strobe across the entire SCA.  Since each transistor has differing characteristics due to the non-idealities of ASIC manufacturing, this strobe does not evenly pass from time bin to bin.  This necessitates a "dT" calibration constant for each of the 260 samples, as well as for each phase of the write strobe (up-going or down-going), leaving us with 520 total calibration constants per LAB.  There are several methods that can be utilized to determine the timing separation between any two capacitor bins, two of which were used to check the calibration of the ANITA3 instrument.
 		
 		The first calibration technique I will refer to as the Bin Occupancy Fraction method.  This method involves injecting a constant periodic signal, either a digital clock or a constant frequency sine wave, into each of the LAB chips.  By recording a large number of events, we can measure the resulting number of zero crossings that occur between each capacitor bin pair.  By comparing this occupancy vs the expected occupancy for a uniformly sampled time window in which each bin observes the same number of zero crossings, it is possible to determine the fractional width of each bin.  A drawback of this method is that it requires very large statistics to reduce the uncertainty on the resulting dT.
+		
+
+		
 		
 		The second calibration technique is slightly more clever, and involves utilyzing a characteristic of phase offset sine waves and ellipses, and will be called the Ellipse method.  In this method, one can use the derivation detailed in Appendix B to determine the width of a bin by comparing the sum and difference of digitized values from neighboring bins that are offset by some time $\delta t$ both observing the same sine wave.  When plotted, the sum and difference trace out an ellipse where the ratio of the semi-major to semi-minor axis, scaled by the injected sine wave frequency, is equal to the timing separation of that capacitor bin pair.  As a thought experiment, it is useful to imagine two bins that have a very small dT separation.  In this case the measured voltage difference between them will always be small while at the crests of a sine wave the additive term will be large, yielding a ellipse with a very large eccentricity.  Inversely, bins that are separated by exactly one half wavelength will always have large differences and very small sums.  This method is useful in that it requires far less data than the Bin Occupancy Fraction method.  
 		
@@ -615,15 +626,34 @@ Where P is the thermal noise power observed across a termination resistor in wat
 		As real cosmic ray EAS radiation signals are emitted in the atmosphere, it is desired to have a calibration source that mimics this source location.  HiCal utilizes a piezoelectric spark generator driven by a small DC motor attached to a horizontally polarized fat dipole antenna hanging from a balloon payload.
 
 
-\section{Antenna Location Measurements}
+\section{Antenna Phase Center Location Measurements}
+	To accurately reconstruct the arriving electromagnetic wavefront it is extremely important to know the positions of the antennas to very high precision.   Using Equation \ref{eqn:lightTravel} for determining the distance traversed by a travelling wave, and unscientific imperial units, a wavefront traveling at the speed of light will traverse approximately one foot per nanosecond of time. 
 	
+	\begin{figure}[h]
+	\begin{equation}
+		\Delta x = \tau c
+	\end{equation}
+	\label{eqn:lightTravel}
+	\end{figure}
+	
+	The timing limitation imposed by the inter-surf timing discussed above is on the order of 10ps, which would correspond to a 3.6mm maximum uncertainty on the phase centers of the antennas before the become the limiting measurement for coherent reconstruction of several digitized waveforms.  Measuring the relative positions of these with such accuracy, or assuming their positions from a design model, is unrealistic, and so several other methods have been employed to determine their positions.
 	
 	\subsection{Photogrammetry}
-		An initial measurement of the locations of each of the antennas in respect to each other, to the instrument box, and to the GPS antennas, was done by analyzing a series of standardized photos of the payload taken from a variety of angles and rotations.
+		An initial measurement of the antenna locations with respect to each other, to the instrument box, and to the GPS antennas (and thus recorded attitude heading, and position), was done by analyzing a series of standardized photos of the payload taken from a variety of angles and rotations.  Utilyzing this data coupled with precise measurements of single antenna dimensions, it is possible to arrive at a first order estimate of the antenna positions.  An example image and subsequent wiremesh model of the payload can be seen in Figure \ref{fig:photogram1}.
 		
+	\begin{figure}
+	\label{fig:photogram1}
+		\centering
+		\includegraphics[height=0.5\textheight]{figures/KBelovANITA-III_photogrammetry_update-3}
+		\includegraphics[width=\textwidth]{figures/KBelovANITA-III_photogrammetry_update-4}
+		\caption{Top: Example photogrammetry image of the ANITA3 payload with markers drawn around the antenna face outlines.  Bottom: Subsequent wiremesh model of antenna positions derived from numerous combined images.  Thanks to Constantine for images.}
+	\end{figure}
+	
 		
-	\subsection{Phase center optimization}
+	\subsection{Calibration Pulse Timing Optimization}
 		The electrical center-point of the antennas, though directly related to the physical position and orientation of the antenna, requires an additional calibration.  The phase center, or point at which the electromagnetic field couples to the antenna and begins propagating through the signal cables, is a function of frequency and incident wave direction, so the calibration must consider a large phase space.  The calibration measurements are done in-situo by a ground pulser at WAIS divide sending a pulse to the payload as it passes overhead.  This pulse can be used to determine  the relative phase center offsets between nearby antennas.  The positional error of the phase centers relates directly to the pointing error for events seen later in the flight.
+		
+		The two pulser locations discussed earlier provide two distinct timeframes during which to measure the phase centers of the antennas.  
 
 \section{System Impulse Response}
 		The signal observed by the digitizers is strongly effected by the band limiting filters and 

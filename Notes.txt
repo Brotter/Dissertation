@@ -61,4 +61,86 @@ February 1st
 
 February 2nd
 -> One more day to finish the section about the instrument.  I still have a lot of plots to make and things to shore up :(  Also I'm going camping this weekend for Dan's 30th birthday so I gotta finish the analysis stuff soon.  I am running over the full data set right now on the anita servers
-bchn
+
+
+
+February 22nd
+
+-> Andres is talking about blinding for a template search.
+	Two general categories:
+		1) non base singlets (clustering)
+		2) things that match a template
+		
+	Don't want to constrain template TOO much, we don't know what they look like necessarily from theory.  Lots of weird things can happen (LPM effect, models aren't fully evolved).  We also don't know anything about the spectrum or rates of neutrinos, so it is hard to say how often they happen and at what energy.
+	
+	Need to have a random factor of +/- 1 for each event at all times
+	
+	Abby: "We don't want more than 0.1 thermal background events."  Thermal noise cuts CHANGE what your anthropogenic background is.  You need to pick some thermal noise that you're relatively happy with, without actually being able to run the optimization of signal/sqrt(background).  In the past we've set thermal noise cut -> done clustering and seem anthropogenic numbers -> reset noise cut.  "We should probably park the thermal background more like 0.5," it is going to be higher than 0.1.
+	Peter: If an event survives after you unblind is it going to be acceptable as a signal like event?  
+	We need a deconvolution algorithm!  Thermal noise isn't going to both deconvolve AND point.  "After you deconvolve all that you are left with is amplitude.  We aren't enforcing phase coherence to the degree that we can eliminate thermals".
+	Cosmin: We don't like any of our deconvoltions
+	Andres: Other experiments do this too, and they also have a problem with it.  We "Forward Model" everything.  And you can make it parametric!  Then you get a parametric template.  
+	Abby: This is when a grad student comes up and says "this is what I'm doing", referring to me, I need to do that
+	
+	ABCD method?
+	
+	Vertically polarized events aren't really as expected for neutrinos!  Amy's simulation seemed to show that we can't just require totally vertically polarized events in the neutrino channel.  A1 and A2 found these things already!  Did we accidentally exclude them?  Plane of polarization isn't a good cut!  It shouldn't increase the background at all either, oh no wait it will because the anthropogenic background estimate is based on polarization.  
+	
+	the Simulation team might want to actually just make a whole freaking data set instead of us injecting events into the real data (which has caused problems before).  Also this way the simulation team can blindly hand events to the analysis team, which then analyzes them and assigns polarity, and then hands them back to the simulation team to see if we got the polarity correct.
+	
+	Peter doesn't think that we have the instrument fidelity to actually do that though.
+	
+	Is it superposition or Rician addition?  Peter thinks Rician, Andres thinks that it is the same.  (Rician is a complex phasor superposition).  Maybe it didn't work because they just added the voltages together and it doesn't work.  "Data that is already realized" is a cool phrase since it doesn't have the imaginary part.
+	
+	Peter doesn't think we can generate a cosmic ray pulse reliably.  But we have tons!  Though the instrument impulse response is different so you have to deconvolve and deconvolve.
+	
+	"Extensive Air Shower"  not "Extended Air Shower".  :O  Changed in thesis
+	
+	Peter says that WAIS pulses and observed cosmic rays he found in ANITA3 both correlate pretty well together.  
+	
+	If we start getting into really low SNR cosmic rays then polarity might be an issue.  Make sure we correlate the signal arrival direction to the geomagnetic field because that is going to be be a pretty strong cut handle!  but if we blind ourselves to polarity that makes it more difficult.
+	
+	Andres says instead of doing thermal->template.  Do "template & geomagnetic" -> thermal.  Peter says he did "polarization and cross correlation" and then clustered them before the geomagnetic test.  
+	
+	We want cosmic rays right away!  Then you just need to cluster THOSE INTERESTING THINGS vs everything else.  Then you can do background estimates on the things it clusters with.  Are they anthropogenic?  Are they thermal?  Are they stupid blast crap that comes from the payload?  Are they satellite reflections? 
+	Peter asks "why do it with thermals?"  He got 2000 with correlation and polarization (I wonder where he set his cut) and then he clustered and did geomagnetic.  Andres thinks that the geomagnetic is part of the template search.  
+	
+	How do you determine the angular error of a super low SNR event?? this is a problem for clustering thermal events.  Clustering is going to be really weird with something where the error is enormous.  Basically thermals are going to cluster with everything all the time.  
+
+	
+	
+John Russel: 
+	-> Transfer Function stuff
+	-> Cable phase correction is riddled with mistakes.  Need to either actually calculate group delay or regenerate it by just using difference NOT BOTH.
+	-> Need to prove that I'm doing the phase stuff correctly, since I was very fast and loose with it
+	
+My thoughts:
+	Peter mentioned that "we don't control for phase" or "we dont make a cut on phase" or something like that, what is the phase SUPPOSED to look like?  I should be able to get this from the impulse response, and then a delta function should have like constant phase?  The cables too.  So then the phase should just be the filters...  Maybe this gets harder at really low SNRs though, where the noise gets worse in phase space.
+	
+	Also, we DO control for phase if we do a deconvolution ever.  And the correlation requires that things have the same phase.
+	
+
+
+Feb 24th
+
+Okay so not a lot got done today.  Did the TA thing, tried to clean up the impulseResponse stuff but didn't really get anywhere.
+
+Went to eat the street with Joan for dinner and had great ribs and fun
+
+Then looked at Constantine's photogrammetry presentation (probably a plot I can use in there) and he doesn't have a good estimate of his error.  He cant really.  Its like a cm on the faces or whatever but also a scaling could be wrong or there could be a systematic and there is no cross check.  Oh well, easy section.
+
+Linda's phase center calibration is much more interesting.  Because 1) Cosmin doesn't believe them 2) they are MUCH different from the H-pols, so physically one of them has to be incorrect, but Linda looks like she did a good job so it isn't an easy fix.  She doesn't really have uncertainty estimates, but pointing statistics look pretty good.  Something I could try, because it might be good to have a plot I made on this calibration, is using sine subtraction and plotting expected peak correlation timing offset vs measured peak correlation timing offset.  If it is systematically off, it will be seen in that distribution.  She did this, but plotted it vs incoming direction which to be honest we never use (though we should probably).  More interestingly would be to see what that is like vs time to see if it is correlated to noise or ground movement near the transmitter or something.  no that doesn't make sense, it needs to be receiver end.  so maybe some nearby coherent satellite that is time dependent or something.
+
+Also: I gotta put together the trigTimeNs plots for the calibration pulses.  This is the section to talk about how I determined which they are.  It is a calibration after-all.
+
+Okay, anyway I wrote up more on those sections a little.  Looks like I'm going to drive somewhere now at midnight!  I'll think about this stuff.
+
+Feb 27th
+
+Didn't get much done on the 25th or 26th.  A little maybe?  Wrote some stuff probably I don't know.
+
+Today I did a lot though, mainly with the ZHAires simulations and system impulse response.  I'm super tired right now :(  I have to put together some slides for Philip about why I would be good working on GAPS, and ask Peter for a letter of rec tomorrow.  I should probably also send him some more chapters.  I have more stuff I can put in the simulation now :)  It's all under benCode/ZHAiresReader and also I installed ZHAires on this laptop for god knows what reason.  I shouldn't have to do anymore shower simulations.  I DO need to have a trigger simulation for a reason why being further away from the Cherenkov angle may still trigger ANITA3.  
+
+I should be able to finish the calibration chapter, and I should send him the instrument chapter as well.  I also need to run the correlation alghorithm (with some basic template) on all the events.  Then I can start making cuts.  I need this by WEDNESDAY.
+
+I'm so tired now, I can't do much else.  So tomorrow it will have to be
