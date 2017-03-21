@@ -1,15 +1,24 @@
 %%%%%%%%%% 4 %%%%%%%%%%%%%%%%
 \chapter{Simulation of Air Shower Event in Time Domain and Expected Event Rate from Analysis Techniques}
 %%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Air Shower Simulation Overview}
 	The series of analysis procedures used to categorize events into signal and noise boxes
+	
 	\subsection{ZHAires Shower Modeling}
-		Radio emission from cosmic ray air showers is accomplished by using the ZHS extension to the AIRshower Extended Simulations (AIRES) package.\cite{AlvarezMuñiz2012325}  This framework, developed by Jaime Alvarez-Muniz, Washington Rodrigues de Carvalho Jr. and Enrique Zas, generates a time varient electric field for a configurable incident particle at some instrumentation point in the atmosphere.  Recent work with ANITA in mind has further extended the simulation to accurately depict reflections off the ice sheet.
+		Simulating the radio emission of cosmic ray air showers is accomplished by using the ZHS extension to the AIRshower Extended Simulations (AIRES) package.\cite{AlvarezMuñiz2012325}  Concatenated, these two packages make up the ZHAires simulation framework.  This framework, developed by Jaime Alvarez-Muniz, Washington Rodrigues de Carvalho Jr. and Enrique Zas, generates a time varient electric field for a configurable incident particle at some instrumentation point in the atmosphere.  Recent work with ANITA in mind has further extended the simulation to accurately depict reflections off the ice sheet.
 		
-		Simulations provide an important method to determine the overall sensitivity of the ANITA instrument to air shower events as a function of incident angle and energy and payload location.  Due to the coherent beamed characteristic of air shower radio emmission, specifically a peak at the critical Cherenkov angle from the shower axis, ANITA is only sensitive to a small fraction of showers.
+		Simulations provide an important method to determine the overall sensitivity of the ANITA instrument to air shower events as a function of incident angle, energy, and payload location.  Due to the coherent beamed characteristic of air shower radio emmission, specifically a peak at the critical Cherenkov angle from the shower axis, ANITA is only sensitive to a small fraction of showers that occur within its field of view.
 		
 		The spectral content of EAS radiation falls off sharply as a function of offset from the critical Cherenkov angle.  Without being within a few degrees of the peak coherence angle, low frequency radiation, below the band of the ANITA instrument, dominates the spectrum.  This can be seen in Figure figure.  
 		
+\section{Convolution of Modeled Shower and System Response}
+		
+		\subsection{System Impulse Response}
+		
+		\subsection{System Noise Addition}
+		
+
 \section{IceMC: ANITA Monte Carlo Simulation Package}
 	
 \section{Instrumented Volume Estimate}

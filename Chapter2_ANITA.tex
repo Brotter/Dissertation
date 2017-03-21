@@ -3,9 +3,17 @@
 \chapter{ANITA Telescope Platform}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Overview}
-	The ANITA telescope platform is a passive broad-band radio frequency electromagnetic field transient detector and time domain voltage digitizer.  There have been four ANITA flights at the time of this thesis, numbered one through four.  ANITA1 flew in the 2006-2007 Antarctic balloon campaign\cite{ANITA1}, ANITA2 in 2007-2008\cite{ANITA2}, ANITA3 in 2014-2015 (the topic of this thesis) and most recently ANITA4 in 2016-2017.  
+	The ANITA telescope platform, seen in Figure \ref{fig:ANITA3_hangtest}, is a passive broad-band radio frequency electromagnetic field transient detector and time domain voltage digitizer.  There have been four ANITA flights at the time of this thesis, numbered one through four.  ANITA1 flew in the 2006-2007 Antarctic balloon campaign\cite{ANITA1}, ANITA2 in 2007-2008\cite{ANITA2}, ANITA3 in 2014-2015 (the topic of this thesis) and most recently ANITA4 in 2016-2017.  
 	
-	The main instrument structure consists of a collection of radially positioned, outwardly facing, broad-band, highly-directional quad-ridge horn antennas.  The antennas are separated into three different vertically spaced rings, with each ring separated into 16 different azimuthally facing "phi-sectors." (see Figures \ref{fig:phiSectors} and \ref{fig:ANITA3_hangtest})    These co-pointing antennas allow multiple observations of a signal event with a physical distance baseline offset between them. These antennas couple the incident electromagnetic radiation into a coaxial signal line, which is then amplified by a series of low noise-figure amplifiers, band-pass filtered via analoge compound filters into the relevant frequency bandwidth, before finally being digitized by custom on board high-speed digitizer chips and readout electronics (Figure \ref{fig:RFChainBlockDiagram}).  The digitization is self-triggered by a parallel square-law integrating power detector circuit which arrives at a decision with minimal analog waveform buffering.  After digitization, waveforms are read out via a CPCI interconnect backplane to a ruggedized conductively cooled CPU writing to on-board redundant storage devices.  The payload is capable of reading out ~50Hz of full payload waveforms with low (\textless 5\% ) deadtime to disk.  Additional position and orientation data, as well as multiple diagnostic and in-situ relevant physics measurements, are recorded and precisely time-stamped by a GPS disciplined clock.  Selections of the waveforms and housekeeping measurements are telemetered down to ground servers for in-flight diagnostics, however full recovery of the data vaults is desired for a complete analysis.  The following chapter will expand upon these systems and the theoretical basis for their design and construction.
+	\begin{figure}
+\centering
+	\includegraphics[height=0.9\textheight]{figures/ANITA3_hangtest2_annotated}
+	\caption{An image of the ANITA3 telescope during the test deployment in Palestine TX, 2014.  Marked from top to bottom are two of the nine GPS antennas, the three vertically separated rings, the deployed solar panel array, and a deployed ALFA antenna.  The solar panels visible at the top of the payload are those used by the NASA Small Instrument Package (SIP).  Not visible are the ANITA instrument crate and other objects on the deck of the experiment (between middle and top antenna rings).}
+	\label{fig:ANITA3_hangtest}
+\end{figure}	
+	
+	The main instrument structure consists of a collection of radially positioned, outwardly facing, broad-band, highly-directional quad-ridge horn antennas.  The antennas are separated into three different vertically spaced rings, with each ring separated into 16 different azimuthally facing "phi-sectors." (see Figure \ref{fig:phiSectors})  These co-pointing antennas allow multiple observations of a signal event with a physical distance baseline offset between them. These antennas couple the incident electromagnetic radiation into a coaxial signal line, which is then amplified by a series of low noise-figure amplifiers, band-pass filtered via analoge compound filters into the relevant frequency bandwidth, before finally being digitized by custom on board high-speed digitizer chips and readout electronics (Figure \ref{fig:RFChainBlockDiagram}).  The digitization is self-triggered by a parallel square-law integrating power detector circuit which arrives at a decision with minimal analog waveform buffering.  After digitization, waveforms are read out via a CPCI interconnect backplane to a ruggedized conductively cooled CPU writing to on-board redundant storage devices.  The payload is capable of reading out ~50Hz of full payload waveforms with low (\textless 5\% ) deadtime to disk.  Additional position and orientation data, as well as multiple diagnostic and in-situ relevant physics measurements, are recorded and precisely time-stamped by a GPS disciplined clock.  Selections of the waveforms and housekeeping measurements are telemetered down to ground servers for in-flight diagnostics, however full recovery of the data vaults is desired for a complete analysis.  The following chapter will expand upon these systems and the theoretical basis for their design and construction.
+	
 	
 	
 \begin{figure}
@@ -15,13 +23,6 @@
 	\label{fig:phiSectors}
 \end{figure}
 
-	
-\begin{figure}
-\centering
-	\includegraphics[height=0.9\textheight]{figures/ANITA3_hangtest2_annotated}
-	\caption{An image of the ANITA3 telescope during the test deployment in Palestine TX, 2014.  Marked from top to bottom are two of the nine GPS antennas, the three vertically separated rings, the deployed solar panel array, and a deployed ALFA antenna.  The solar panels visible at the top of the payload are those used by the NASA Small Instrument Package (SIP).  Not visible are the ANITA instrument crate and other objects on the deck of the experiment (between middle and top antenna rings).}
-	\label{fig:ANITA3_hangtest}
-\end{figure}
 
 \begin{figure}
 \centering
