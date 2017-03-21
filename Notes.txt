@@ -144,3 +144,27 @@ Today I did a lot though, mainly with the ZHAires simulations and system impulse
 I should be able to finish the calibration chapter, and I should send him the instrument chapter as well.  I also need to run the correlation alghorithm (with some basic template) on all the events.  Then I can start making cuts.  I need this by WEDNESDAY.
 
 I'm so tired now, I can't do much else.  So tomorrow it will have to be
+
+%%%%%%%
+
+MARCH SIXTH
+
+oh man.  march sixth.  that's quite far into the year.  Calibration chapter not done.  Instrument chapter needs like 3 more plots probably (from my talk with Julie).
+
+Need to finish the parameterized cosmic ray & instrument response 
+
+
+%%%%%%%%%%%%%%%%%
+
+March 16th
+
+God it is getting close to April 1st.  Things I need to do this week:
+
+0) Contact Szarmes and get an extension on my dissertation deadline
+1) Ensure the system gain is conserved throughout the transfer function, and determine quantitative numbers for total system gain that match the link budget.
+2) Put together slides about the antenna off angle gain response (which I already looked at previously), since this is required to accurately reconstruct the magnitude of the electric field
+3) Determine the relative absolute phase offsets between the channels (I saw they have a ~10% distribution, so we can correct for this since it impacts pulse shape)
+4) Institute an all-pass deconvolution for waveforms for the analysis, which will ideally eliminate the channel to channel variation and improve interferometric pointing as well as produce better coherent sums
+5) Put together more slides about the template trigger using simulated cosmic ray E-fields and the deconvolved coherent sums.
+
+Then today I have to go in and grade lab notebooks.  And I'm upset with Joan because I was really tired last night at midnight and woke up at like 7am this morning and she was super intent on being loud and not letting me sleep.  I got super upset because I remember that she kept saying "well if you're tired maybe you should go to bed earlier" and I CANT IF SHE IS KEEPING ME UP.
