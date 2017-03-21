@@ -1,0 +1,250 @@
+	
+%%%%%%%%%%%% 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Instrument Calibration}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	The measurements recorded by the ANITA3 digitizing electronics need to be calibrated and the instrument geometry must be precisely measured in order for observed events to be directly relatable to the electromagnetic field present at the instrument.  There are several major considerations that have to be taken into account in order to properly calibrate the instrument.  The LABRADOR ADC counts need to be scaled to voltage, the sampling time base has to be corrected for uneven sampling rate, the gain and phase of the impulse response to the system has to be measured, and the actual physical locations of the antennas has to be measured and corrected from the engineering model.  The end goal of any calibration is to relate the measured and recorded quantities, by parameterizing the observation instrument and using known values to calculate those parameters, to the actual physical effect that is being observed.  The following chapter details the steps taken and results of calibrating these aspects of the ANITA3 instrument.
+	
+
+	
+\section{LABRADOR voltage calibration}
+		The LAB3 ASCIC uses a ring buffer storage capacitor array (SCA) to store many sequential snapshots of the charge on a capacitor from a time varying electrical potential arriving at the chip.  This captured analog charge is then digitized (an analog to digital conversion, or ADC) by comparing it to a constant current source ramp signal that stops a Wilkinson clock at the time of comparator activation (see Figure \ref{fig:Lab_Digitization}.  The digital values read out by the acquisition software are then physically measuring a time between when the ramp signal begins and when it's voltage passes the voltage of the stored charged in that particular SCA bin.  This ADC count must be converted into a voltage that can be propagated back through the signal chain and inform us on the induced potential on the antenna.
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{figures/LAB_Digitization}
+	\caption{Simplified diagram of the digitization chain for the LABRADOR3 digitizer}
+	\label{fig:Lab_Digitization}
+\end{figure}	
+		
+
+
+	\subsection{Pedestal Subtraction}
+		The signal propagated through the ANITA3 system is AC-coupled by design, and as such must have a DC offset reintroduced to it before being being digitized by the LABRADOR.  The ramp voltage and comparator internal to the chip operate only at positive voltages (0 to 2.5V) , and so to get a measurement of both positive and negative voltage fluctuations the signal must nominally be set at mid-range of the ramp signal, or about 1.25V.  This is accomplished through a fixed voltage regulator external to the LABRADOR on the SURF board.  This "pedestal" voltage, visible in the data as a constant ADC count offset, must be later subtracted to correctly zero mean the signal.  A "pedestal run," in which large numbers of samples were measured and averaged to determine a mean value per capacitor bin, was done at the beginning of the flight and stored on a storage drive of the instrument.  These pedestals were then subtracted immediately after captured by the acquisition software (Acqd) before being stored, and are included in the raw data.  The pedestals used in ANITA3 are visible in Figure \ref{fig:pedestals}
+		
+\begin{figure}
+	\centering
+	\includegraphics[height=0.8\textheight]{figures/Pedestals_big2}
+	\caption{Mean pedestal values used for subtraction(left) and RMS of bin in pedestal run (right) for all LABRADOR chips for the ANITA3 flight.  The Y axis is an index describing the LABRADOR in question (SURF*36 + Chan*4 + Lab,).  The X axis is the capacitor bin number within that surf.  The Z color axis is the value of the Pedestal or RMS in ADC counts.  From this plot one can visibly see the small variance of pedestals within a single LAB, but moderate variation between SURFs.  Also visible is the clock channel and its associated large pedestal RMS, as the clock remains on during pedestal runs.}
+	\label{fig:pedestals}
+\end{figure}	
+				
+				
+	\subsection{Least Significant Bit Masking}
+		As a note, though the LABRADOR reads out a 12 bit digitized ADC value, the least significant two bits are known to be systematically biased and are thus masked.  The final ADC value stored by the acquisition software is an 11 bit signed integer, with the least significant bit determined by the pedestal correction.  This means that bins have either even or odd values, but not both.  This effect can be seen in Figure \ref{fig:evenOddPeds}.  Functionally it allows the pedestal to have half bit resolution while not requiring float arithmetic for further CPU tasks.
+		
+		
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/pedsEvenOdd}
+		\caption{A histogram of ADC count occupancy as a function of capacitor bin stored by the acquisition software.  The least significant bit from the LABRADOR is masked to zero, however the constant pedestal subtraction has a LSB addition that causes an offset.}
+		\label{fig:evenOddPeds}
+	\end{figure}
+		
+	
+	
+	\subsubsection{Simple Voltage to ADC Count Calibration}
+	To initially measure the voltage to ADC counts of the LABRADOR chips an identical RF pulse was inserted into two AMPA channels at the front of the signal chain, then measured both after the full signal chain immediately before entering the SURF RF input with a calibrated Tektronix oscilloscope, and using the ANITA readout software (See Figure \ref{fig:calSetup}, note this figure is used in multiple calibration analyses). This signal was then compared against the pulse read out by the acquisition software.  While keeping the reference channel constant, the test signal was then moved throughout the remaining 95 channels.  The peak to peak signal height of each test channel was then compared against the reference channel's oscilloscope readout.
+		
+			
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/antarctica14_calSetup}
+		\caption{A schematic of the pulse insertion calibration setup used immediately before flight with the full signal chain in Antarctica in 2014}
+		\label{fig:calSetup}
+	\end{figure}
+		
+	One drawback of this method is that only the reference channel is coupled out from after the signal chain for comparison with the SURF output pulse.  This pulse is dispersed by the amplification and filtering of the signal chain, and thus comparing it to the input pulse requires the full complex impulse response, which considers both gain and phase as a function of frequency of the system, an analysis that is described later in this chapter.  For a simple first-order voltage calibration, one assuming voltage to be a linear function of ADC counts with no frequency dependance and an identical complex impulse response between signal chains, the peak to peak amplitude of each test channel compared to the reference channel is sufficient.  However, since the magnitudes of the gains of the signal chains is not equal, this calibration serves best as a normalization between the full signal chains of all the channels.  In other words, after applying the simple volts to ADC counts calibration, all channels are expected to have equal peak to peak voltages for an identical input signal regardless of signal chain gain or noise figure.
+		
+		
+		
+	\subsection{Chip to Chip Variation}
+		Each chip suffers from manufacturing non-idealities introduced by the nano-lithography process.  Due to this, each chip must be calibrated independently.  The time base generator, the write pointer strobe propagation and RCO phase dependance, as well as the ADC to absolute voltage values must all be independently measured for each chip.  The resulting ADC counts to mV conversion can be seen in Figure \ref{fig:adcTomV}.
+
+			
+	\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{figures/ADCtoVolts.png}
+		\caption{Simple voltage calibration values for all 96 channels of the ANITA3 instrument (taken from simpleVoltageCalibrationHarm.txt).  The units of the Z-axis color bar are in mV/ADC counts.  Note that each channel is digitized by four separate LAB chips.  However, the largest effect on the voltage calibration is from variations in the signal chain}
+		\label{fig:adcTomV}
+	\end{figure}
+		
+
+
+
+\section{LABRADOR timing calibration}
+		The LAB3 storage capacitors' time base are controlled by a series of current starved transistors propagating a pulse down the array.  This allows each cell to be periodically and sequentially connected to the input signal, then disconnected  which can then be later digitized.  This timing generator circuit is effected by non-idealities of the ASIC manufacturing process as well and thus does not create equally spaced time separations between capacitors in the sampling array.  The timing separation, or delta-times (dTs for short), of each sample is shared between all eight channels of each LAB chip as it is generated by the same timing generator, however it can have significant variance between the different chips within a single SURF as well as between the SURFs.  There are 96 total lab chips actively recording data in the ANITA3 instrument, and each must be calibrated for this dT variance.
+
+\noindent		
+\begin{figure}
+	\includegraphics[width=\textwidth]{figures/LAB3BTimingGenerator}
+	\caption{Diagram of LAB3B timing generator circuit\cite{LABASICPAPER} }
+	\label{fig:timingGenerator}
+\end{figure}
+
+	\subsection{Time Domain Bin Width Matrix}
+		The time base generator is comprised of a series of 260 current starved transistors that propagate a write strobe across the entire SCA.  Since each transistor has differing characteristics due to the non-idealities of ASIC manufacturing, this strobe does not evenly pass from time bin to bin.  This necessitates a "dT" calibration constant for each of the 260 samples, as well as for each phase of the write strobe (up-going or down-going), leaving us with 520 total calibration constants per LAB.  There are several methods that can be utilized to determine the timing separation between any two capacitor bins, two of which were used to check the calibration of the ANITA3 instrument.
+		
+	\subsubsection{Bin Occupancy Fraction Method}
+		
+		The first calibration technique I will refer to as the Bin Occupancy Fraction method.  This method involves injecting a constant periodic signal, either a digital clock or a constant frequency sine wave, into each of the LAB chips.  By recording a large number of events, we can measure the resulting number of zero crossings that occur between each capacitor bin pair.  By comparing this occupancy vs the expected occupancy for a uniformly sampled time window in which each bin observes the same number of zero crossings, it is possible to determine the fractional width of each bin.  A drawback of this method is that it requires very large statistics to reduce the uncertainty on the resulting dT.  
+		
+		This calibration was done for ANITA3 with two timing sources, an injected 432.1MHz sine wave and the 33.3MHz square wave sync clock injected into the system for the entire flight.  The sine wave calibration, preformed by Ben Strutt and detailed in his thesis (\cite{benSThesis}), is the nominal calibration that is used for the remainder of this thesis.  The array can be seen in Figures \ref{fig:dTNominal2D} and \ref{fig:dTNominal2D}.  All other bin width matrix timing calibrations detailed below were done as a check on those values.
+		
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/dTNominal2D}
+		\caption{Nominal LAB3 Time Domain Bin Width "dT" values generated using a 432.1MHz injected sine wave calibration signal and the bin occupancy fraction method.  Values were determined by Ben Strutt\cite{benSThesis}.}
+		\label{fig:dTNominal2D}
+	\end{figure}
+	
+	
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/dTNominal}
+		\caption{Nominal LAB3 Time Domain Bin Width "dT" values generated using a 432.1MHz injected sine wave calibration signal and the bin occupancy fraction method.  Values were determined by Ben Strutt\cite{benSThesis}.}
+		\label{fig:dTNominal}
+	\end{figure}
+		
+		The second possible calibration source, the 33.3MHz sync clock, is also useful for this calibration method.  It has the additional benefit of being constantly present throughout the entire flight.
+		
+		
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/nominalDtVsSyncClockDt}
+		\caption{Comparison of the }
+		\label{fig:dTNominal2D}
+	\end{figure}
+
+
+
+		
+		
+		
+
+	\subsubsection{Ellipse Method}	
+		The second calibration technique is slightly more clever, and involves utilyzing a characteristic of a significant number of phase offset sine waves captures and will be called the Ellipse method.  Plotting the sum and difference of sequential samples of a pure sinusoidal function yields an ellipse whose semi-major and semi-minor axes determine the fractional time of each sample.  
+		
+		Using this method, whose derivation is detailed in Appendix B, it is possible to determine the width of each bin by comparing the sum and difference of digitized values from neighboring bins that are offset by some time $\delta t$ both observing the same sine wave.  It is useful to consider the edge cases of such a system, for example two bins that have a negligible dT separation.  In this case the measured voltage difference between them will always be small if not zero, while the addition axis has a can a large range of values, the maximum being the crests of a sine wave. This will yield an ellipse with a very large eccentricity.  Inversely will have the inverse eccentricity, bins that are separated by exactly one half wavelength of the injected frequency will always have wide range of possible differences, and sums always approaching zero.  Nominal sampling between these extremes will provide an ellipse approaching a circle, as seen in Figure \ref{fig:ellipseMethodExample}.  This method is useful in that it requires far less data than the Bin Occupancy Fraction method.  
+		
+		Utilyzing this method, I calibrated all capacitor bin dTs and compared the results with the previously measured constants provided in this thesis and other published results\cite{benSThesis}.  The values are presented in Figure \ref{fig:ellipseResults}.
+		
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/ellipseMethodExample}
+		\caption{}
+		\label{fig:ellipseMethodExample}
+	\end{figure}
+
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/ellipseComparison}
+		\caption{}
+		\label{fig:ellipseResults}
+	\end{figure}
+
+
+	\subsection{Sine Wave Fitting Method}
+	
+	There exists a third method for calibrating each digitizer bin's timing width, which is applying an iterative least-squares fit of the inserted sine wave and determining the relative phase offsets of the voltage of each recorded point versus the same value of the fit.  This was done as an additional method for determining the validity and event to event stability of the dT constants.  This method has the additional benefit of requiring extremely low statistics, with a measurement of the width possible on a single captured waveform.  Of course, the four LAB buffer and dual RCO phases results in each bin only being measured one eighth of the total event read out.  Additionally, the only periodic input function was a sine wave which has a large fractional region where small voltage offsets effect large timing offsets, or regions where the derivative is small.  The bin occupancy fraction method is in a way a simplification of this method, using only times where the derivative is largest.  
+	
+	
+
+
+	\subsection{dT Variance and Timing Results}	
+		The variance in the timing from bin to bin has a strong effect on the measured bandwidth of the system.  Due to the non-periodic nature of the signal, bins that are sampled too far apart will be unable to digitize frequencies that are higher than the Nyquist frequency of the pair.  Similarly, samples spaced closer together than the nominal sampling frequency will act to alias in high frequency noise and dilute the signal.  The nominal sampling variance between the ANITA1 and ANITA2 flights increased by a factor of 3.5 to 25\%, which reduces the signal power in the high end of the spectrum .  The cause of this change between the ANITA2 and ANITA3 flights is unknown.
+		
+		
+	\subsection{Wraparound Time ($\epsilon$)}
+		The propagation time of the write strobe between the end of the SCA and the beginning is longer than a single bin.  As the SCA acts as a ring buffer, and the pulse can occur at any time within the SCA, the write strobe must begin its transition back to the first bin before the end of the SCA, at bin 256.  The remaining four bins are then used to fill in the "wraparound" time, which has been colloquially called $\epsilon$.  These epsilon values also differ with each RCO phase, and so each chip receives two $\epsilon$ correction constants. In addition, four dT periods is often longer than the wraparound time, and as such the 260th sample is often treated as a duplicate and discarded.  
+		
+	\subsection{RCO Phase and Determination}
+		The RCO phase is sent as an output to the FPGA as a buffered copy of the wraparound voltage.  Using this, it is possible to determine the current phase of the chip when a hold was placed.  This has issues at the boundaries of the SCA, as the FPGA may not have latch the current RCO value when returning the digitized values.  A correction for this can be made by measuring the period of the ninth channel sync clock, which will differ between each RCO phase.  Using the firmware reported value in conjunction with the sync clock period allows for correctly determining the RCO phase with high accuracy.
+
+	\subsection{Temperature Dependance}	
+		All transistors react differently to temperature, and those present in the time base generator are no exception.  As the payload cools and warms due to rotation, time of day, and latitude, the sampling frequency will increase and decrease.  To alleviate this, a temperature correction must be applied to the final data. This is done via an average of the CP30 number reported by the FPGA over multiple events.
+		
+
+		
+	\subsection{Inter-SURF Timing for Waveform Alignment}	
+		As each LAB3 runs independently of each other and each channel has different signal chain group delay characteristics, each channel must be aligned in time with each other to determine the precise timing of any digitized waveforms.  The delay between channels has both a time invariant and time varying component on an event by event basis.  
+		
+		The invariant term, caused by the path lengths of the digitization control signals between the TURF and SURF boards in addition to any group delay offsets introduced by the signal chain, can be initially calibrated out using coincident pulses inserted into multiple channels.  To measure and correct for this offset, an impulse was sequentially injected into each channel while a coupled impulse was simultaneously injected into an unchanging reference channel.  By measuring the difference between the observed arrival times of these pulses at each SURF, it is possible to develop a matrix of constant delay offsets between channels.  This calibration setup is described in Figure \ref{fig:calSetup}.  The results of this calibration are shown in Figure \ref{fig:delayOffsets}.
+		
+
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/averagedCableDelay}
+		\caption{Channel}
+		\label{fig:delayOffsets}
+	\end{figure}
+		
+		
+		The event by event time variance introduced by the nature of discrete clocked digital logic and the free-running sampling controls of the LABs, must be done at each event.  This is done with a "sync" clock that is propagated amongst the boards and constantly digitized in the 9th LAB3 channel.  This constant  33.3MHz analog clock is independent of any digital logic and thus should have a non-varying group delay offset between channels.  Any offsets of the digitized sync clock between LAB channels must then be an effect of the jitter in the HOLD command, and aligning these clocks post-digitization can be used to correct for this non-varient term.
+		
+
+
+
+\section{Ground based in-flight calibration pulses}
+	Several ground pulser stations, and one trailing balloon source (HiCal), were set up on the Antarctic continent for the ANITA3 flight.  These transmitted a high power GPS synchronized broad spectrum pulse that closely mimics an EAS impulsive radiation signature.  These pulses can be used both for determining the overall sensitivity and efficiency of the trigger system, but can also be used as known-source measurements for doing precise in flight antenna phase center location calibrations.
+	
+	Two autonomous pulser stations were deployed at field camps in east Antarctica, and an additional manned pulser pulser was deployed at the launch site, also known as the Long Duration Balloon (LDB) facility.  The remote stations were located at WAIS Divide and Siple Dome, however the payload only passed within line of cite of the WAIS divide pulser location. 
+	
+	All ground based calibration pulsers and the payload timing were synchronized to the GPS second.  This was done to ensure that any calibration pulse signature could be discriminated from physics signal events easily.  The HiCal pulser system was unable to employ a GPS synchronization due to cost and weight limitations, and their existence can only be derived from the reported location telemetry from its payload.
+	
+	\subsection{WAIS Divide}
+		The autonomous station deployed at WAIS divide consisted of two antennas, one vertically and one horizontally polarized, pulsing at a repetition rate of 1Hz.  An unknown system failure yielded only horizontally polarized pulses measured at the ANITA3 instrument.  The WAIS calibration pusles give us our best estimate for the locations of in flight antenna horizontally polarized phase centers.
+
+	\subsection{LDB}
+		The LDB pulser was observed twice during both the initial launch period, as well as during the second pass on the subsequent orbit around the continent.  This pulser provided the only vertically polarized calibration signals.  A drawback of this pulser location is the high level of non-thermal anthropogenic noise generated by McMurdo Station and the surrounding field camps.  Subsequently, a high power level and high repetition rate of the pulser was required in order for the payload to self trigger on the signals.  Additionally, as the signals were arriving from the same direction as the noise sources, trigger phi-masking had to be turned off for these measurements, a parameter not characteristic to the majority of the flight.  Figure \ref{fig:LDBPulserNsTimes} shows the 
+		
+	\subsection{HiCal}
+		As real cosmic ray EAS radiation signals are emitted in the atmosphere, it is desired to have a calibration source that mimics this source location.  HiCal utilizes a piezoelectric spark generator driven by a small DC motor attached to a horizontally polarized fat dipole antenna hanging from a balloon payload.
+
+
+\section{Antenna Phase Center Location Measurements}
+	To accurately reconstruct the arriving electromagnetic wavefront it is extremely important to know the positions of the antennas to very high precision.   Using Equation \ref{eqn:lightTravel} for determining the distance traversed by a travelling wave, and unscientific imperial units, a wavefront traveling at the speed of light will traverse approximately one foot per nanosecond of time. 
+	
+	\begin{figure}[h]
+	\begin{equation}
+		\Delta x = \tau c
+	\end{equation}
+	\label{eqn:lightTravel}
+	\end{figure}
+	
+	The timing limitation imposed by the inter-surf timing discussed above is on the order of 10ps, which would correspond to a 3.6mm maximum uncertainty on the phase centers of the antennas before the become the limiting measurement for coherent reconstruction of several digitized waveforms.  Measuring the relative positions of these with such accuracy, or assuming their positions from a design model, is unrealistic, and so several other methods have been employed to determine their positions.
+	
+	\subsection{Photogrammetry}
+		An initial measurement of the antenna locations with respect to each other, to the instrument box, and to the GPS antennas (and thus recorded attitude heading, and position), was done by analyzing a series of standardized photos of the payload taken from a variety of angles and rotations.  Utilyzing this data coupled with precise measurements of single antenna dimensions, it is possible to arrive at a first order estimate of the antenna positions.  An example image and subsequent wiremesh model of the payload can be seen in Figure \ref{fig:photogram1}.
+		
+	\begin{figure}
+	\label{fig:photogram1}
+		\centering
+		\includegraphics[height=0.5\textheight]{figures/KBelovANITA-III_photogrammetry_update-3}
+		\includegraphics[width=\textwidth]{figures/KBelovANITA-III_photogrammetry_update-4}
+		\caption{Top: Example photogrammetry image of the ANITA3 payload with markers drawn around the antenna face outlines.  Bottom: Subsequent wiremesh model of antenna positions derived from numerous combined images.  Thanks to Constantine for images.}
+	\end{figure}
+	
+		
+	\subsection{Calibration Pulse Timing Optimization}
+		The electrical center-point of the antennas, though directly related to the physical position and orientation of the antenna, requires an additional calibration.  The phase center, or point at which the electromagnetic field couples to the antenna and begins propagating through the signal cables, is a function of frequency and incident wave direction, so the calibration must consider a large phase space.  The calibration measurements are done in-situo by a ground pulser at WAIS divide sending a pulse to the payload as it passes overhead.  This pulse can be used to determine  the relative phase center offsets between nearby antennas.  The positional error of the phase centers relates directly to the pointing error for events seen later in the flight.
+		
+		The two pulser locations discussed earlier provide two distinct timeframes during which to measure the phase centers of the antennas.  
+
+\section{System Impulse Response}
+		The signal observed by the digitizers is strongly effected by the band limiting filters and 
+		
+	\subsection{Effect of Signal Chain}
+	
+	\subsection{Convolution with Antenna Response}
+		An important effect on the signal measured by the instrument is the angular response of the antennas.  First, there are a few considerations for determining what the optimal antenna response, the ratio of induced voltage on the 50-ohm output terminal of the antenna as a function of electric field on the front face, as a function of angle.  Firstly, it is important for the antennas to have some response outside of their specific 22.5 degree wide phi sector observations region in order to have baselines with measurable signal power (is this true?  It only is an effect if the source is exactly centered with the phi sector, but then you sort of know where it is because neither surrounding phi sector has any power...).  The antennas also need to have a high gain, aka a high directivity, in order to increase signal power as a function of noise power.  If we only used omni-directional antennas, the interferometry would have additional baselines (as additional antennas would observe any specific signal source), however each channel would have a reduced signal power with an identical noise power.  This also doesn't take into account the occlusion of signal by the gondola structure and discrete instrument packages residing ont the deck.  In addition, there exists no perfect antenna with a step function response, and as such we need to characterize the non-ideal antennas that fly on ANITA3.
+		These antennas have several measurements that describe the complex response (antenna gain and group delay as a function of frequency) of the flight antennas.  One was done by the manufacturer, and several were done by us on the ground.  An additional calibration was possible in flight using the calibration pulsers and the random rotations of the gondola in respect to it.  The absolute measurements are most accurate in gain, as in the far field calibration measurements the absolute timing of the pulser was not synchronized.  However, both gain and phase have relative measurements as a function of angle.
+		There are two measurements that go into the response of the antenna.  The first is the S11 (or VSWR) of the antenna.  This describes the amount of input power is actually transmitted radiatively out of the antenna as a function of frequency.  The second is the actual gain pattern, which describes \textit{where} that power is transmitted in space.  Both are invertible, and together can be used to determine the antenna height which is a relation between the electric field incident on the antenna and the voltage transmitted to the transmission line.
+		Additionally there is a polarization component.  As we have interest in the polarization components (Stokes parameters) of the signal, the antennas are designed to be measure both vertical and horizontal polarizations independently.  Each polarization of the antenna has some non-trivial response in the opposite polarization however, especially in signals that have a combined vertical and horizontal component, which must be measured and factored out when for determining incident signal polarization.  For this, we have few measurements, and it may have to be done purely with in flight observations of known circularly polarized anthropogenic sources (such as satellites), thought that has an additional ionospheric component that would need to be measured.  In the end we may need to just extend error bars for this in leu of additional chamber measurements.
+		
+	\subsection{Effect of Uneven Time Sampling}
+	The uneven sampling produced by the non-idealities of the LABRADOR sampling timebase requires the waveform to be evenly resampled before it can be properly compared to other waveforms in each event.  In addition, the timing offsets induced by the physical baseline delays between antennas as well as the internal asynchronous hold times are not quantized to the sample bins, and thus must be up-sampled to be properly correlated and averaged.  There are several methods that can be used to accomplish this, each with drawbacks and positives.
+
+	
+
+	
+	
+\section{Triggering Sanity Check}
+		Before flight, a programmable delay line was used to input picosecond precision delayed impulses into channels within neighboring phi sectors to test for the true angular response of the payload.  Due to the opaque nature of firmware, it is important to discern the exact L0 coincidence regions in which a global trigger will be generated.
+	\subsection{Angular Response Characteristics From Data}
+
+\section{Non-uniform Channels and Outliers}
+	There are several channels in the ANITA3 instrument that are non-uniform.  The first, and most obvious, is the channel in which the ALFA is digitized.  The desire to have a 97th low frequency drop down omni-azimuthal responce digitizing antenna required an additional channel, however there were none available.  To accommodate this, a modified filter was placed on channel 05TH that limited the nominal input signal to 800Mhz.  The low frequency (40-80MHz) antenna was then heterodyned with a 900Mhz local oscillator (LO) which produces a upsampled beat pattern at $f_(LO)-f_(ALFA)$ and $f_(LO)+f_(ALFA)$. This channel must be treated slightly differently than the rest in a few ways.  First, the signal must be digitally filtered to remove the ALFA component before it is correlated or averaged with similar antennas.  Secondly, in simulation the reduced bandwidth (and subsequent lower noise and signal power) must be taken into account.
+
+

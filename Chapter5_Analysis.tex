@@ -1,0 +1,63 @@
+%%%%%%%%%%%%% 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Cosmic Ray Search with ANITA3 Flight Data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ANITA3 Flight Overview}
+	The data recorded by the ANITA3 flight instrument requires a significant analysis effort to extract a meaningful physics result.  In our case, we need to use the raw digital values read out for each channel to determine the analog electromagnetic environment surrounding the payload during brief moments the trigger system determined a physics event may be occurring.  From this, we can use an understanding of the physical geometry of the antennas mounted on the payload, including their orientation and electrical responses, to determine the cause of any incident wave patterns read out by the digitizers.  Once these wave patterns are identified and classified, they can be sorted into signal and background thermal or anthropogenic noise sources via a series of procedural cuts.  This section details the process and results of this analysis.
+	
+\section{Analysis Overview}
+	The analysis for this flight was done with the premise that we are searching for "cosmic ray like" events.  As there are already published observations of cosmic rays from previous ANITA flights, I can reduce the workload of doing a full blind analysis with the consequence of excluding signals that do not fit into a measured and modeled EAS radiation pattern.  This still will allow us to search for two separate cosmogenic particles, cosmic rays and tau neutrino regeneration events.
+
+	\subsection{In Flight Modifications}
+		
+	
+\section{Blinding Procedure}
+
+	\subsection{Philosophical Reasoning For Blinding}
+	
+	\subsection{Threshold for Unblinding Request}
+
+	\subsection{Polarization Specific Blinding}
+
+\section{Event Quality Cuts}
+
+\section{Constant wave source filtering}
+	Anthropogenic signals used for communications often take the form of high powered circularly polarized constant wave sources.  These signals are present in much of the data, and their effect on the trigger is twofold.  Firstly, they compress the tunnel diode by increasing the total power of the input signal, elevating the diode response out of the square-law range.  Second, they force an increase in the threshold voltage used on the comparator circuit used to trigger on the signals.  Despite these two effects, impulsive candidate signals can still be hidden superimposed on the CW source.  To remediate the effects of these signals on the pointing and post-flight analysis, we can apply a filter that only notches out a specific frequency band of the signal.
+	\subsection{Bookkeeping and Filtering Decision Heuristic}
+	\subsection{Fourier Domain Band Filtering}
+			The easiest way to filter out CW signals is to set the magnitude of the complex Fourier phasors to zero in frequency bands that exceed some expected flat spectral slope.  Though this is computationally quite easy, this process is not causal, and will harm the integrity of the resultant signal.
+		\subsection{Sine wave subtraction}
+			A more computationally intensive method for eliminating CW sources is a method where a sine wave is fit to the measured waveform and iteratively subtracted.  This process preserves the causality of the signal, as it is done purely in the time domain, and also decreases the width of the band that will be filtered, preserving more total signal power if it exists in the measurement.  The drawback of this method is that it requires a fit, which is takes time and is prone to failure.
+
+
+\section{De-dispersion}
+	The antenna, filters, cables, and amplifiers are responsible for introducing a frequency dependent gain and group delay to the observed signals.  These elements act to disperse the power in the signal across tens of nanoseconds from what was emitted from the relativistic shower at the critical angle as a highly impulsive, picosecond length essential delta-function like electromagnetic field transient.  The impulse response, or complex phasor representation of this dispersive effect, was measured for the signal chain immediately preceding the flight for each of the 96 channels, and for all 48 antennas in a controlled manner in Palestine the summer beforehand.  These two effects are then combined and used to determine a whole system impulse response that relates the measured ADC values at the LABRADOR digitizer to an electric field incident at the payload.  By reversing the dispersive process, via Weiner deconvolution (described below), we can both increase the instantaneous power of a signal and compare it directly to the electric field radiation output of high energy particle shower simulations such as COREAS or ZHAires.
+	\subsection{Generation of transfer function}
+		The transfer function of the system was painstakingly developed and utilized a variety of both time domain and Fourier transformed frequency domain manipulations.  These each introduce their own errors, as many of them require assumptions about the incoming signal.  I'll detail the full process of generating the transfer function in an appendix.
+	\subsection{Signal to noise ratio of impulse response}
+		Any band limited deconvolution process requires a knowledge of the signal to noise ratio of the transfer function as a function of frequency (SNR(f)).  Since the transfer function merely relays the amplitude and phase differences between an input and output signal (represented in either a complex phasor or a time domain waveform), one must also have an understanding of the total power contained within the input and output signals.  If, for example, both the input and output signal contained very little power out of a specified band pass, it could be wrongly assumed from a transfer function that the signal chain was able to pass frequencies that are out of the band pass.
+		The "signal" and "noise" of this must therefore be defined, as the spectral power has multiple sources.  The principle   
+	\subsection{Weiner Deconvolution}
+		The impulse response used to deconvolve waveforms is 
+
+\section{Polarization cuts}
+
+\section{Event Reconstruction}
+	The major tool used in the ANITA analysis is a radio astronomy technique that uses the physical separation between the antennas and the correlations of waveforms from these antennas to generate a map of likely pointing directions.  ANITA has three vertical tiers of antennas, each separated from each other, and at least three co-pointing phi sectors that are expected to observe events from any angle.  Using the combined baseline offsets from these antennas, it is possible to overlay 9 different interferometric maps to create a pointing map.  By finding the peak of this map, a vector pointing away from the payload can be traced to the ice, where a map of the vertical height of the continent can be used to create a map of events on the ground.
+	\subsection{Radio Interferometric Pointing}
+	\subsection{Ray Tracing to Continent (with index of refraction)}
+	\subsection{Log-Likelyhood Two Dimensional Gaussian Pointing Error}
+	\subsection{Immediate Pointing Cuts}
+
+
+\section{Known object categorization}
+	Many bases on the Antarctic continent are already cataloged by the various national programs that operate them.  Using these known bases we can eliminate events that interferometrically point to objects of expected anthropogenic noise.  There also likely exist bases that are, for whatever reason, not included in our catalog.  We also use a list of "pseudo-bases" generated from clustered event lists from previous ANITA flights to eliminate possible anthropogenic interference.  The resulting effect these excluded regions have on the flight can be determined by its flight path and a log-likelyhood method for generating pointing error elipses around the bases.  I'll put a plot of that here.
+	\subsection{Sun and Its Reflection, Thermal Noise Effect}
+	\subsection{Satellites, Bases, and other Anthropogenic Sources}
+
+\section{Thermal Noise Separation Results}
+	\subsection{Cut Efficiency}
+	\subsection{Cut Quality}
+
+
+\section{Base and non-base clustering}
+	\subsection{Clustering Purity and Efficiency}
