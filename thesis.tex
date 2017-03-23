@@ -114,7 +114,7 @@ Richard Mills
 %\listoftables
 
 %%% Generate list of figures
-%\listoffigures
+\listoffigures
 
 \end{frontmatter}
 
@@ -123,10 +123,14 @@ Richard Mills
 \include{body}
 
 %%% Switch to appendix mode
-%\appendix
+\appendix
 
 %%% Bring in any appendices from external file (optional)
-%\include{appendix}
+\input{AppendixA}
+
+\chapter{System Impulse Response}
+\input{AppendixB/AppendixB}	
+
 
 %% Just for demo purposes, include all entries from bib file
 %\nocite{*}
