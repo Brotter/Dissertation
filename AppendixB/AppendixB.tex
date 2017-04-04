@@ -15,6 +15,39 @@
 
 	There are two distinct systems on the ANITA3 instrument that alter the received time domain signal on its to the digitizer, the antennas and the signal chain.  The antennas are broad band horn antennas whose dual polarizations have co-located phase centers.  These antennas couple the propagating electromagnetic (EM) radiation emitted by an extensive comic ray or neutrino air shower (EAS) from into a transmission wire by uniformly shifting the impedance of their impedance from that of free space to that of the RF system.  The collection of amplifiers, filters, and other 50-ohm RF components that populate the path between the antenna and the LABRADOR chip is known as the signal chain, and has it's own frequency dependent gain and phase modulation properties.  To calibrate these two systems, known input signals were injected into the systems and measurements were taken of the output signal.  The methods and techniques used to generate an impulse response using these input and output signals will be discussed, as well as the results for the ANITA3 flight.
 
+\section{Discrete Fourier Transform}
+
+\begin{equation}
+\mathcal{F}_{k} = \sum_{n=0}^{N-1} x_{n}e^{-2\pi ikn/N}
+\label{eqn:DFT}
+\end{equation}
+
+\begin{equation}
+x_{n} = \frac{1}{N}\sum_{k=0}^{N-1} \mathcal{F}_{k}e^{-2\pi ikn/N}
+\label{eqn:DFT}
+\end{equation}
+
+\section{Units and Spectrum Discussion}
+
+	Accurately representing the amount of power in a time domain waveform or network as a function of frequency requires both a normalized Fourier transform that obeys Parseval's Theorem, as well as the appropriate units.  There are two main types of signals which we are considering in this analysis, absolute measurements, referenced to a measured voltage on constant impedance network, and relative measurements relating two different measured signals.  An example of an absolute measurement is the time series waveforms captured on oscilloscopes.  These can be described by decibles referenced to 1mW (dBm) or Power Spectral Density (PSD), represented by dBm/Hz   while the relative measurements are network analyzer S21 measurements and transfer functions.
+
+	The ratio of spectral power between two different signals $x_{A}(t)$ and $x_{B}(t)$, can be done through division of their equivalent Fourier representations $\mathcal{F}_{A}(f)$ and $\mathcal{F}_{B}(f)$.  The logarithmic magnitude of this ratio is what is most often recognized as the gain of the network between the two measured signals.  The calculation of the gain is seen in Equation \ref{eqn:gain}
+	
+\begin{equation}
+Gain(f) = 10log_{10}(|\frac{\mathcal{F}_{A}(f)}{\mathcal{F}_{B}(f)}|^{2}) \qquad [dB]
+\label{eqn:gain}
+\end{equation}
+
+\begin{equation}
+Power(f) = 10log_{10}(\frac{|\mathcal{F}(f)|^{2} * 1000[\frac{mW}{W}]} {Z})\qquad [dBm]
+\label{PSD}
+\end{equation}
+	
+\begin{equation}
+PSD(f) = 10log_{10}(\frac{|\mathcal{F}(f)|^{2} * 1000[\frac{mW}{W}]} {Z*df})\qquad [dBm/Hz]
+\label{PSD}
+\end{equation}
+
 
 \section{Seavey Broad Band Quad-ridge Antenna Impulse Response}
 
@@ -24,24 +57,52 @@
 	
 	\subsection{Measurements Summary}
 	
-	The three different measurements were taken that are discussed in this paper each probe a unique region of the full calibration measurement.  First, a measurement was taken at the University of Hawaii at Manoa in a copper lined, RF sealed, anechoic chamber using two "identical" (same model and manufacturing batch) ANITA3 flight antennas.  This measurement allowed a maximally noise free environment in which to measure any small signal effects that may be present in the antennas.  It also removes the requirement for correlation and averaging of multiple waveforms, decreasing uncertainty introduced by interpolation techniques.  Unfortunately, the size of the anechoic chamber forced the distance between the antennas into the near field region for the lower side of the frequency bandwidth.  This causes results below 200MHz, the region in which these new antennas were supposed to perform differently than previous ANITA antenna designs, to be distorted and requires a correction.  Additionally, measurements of the gain pattern far off the maximal bore-sight angle became occluded by the absorbing material that lined the walls of the chamber, worsening the Fresnel interference and increasing the uncertainty in those measurements.
+	The three different measurements were taken that are discussed in this paper each probe a unique region of the full calibration measurement.  First, a measurement was taken at the University of Hawaii at Manoa in a copper lined, RF sealed, anechoic chamber using two "identical" (same model and manufacturing batch) ANITA3 flight antennas.  This measurement allowed a maximally noise free environment in which to measure any small signal effects that may be present in the antennas.  It also removes the requirement for correlation and averaging of multiple waveforms, decreasing uncertainty introduced by interpolation techniques.  Unfortunately, the size of the anechoic chamber forced the distance between the antennas into the near field region for the lower side of the frequency bandwidth.  This causes results below 200MHz, with a wavelength of ~1.6m and minimum far field distance requirement of 3.2m, to be slightly distorted and require a 	Fresnel correction. As this is the region in which the antennas were supposed to perform differently than previous ANITA antenna designs, this experimental setup and required correction is highly problematic.  Additionally, measurements of the gain pattern far off the maximal bore-sight angle have Fresnel zones occluded by the absorbing material that lined the walls of the chamber, once again introducing Fresnel interference and increasing the uncertainty in the measurements.
 	
 	In response to this, additional tests were undertaken at the University of Hawaii with much larger separation distances.  To accomplish this, the two antennas under test were placed on building rooftops separated by a moderately sized courtyard.  The building separation was large enough to escape the near-field of the lower frequency antenna response, yet close enough to preclude any ground bounce interference or multi-path issues.  These measurements were plagued by anthropogenic noise, however a large sample of waveforms uncorrelated to this noise was taken reducing the resulting background significantly.  These measurements provide the best results for the absolute system gain and antenna directivity.
 	
 	Finally, for the full ANITA flight the consistency and similarity of all 48 antennas needed to be measured.  Bore-sight gain measurements were taken for all antennas in Palestine TX in 2014 during integration of the ANITA3 payload.
 	
-	\subsection{Absolute Bore-sight Antenna Length}
+	\subsection{Absolute Bore-sight Antenna Height}
 		
-		The relationship between the magnitude of an electric field vector and the induced potential on the transmission line output of the antenna is a combination of the radiation efficiency and beam pattern, and is colloquially known as the effective antenna length, measured in units of volts per meter.  
+		The relationship between the magnitude of an electric field vector and the induced potential on the transmission line output of the antenna is a combination of the radiation efficiency and beam pattern, and is colloquially known as the effective antenna height, measured in units of volts per meter.  This measurement was done in several  
+		
+		
+	The equation for determining the complex antenna height of a single antenna is given by Equation \ref{eqn:antHeight}.
 	
-	
+\begin{equation}
+\mathcal{H}_{Rx}(f) = \frac{ c r(f) \mathcal{F}_{rec}(f)}{ if \mathcal{F}_{src}(f) \mathcal{H}_{Tx}(f) } 
+\label{eqn:antHeight}
+\end{equation}
+
+In this equation, $\mathcal{H}(f)$ represents the transfer function of the receive (Rx) and transmit (Tx) antennas, $c$ is the speed of light, $\mathcal{F}(f)$ is the Fourier equivalent sampled waveform, and $r(f)$ is the free space path distance between the phase centers of the antennas.  The location of the phase centers of the antennas are not known, and would require additional absolute timing measurements.  For the purposes of this analysis a linear relationship between frequency and phase center was derived assuming two points, that the 180MHz phase center is at the antenna face, and that the 1.2GHz phase center was at the feed point.
+
+If the antennas are identical, $\mathcal{H}_{Rx}(f) = \mathcal{H}_{Tx}(f)$, and Equation \ref{eqn:antHeight} becomes:
+
+\begin{equation}
+\mathcal{H}(f) = \sqrt{ \frac{c r(f)}{if} \frac{\mathcal{F}_{rec}(f)}{\mathcal{F}_{src}(f)} }
+\label{eqn:antHeight2}
+\end{equation}
+
+Additionally, the complex antenna height relates electric field to measured voltage according to the following equation:
+
+\begin{equation}
+\frac{V_{rec}(t)}{\sqrt{Z_{sys}}} = h(t) \circ \frac{ E_{rad}(t) }{ \sqrt{Z_{o}} }
+\label{eqn:antHeight2EField}
+\end{equation}
+
+Where $\circ$ is the convolution operator, $Z_{sys}$ is the impedance of the transmission line, 50$\Omega$ in our system, and $Z_{o}$ is the impedance of free space, 377$\Omega$.
 
 \section{RF Signal Chain Impulse Response}
+		
+	\subsection{Measurements Summary}
 
+		
+		
 
 \section{Methods and tools}
 	
-	A variety 
+	A variety of methods and tools are required to relate the different calibration data to each other to determine a final transfer function for the system.  Each of these has their own effect on the 
 
 \section{Magnitude Considerations and Absolute Response}
 	
