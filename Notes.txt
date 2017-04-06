@@ -181,3 +181,16 @@ But, I still need to do EVERYTHING on the list from the 16th.  I haven't done a 
 After that, I can re-write the findCosmicRays code so that it uses things like the DataSet importer class (and thus include the blinding as well) and also probably tack on a bunch to the Analyzer so that it stores more?  Anyway, first things first.
 
 I seem incapable of writing anything :(  Maybe I should just go grade lab notebooks for awhile?  NO I HAVE TO DO THIS AAARGH.  I keep helping Jarred and the like (even though I know it is pointless).  Also my computer is almost out of batteries.  Blarf.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+April 4th (Tuesday)
+
+Yesterday I think I got really close to finishing the absolute transfer function.  The antenna gain is ~+10dB, which matches what Ped got in 2004, and the signal chain gain is ~+61dB, which matches the link budget.
+
+What I should do today:  Finish writing that up and put the relevant parts in my thesis.  I should also probably finish like the tables with the link budget and expected power and stuff like that.
+
+Then, at like 3 or so, head back to the Manoa library for a few hours, then to a coffee shop I guess!
+
+
