@@ -86,18 +86,18 @@
 		
 		The first calibration technique I will refer to as the Bin Occupancy Fraction method.  This method involves injecting a constant periodic signal, either a digital clock or a constant frequency sine wave, into each of the LAB chips.  By recording a large number of events, we can measure the resulting number of zero crossings that occur between each capacitor bin pair.  By comparing this occupancy vs the expected occupancy for a uniformly sampled time window in which each bin observes the same number of zero crossings, it is possible to determine the fractional width of each bin.  A drawback of this method is that it requires very large statistics to reduce the uncertainty on the resulting dT.  
 		
-		This calibration was done for ANITA3 with two timing sources, an injected 432.1MHz sine wave and the 33.3MHz square wave sync clock injected into the system for the entire flight.  The sine wave calibration, preformed by Ben Strutt and detailed in his thesis (\cite{benSThesis}), is the nominal calibration that is used for the remainder of this thesis.  The array can be seen in Figures \ref{fig:dTNominal2D} and \ref{fig:dTNominal2D}.  All other bin width matrix timing calibrations detailed below were done as a check on those values.
+		This calibration was done for ANITA3 with two timing sources, an injected 432.1MHz sine wave and the 33.3MHz square wave sync clock injected into the system for the entire flight.  The sine wave calibration, preformed by Ben Strutt and detailed in his thesis (\cite{BenSThesis}), is the nominal calibration that is used for the remainder of this thesis.  The array can be seen in Figures \ref{fig:dTNominal2D} and \ref{fig:dTNominal2D}.  All other bin width matrix timing calibrations detailed below were done as a check on those values.
 		
 	\begin{figure}
 		\includegraphics[width=\textwidth]{figures/dTNominal2D}
-		\caption{Nominal LAB3 Time Domain Bin Width "dT" values generated using a 432.1MHz injected sine wave calibration signal and the bin occupancy fraction method.  Values were determined by Ben Strutt\cite{benSThesis}.}
+		\caption{Nominal LAB3 Time Domain Bin Width "dT" values generated using a 432.1MHz injected sine wave calibration signal and the bin occupancy fraction method.  Values were determined by Ben Strutt\cite{BenSThesis}.}
 		\label{fig:dTNominal2D}
 	\end{figure}
 	
 	
 	\begin{figure}
 		\includegraphics[width=\textwidth]{figures/dTNominal}
-		\caption{Nominal LAB3 Time Domain Bin Width "dT" values generated using a 432.1MHz injected sine wave calibration signal and the bin occupancy fraction method.  Values were determined by Ben Strutt\cite{benSThesis}.}
+		\caption{Nominal LAB3 Time Domain Bin Width "dT" values generated using a 432.1MHz injected sine wave calibration signal and the bin occupancy fraction method.  Nominal values displayed in this plot and used for initial analysis were determined by Ben Strutt\cite{BenSThesis}.}
 		\label{fig:dTNominal}
 	\end{figure}
 		
@@ -116,7 +116,7 @@
 		
 		Using this method, whose derivation is detailed in Appendix B, it is possible to determine the width of each bin by comparing the sum and difference of digitized values from neighboring bins that are offset by some time $\delta t$ both observing the same sine wave.  It is useful to consider the edge cases of such a system, for example two bins that have a negligible dT separation.  In this case the measured voltage difference between them will always be small if not zero, while the addition axis has a can a large range of values, the maximum being the crests of a sine wave. This will yield an ellipse with a very large eccentricity.  Inversely will have the inverse eccentricity, bins that are separated by exactly one half wavelength of the injected frequency will always have wide range of possible differences, and sums always approaching zero.  Nominal sampling between these extremes will provide an ellipse approaching a circle, as seen in Figure \ref{fig:ellipseMethodExample}.  This method is useful in that it requires far less data than the Bin Occupancy Fraction method.  
 		
-		Utilyzing this method, I calibrated all capacitor bin dTs and compared the results with the previously measured constants provided in this thesis and other published results\cite{benSThesis}.  The values are presented in Figure \ref{fig:ellipseResults}.
+		Utilyzing this method, I calibrated all capacitor bin dTs and compared the results with the previously measured constants provided in this thesis and other published results\cite{BenSThesis}.  The values are presented in Figure \ref{fig:ellipseResults}.
 		
 	\begin{figure}
 		\includegraphics[width=\textwidth]{figures/ellipseMethodExample}
@@ -159,7 +159,7 @@
 		
 		
 	\subsection{RCO Phase Determination}
-		The RCO phase is sent as an output to the FPGA as a buffered copy of the wraparound voltage.  Using this, it is possible to determine the current phase of the chip when a hold was placed.  This has issues at the boundaries of the SCA, as the FPGA may not have latched the current RCO value when returning the digitized values.  A correction for this can be made by measuring the period of the ninth channel sync clock, which will differ between each RCO phase.  Using the firmware reported value in conjunction with the sync clock period allows for correctly determining the RCO phase with high accuracy.
+		The RCO phase is sent as an output to the FPGA as a buffered copy of the wraparound voltage.  Using this, it is possible to determine the current phase of the chip when a hold was placed.  At the boundaries of the SCA, when the RCO has recently changed, the FPGA may not have the most current RCO value latched to a register when returning the digitized values.  A correction for this can be made by measuring the period of the ninth channel sync clock, which will differ between each RCO phase.  Using the firmware reported value in conjunction with the sync clock period allows for correctly determining the RCO phase with high accuracy.
 
 	\subsection{Temperature Dependence}	
 		All transistors react differently to temperature, and those present in the time base generator are no exception.  As the payload cools and warms due to rotation, time of day, and latitude, the sampling frequency will increase and decrease.  To alleviate this, a temperature correction must be applied to the final data. This is done via an average of the CP30 number reported by the FPGA over multiple events.
@@ -179,15 +179,28 @@
 	\end{figure}
 		
 		
-		The event by event time variance introduced by the nature of discrete clocked digital logic and the free-running sampling controls of the LABs, must be done at each event.  This is done with a "sync" clock that is propagated amongst the boards and constantly digitized in the 9th LAB3 channel.  This constant  33.3MHz analog clock is independent of any digital logic and thus should have a non-varying group delay offset between channels.  Any offsets of the digitized sync clock between LAB channels must then be an effect of the jitter in the HOLD command, and aligning these clocks post-digitization can be used to correct for this non-varient term.
+		The event by event time variance introduced by the nature of discrete clocked digital logic and the free-running sampling controls of the LABs, must be done at each event.  This is done with a "sync" clock that is propagated amongst the boards and constantly digitized in the 9th LAB3 channel.  This constant  33.3MHz analog clock is independent of any digital logic and thus should have a non-varying analog group delay offset between channels.  Thus, any measured offsets of the digitized sync clock between LAB channels must then be an effect of the jitter in the propagation of HOLD command and subsequent response by the LAB.  Aligning these clocks post-digitization can be used to correct for this non-varient term.
 		
 
 
 
 \section{Ground based in-flight calibration pulses}
-	Several ground pulser stations, and one trailing balloon source (HiCal), were set up on the Antarctic continent for the ANITA3 flight.  These transmitted a high power GPS synchronized broad spectrum pulse that closely mimics an EAS impulsive radiation signature.  These pulses can be used both for determining the overall sensitivity and efficiency of the trigger system, but can also be used as known-source measurements for doing precise in flight antenna phase center location calibrations.
+	Three ground pulser stations, and one trailing balloon source (HiCal), were set up on the Antarctic continent for the ANITA3 flight.  These transmitted a high power, GPS synchronized, broad spectrum pulse that closely mimics an EAS impulsive radiation signature.  These pulses can be used both for determining the overall sensitivity and efficiency of the trigger system, but can also be used as known-source measurements for doing precise in flight antenna phase center location calibrations.
 	
-	Two autonomous pulser stations were deployed at field camps in east Antarctica, and an additional manned pulser pulser was deployed at the launch site, also known as the Long Duration Balloon (LDB) facility.  The remote stations were located at WAIS Divide and Siple Dome, however the payload only passed within line of cite of the WAIS divide pulser location. 
+	Two autonomous pulser stations were deployed at field camps in east Antarctica, and an additional manned pulser pulser was deployed at the launch site, also known as the Long Duration Balloon (LDB) facility.  The remote stations were located at WAIS Divide and Siple Dome, however the payload only passed within line of cite of the WAIS divide pulser location.  They employed an azimuthally symmetric, quad-slot "Mini-ALFA" antenna custom designed by A. Romero-Wolf for horizontally polarized signals, and a Telewave ANT280S discone antenna for vertically polarized signals.  These are shown in figure \ref{fig:waisPulserAntenna}.  Their S11, a measure of antenna efficiency, is seen in Figure \ref{fig:waisPulserAntennaResponse}. 
+	
+	\begin{figure}
+		\includegraphics[width=0.45\textwidth]{figures/waisPulserAntennaH}
+		\includegraphics[width=0.45\textwidth]{figures/waisPulserAntennaV}
+		\caption{Images of the calibration pulser antennas deployed at WAIS divide and Siple Dome for calibration of the ANITA3 instrument in flight.  Right: Custom designed, quad-slot "Mini-ALFA" antenna for horizontally polarized signals.  Left: a Telewave ANT280S discone vertically polarized antenna. \cite{StephCalPulserPresentation}}
+		\label{fig:waisPulserAntenna}
+	\end{figure}	
+	
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/waisPulserAntennaSpectrum}
+		\caption{Measured S11 antenna efficiency for the horizontally (left) and vertically (right) polarized antennas deployed at remote locations for the ANITA3 in flight calibration pulsing. \cite{StephCalPulserPresentation}}
+		\label{fig:waisPulserAntennaResponse}
+	\end{figure}
 	
 	All ground based calibration pulsers and the payload timing were synchronized to the GPS second.  This was done to ensure that any calibration pulse signature could be discriminated from physics signal events easily.  The HiCal pulser system was unable to employ a GPS synchronization due to cost and weight limitations, and their existence can only be derived from the reported location telemetry from its payload.
 	
@@ -230,8 +243,8 @@
 		
 		The two pulser locations discussed earlier provide two distinct timeframes during which to measure the phase centers of the antennas.  
 
-\section{System Impulse Response}
-		The signal observed by the digitizers is strongly effected by the various components in the signal chain.  Chief amongst these is the group delay introduced by the band pass filters.
+\section{Instrument Impulse Response}
+		The signal observed by the digitizers is strongly effected by the various components in the signal chain.  Chief amongst these is the group delay introduced by the band pass filters.  To properly reconstruct the electric field that was present at the payload at the time of digitization, a full complex phasor array representing the signal chain response and antenna height as a function of frequency must be developed.  This is discussed at length in Appendix B.
 		
 	\subsection{Effect of Signal Chain}
 	
@@ -249,8 +262,11 @@
 	
 	
 \section{Triggering Sanity Check}
-		Before flight, a programmable delay line was used to input picosecond precision delayed impulses into channels within neighboring phi sectors to test for the true angular response of the payload.  Due to the opaque nature of firmware, it is important to discern the exact L0 coincidence regions in which a global trigger will be generated.
+		Before flight, a programmable delay line was used to inject impulses at various picosecond precision delayed impulses into all like polarized channels of two neighboring phi sectors to test for the true angular response of the payload.  Due to the opaque nature of firmware, it is important to discern the exact L0 timing coincidence regions for which a global trigger will be generated.
 	\subsection{Angular Response Characteristics From Data}
+
+
+
 
 \section{Non-uniform Channels and Outliers}
 	There are several channels in the ANITA3 instrument that are non-uniform.  The first, and most obvious, is the channel in which the ALFA is digitized.  The desire to have a 97th low frequency drop down omni-azimuthal responce digitizing antenna required an additional channel, however there were none available.  To accommodate this, a modified filter was placed on channel 05TH that limited the nominal input signal to 800Mhz.  The low frequency (40-80MHz) antenna was then heterodyned with a 900Mhz local oscillator (LO) which produces a upsampled beat pattern at $f_(LO)-f_(ALFA)$ and $f_(LO)+f_(ALFA)$. This channel must be treated slightly differently than the rest in a few ways.  First, the signal must be digitally filtered to remove the ALFA component before it is correlated or averaged with similar antennas.  Secondly, in simulation the reduced bandwidth (and subsequent lower noise and signal power) must be taken into account.

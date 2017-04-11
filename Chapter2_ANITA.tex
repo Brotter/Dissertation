@@ -189,11 +189,10 @@ Where P is the thermal noise power observed across a termination resistor in wat
 		
 		
 	\subsection{Gain Justification}
-		The required gain of the system can be arrived at by determining the maximum terminal instrumentation requirement input power, then calculating what additional amplification is required to meet that specification.  Any terminal instruments that require lower input power are achieved by in-line, flat spectrum, fixed attenuator components.  \ref{tab:rfLinkBudget} is a table of the terminal components, their dynamic ranges, and the required gain necessary to put observed thermal noise from the antenna into a measurable power region.  Components not yet mentioned in this thesis are covered in subsequent sections in this chapter.
+		The required gain of the system can be arrived at by determining the maximum terminal instrumentation requirement input power, then calculating what additional amplification is required to meet that specification.  Any terminal instruments that require lower input power are achieved by in-line, flat spectrum, fixed attenuator components.  Table \ref{tab:rfLinkBudget} contains the three terminal components, their dynamic ranges, and the required gain necessary to put observed thermal noise from the antenna into a measurable power region.  The justification for components not yet mentioned in this thesis are covered in subsequent sections in this chapter.
 	
 \begin{figure}
 	\centering
-	\label{tab:rfLinkBudget}
 	\begin{tabular}{| l | c | c |}
 		\hline
 		Component & Dynamic Range & Gain Requirement\\
@@ -204,6 +203,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 		\hline
 	\end{tabular}
 	\caption{A description of the required input power and gain requirements for the three terminal instrumentation components of the ANITA3 system}
+	\label{tab:rfLinkBudget}
 \end{figure}
 	
 	
@@ -211,7 +211,16 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	The electric field variations incident as a function of time is digitized using an array of fast analog to digital converters (ADCs), custom designed application specific integrated circuits (ASICs).  The ANITA3 instrument utilizes a LABRADOR (Large Analog Bandwidth Recorded And Digital Ordered Readout) chip, designed by Gary Varner.  It is a 12-bit, 2.4GS/s, 256 sample long ADC, yielding a window size of ~100ns.  This is accomplished with a sample and hold ring buffer read out with a wilkinson clock comparing the stored charge in a storage capacitor against a ramp signal driven by a constant current source.  Each chip receives 8 RF analog inputs, as well as a 9th clock channel coincidently propagated to all LAB chips.  The SURF (Signal Unit for Radio Frequency) Board consists of 4 LABRADOR chips in order to create a buffer for continuous sampling.  
 
 	\subsection{LABRADOR3 ASIC}
-		The third iteration of the Large Analog Bandwidth Recorder And Digitizer with Ordered Readout (LABRADOR, or LAB3) has been in use on ANITA flights due to its extremely low power and high precision.  It consists of a nine RF channels fed into separate 260 cell capacitor ring buffer and can operate at sampling frequencies of 2.6GS/s, or a Nyquist limit of 1.3GHz.  In addition, it has a large dynamic range and a gigahertz of bandwidth in the UHF spectrum.  The sampling time base is driven by a phase inverting Ripple Carry Out pulse that propagates internally to the chip.  The continuous sampling is halted when a trigger is issued to the chip, and a Wilkinson Clock measuring the Time To Threshold of a constant current ramp voltage converts the stored charge in each capacitor to a digital value that is read out in parallel to an FPGA for storage.  Due to the dead time related to the digitization process, four LAB3 chips are placed in parallel in order to ensure continuous sampling even when a single LAB3 is reading out its values.  When a hold is issued, the LAB3 chip returns both an estimate of which RCO phase it is in (which is incorrect near the wraparound region), as well as the locations of the "HitBus", or samples that are currently connected to the RF input. The procedure and results of calibrating this readout is detailed in the Calibration section.
+		The third iteration of the Large Analog Bandwidth Recorder And Digitizer with Ordered Readout (LABRADOR, or LAB3) has been in use on ANITA flights due to its extremely low power and high precision.  It consists of a nine RF channels fed into separate 260 cell capacitor ring buffer and can operate at sampling frequencies of 2.6GS/s, or a Nyquist limit of 1.3GHz.  In addition, it has a large dynamic range and a gigahertz of bandwidth in the UHF spectrum.  The sampling time base is driven by a phase inverting Ripple Carry Out pulse that propagates internally to the chip.  The continuous sampling is halted when a trigger is issued to the chip, and a Wilkinson Clock measuring the time to threshold of a constant current ramp voltage converts the stored charge in each capacitor to a digital value that is read out in parallel to an FPGA for storage (see Figure \ref{fig:LAB_Dig}.  Due to the dead time related to the digitization process, four LAB3 chips are placed in parallel in order to ensure continuous sampling even when a single LAB3 is reading out its values.  When a hold is issued, the LAB3 chip returns both an estimate of which RCO phase it is in (which is incorrect near the wraparound region), as well as the locations of the "HitBus", or samples that are currently connected to the RF input. The procedure and results of calibrating this readout is detailed in the Calibration section.
+		
+
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/LAB3_Dig}
+	\caption{A simplified diagram of the LABRADOR digitization technique.  A linearly increasing ramp signal is generated by driving a constant current into a set capacitance, which is compared versus the voltage present on each SCA capacitor.  At the beginning of the ramp signal, a 100MHz Wilkinson clock is started, which increments a 12 bit counter at every period.  At the time of the threshold crossing, the counter is stopped and read out as the digitized value.}
+	\label{fig:LAB_Dig}
+\end{figure}
+
 		
 \begin{figure}
 \centering

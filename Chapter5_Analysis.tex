@@ -43,9 +43,20 @@
 
 \section{Event Reconstruction}
 	The major tool used in the ANITA analysis is a radio astronomy technique that uses the physical separation between the antennas and the correlations of waveforms from these antennas to generate a map of likely pointing directions.  ANITA has three vertical tiers of antennas, each separated from each other, and at least three co-pointing phi sectors that are expected to observe events from any angle.  Using the combined baseline offsets from these antennas, it is possible to overlay 9 different interferometric maps to create a pointing map.  By finding the peak of this map, a vector pointing away from the payload can be traced to the ice, where a map of the vertical height of the continent can be used to create a map of events on the ground.
-	\subsection{Radio Interferometric Pointing}
+	\subsection{Radio Interferometric Mapping}
+		Interferometric mapping is a method developed to compare measured time domain waveforms captured by antennas with a physical baseline offset with the goal of determining likely incoming plane wave direction.  This is accomplished by calculating the timing offsets expected from each direction of a pair of antennas in elevation and azimuth, computing the correlation function of the two waveforms, then weighting each direction in relation to the correlation value at that specific timing offset.  An example of a map created with a single baseline pair is seen in Figure \ref{fig:singleBaselineCorrMap}.  With multiple baseline pairs, each with a different distance vector angle between them, one can overlay multiple correlation maps to determine a most likely incoming plane wave direction.
+		
+	\subsection{Coherent Sum Averaging}
+		The electronic and thermal noise present in each channel limits the sensitivity of the instrument to EAS signals with low power.  Since the power within the radiation of an EAS shower varies linearly with the energy of the particle, low energy showers, which have a higher flux rate, will have signal to noise ratios approaching one.  Additionally, polarization information and frequency content are effected by any noise present in the system.  Averaging waveforms from multiple channels will reduce this incoherent background noise by a factor of $\frac{1}{\sqrt{N}}$.  After determining the peak interferometric pointing direction, it is possible to align the channels that received signal from an incident radiation field and average them together.  An example of this is shown in Figure \ref{fig:coherentSum}.
+	
+	
 	\subsection{Ray Tracing to Continent (with index of refraction)}
+		Another tool made possible through interferometric mapping is that it allows us to point a captured event back to its incoming direction, determining the likely incident cosmic ray interaction location.  Ultimately, it would be most interesting to point an incoming particle back to a location on the sky for statistical source determination.  Additionally, it is important to determine whether a measured event came from a particle physics interaction, or was merely an anthropogenic background noise impulse.  By developing a base list from USAP and other international Antarctic programs, we can determine whether a specific event points back to a known base.
+		
+		
 	\subsection{Log-Likelyhood Two Dimensional Gaussian Pointing Error}
+		Neutrinos and cosmic rays are expected to be mostly isotropically distributed across the continent.  
+	
 	\subsection{Immediate Pointing Cuts}
 
 
@@ -57,6 +68,9 @@
 \section{Thermal Noise Separation Results}
 	\subsection{Cut Efficiency}
 	\subsection{Cut Quality}
+
+
+\section{Linear Polarization Fraction}
 
 
 \section{Base and non-base clustering}
