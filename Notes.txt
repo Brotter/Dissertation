@@ -194,3 +194,92 @@ What I should do today:  Finish writing that up and put the relevant parts in my
 Then, at like 3 or so, head back to the Manoa library for a few hours, then to a coffee shop I guess!
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+July 1st
+
+Oh man it has been such a long time!  Almost two full months.  Lots happened since then.
+
+First I came up with a cool idea that might actually be useful: I can make a coherent temperature/noise RMS map for the sky by aligning and averaging multiple waveforms with the timing offsets that correspond to that baseline.  The problem I actually need to solve is how to get the noise of a particular waveform so that I can say what the SNR (stupid measurement) is of any of the cosmic rays that I find.
+
+Two things I told everyone I've done which are buggy at best: Average the minbias (GPS/soft trig) events over ~minute timescales per antenna to determine what the noise is in that channel without having to use the actual triggered waveform.  Found 20 cosmic rays (its such a shit non-motivated cut that I could have said any number pretty much).
+
+Another thing I have to do is make the template result stuff into an actual class that I will then be able to pass on to others after I leave.  This is partway done, but I might even want to add things: deconvolved waveform template values.  Linearly polarized waveform (is this a thing?) waveform values.  More templates such as HI-CAL and payload blasts and maybe bases if they look the same all the time, CW.  It should make my code way cleaner if I fix this.
+
+I also need to get icemc running in some real way, because then I can use it to do the exposure calculation.
+
+The summer thesis deadline is a little over a month from now, so I also have to finish up the actual paper as well, or else I'm going to be shit out of luck and paying out the nose next semester.  I gotta figure out what happens with health insurance most importantly.  How wonderful that I get to devote time to that, what a great thing, capitalism is so great.  Fuck republicans.
+
+Anyway Linda wants Trigger path responses (with no surf but maybe with the antenna?) so I should make sure that the gain isn't appreciably modified.
+
+I also think that the unexpected added noise in ALFA is because of the shit dTs, so probably just mention that to Steph.  I'm sure someone else can take that simulation on.  Maybe she can just re-run over the lower upsample band too and see if it is better, because if I'm right it will be.
+
+Also Patrick had a good idea of modifying the templates on a per event basis so that the phase of each off-angle antenna is correctly taken into account.  Probably not important for now, 90% correlation values seem fine especially if fixing the windowing drove it back down to 30% for noise.  The simulated data seems to show that this is a good place.
+
+It also might be good to take another quick look at the CR off-cone fitting thing, maybe just write down the math?  I should figure out why that one was so garbage.
+
+But in order of imporance: 
+1) Fix template class so I can run stuff again
+    -> oh and the filtering crap is broken and the templates aren't actually being filtered
+2) Make the noise average calculator actually run as a fifo on the events while doing the full set instead of on an event by event basis
+3) Make the fucking thing do decimated data again because my current balancing technique fucks that all up.
+       -> This one is tricky.  Maybe fix AnitaDataset so that it can actually load multiple runs?  Or just load runs sequentially until it gets to where it needs to be then starts.  Thats probably easiest.  Then add a flag so it knows that it should do 10% of what it normally does.  I need to fix this so I can do small datasets quickly.  24 hours is still too long.
+       
+I'm on a plane now so that should be enough for now.
+
+
+%%
+July 2nd.
+
+`cmake --build` -> figuring this out without google took me probably two hours on the plane.  Got AnitaTempalteResults as an integrated object though, so just need to add a few more
+
+Did things with Joan and had a wonderful homecoming today.  Work related: Andres asked how many phi sectors were used to calculate the coherent sum, which made me think of the optimal number for that to maximize coherent waveform snr.  At 450MHz the 3dB point (from seavey) is about 22.5 degrees off boresight for Hpol E and H planes, or a reduction of 1/2 in signal power.  The falloff in gain steepens, and at 45 degrees, two phi sectors, it is -10dB signal power, or an order of magnitude reduction.  Now adding additional phi sectors does decrease noise, three antennas per phi.  
+
+So is that still good?  The noise is probably incoherent so is it just more averaging that decreases the noise while summing the signal?  The problem is how do you weight the signal?  It will decrease signal power if you're averaging an off axis antenna with something you know has higher signal power, but the noise decreases too. Which wins?  Does SNR go up or down?
+
+Simulation will tell me but math will prove it.
+
+Okay thats for tomnorrow!  Of to bed and water for crabs!
+
+%%
+July 4th!  Forth of july!!!!
+
+
+How to build stuff rom Cosmin:
+cd build
+
+[12:00] 
+ccmake ../
+
+[12:00] 
+or cmake ../
+
+[12:00] 
+and then
+
+[12:00] 
+make
+
+[12:00] 
+or rm -rf build
+
+[12:00] 
+make configure
+
+
+Apparently I was being dumb.
+
+Okay I need two more classes for the noise thing.  An AnitaNoiseFactory to do all the heavy lifting (analogous to Analyzer), and an AnitaNoiseSummary to actually save it.  It looks like BenS is implementing the exact thing I did in his code so I can compare mine vs his!
+
+
+Okay I think it is good now?  I made the config public in Analyzer but didn't have to.  I'll run it now :)
+
+
+%%
+July 5th
+
+It still segfaults and doesn't seem to be filling the TProfile2D at all.  The rms stuff seems to work I guess.  Oh!  It never filled the TProfile because it wasn't enabled.  And it was segfaulting because I drunkenly turned on the map saving flag and it turns out that routine didn't ever work.  I figured it out though, it was trying to average maps that didn't exist because of an indexing error.
+
+I NEED TO FINISH THE TRANSFER FUNCTION CRAP.  Its just stupid bookkeeping so I have to do it.
+
