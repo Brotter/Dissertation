@@ -2,23 +2,30 @@
 \chapter{Cosmic Ray Search with ANITA3 Flight Data}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ANITA3 Flight Overview}
-	The data recorded by the ANITA3 flight instrument requires a significant analysis effort to extract a meaningful physics result.  In our case, we need to use the raw digital values read out for each channel to determine the analog electromagnetic environment surrounding the payload during brief moments the trigger system determined a physics event may be occurring.  From this, we can use an understanding of the physical geometry of the antennas mounted on the payload, including their orientation and electrical responses, to determine the cause of any incident wave patterns read out by the digitizers.  Once these wave patterns are identified and classified, they can be sorted into signal and background thermal or anthropogenic noise sources via a series of procedural cuts.  This section details the process and results of this analysis.
+	The data recorded by the ANITA3 flight instrument requires a significant analysis effort to extract a meaningful physics result.  In our case, we need to use the raw digital values read out for each channel to determine the analog electromagnetic environment surrounding the payload during brief moments the trigger system determined a physics event may be occurring.  From this, we can use an understanding of the physical geometry of the antennas mounted on the payload, including their orientation and electrical responses, to determine the cause of any incident wave patterns read out by the digitizers.  Once these wave patterns are identified and classified, they can be sorted into signal and noise, background thermal or anthropogenic, via a series of procedural cuts.  This section details the process and results of this analysis.
 	
 \section{Analysis Overview}
 	The analysis for this flight was done with the premise that we are searching for "cosmic ray like" events.  As there are already published observations of cosmic rays from previous ANITA flights, I can reduce the workload of doing a full blind analysis with the consequence of excluding signals that do not fit into a measured and modeled EAS radiation pattern.  This still will allow us to search for two separate cosmogenic particles, cosmic rays and tau neutrino regeneration events.
 
 	\subsection{In Flight Modifications}
+		The majority of the ANITA3 flight required very little input from ground operators.  However there were some minor issues in the beginning of the flight that required fixing, and one in the middle of the flight that resulted in lost data.
 		
+		At the beginning of the flight, the default time persistance values for phi masking were set too high, resulting in the entire payload becoming masked as it rotated.  The solution to this was to lower the values so that phi masking was turned off as scalar rates dropped back to manageable levels.
+		
+		Between run s
 	
 \section{Blinding Procedure}
-
-	\subsection{Philosophical Reasoning For Blinding}
+	Avoiding the introduction of bias into the resulting measurement through the subconsious desires of the analyzer is a constant struggle.  Several techniques have been employed to minimize this insidious bias.
 	
+	\subsection{Philosophical Reasoning For Blinding}
+		
 	\subsection{Threshold for Unblinding Request}
-
+		
 	\subsection{Polarization Specific Blinding}
 
 \section{Event Quality Cuts}
+	Events taken with the ANITA instrument must first pass basic checks on their quality.  
+
 
 \section{Constant wave source filtering}
 	Anthropogenic signals used for communications often take the form of high powered circularly polarized constant wave sources.  These signals are present in much of the data, and their effect on the trigger is twofold.  Firstly, they compress the tunnel diode by increasing the total power of the input signal, elevating the diode response out of the square-law range.  Second, they force an increase in the threshold voltage used on the comparator circuit used to trigger on the signals.  Despite these two effects, impulsive candidate signals can still be hidden superimposed on the CW source.  To remediate the effects of these signals on the pointing and post-flight analysis, we can apply a filter that only notches out a specific frequency band of the signal.
@@ -36,15 +43,23 @@
 	\subsection{Signal to noise ratio of impulse response}
 		Any band limited deconvolution process requires a knowledge of the signal to noise ratio of the transfer function as a function of frequency (SNR(f)).  Since the transfer function merely relays the amplitude and phase differences between an input and output signal (represented in either a complex phasor or a time domain waveform), one must also have an understanding of the total power contained within the input and output signals.  If, for example, both the input and output signal contained very little power out of a specified band pass, it could be wrongly assumed from a transfer function that the signal chain was able to pass frequencies that are out of the band pass.
 		The "signal" and "noise" of this must therefore be defined, as the spectral power has multiple sources.  The principle   
-	\subsection{Weiner Deconvolution}
-		The impulse response used to deconvolve waveforms is 
+	\subsection{All-Pass Deconvolution}
+		The impulse response used to deconvolve waveforms has been colloquially named the All-Pass deconvolution method.  An ideal deconvolution, one that uses both phase and amplitude information to remove the instrument response, is poorly defined outside the instrument bandwidth.  Since the instrument blocks any signal outside this frequency range, reversing the procedure introduces what is in essence a "divide by zero" error that grossly amplifies signal power outside the band.  The simplest way to avoid this is to disgard the frequency dependent amplitude information, and only correct for the phase.  Due to the relatively flat spectral response of the ANITA system, this is a good first approximation.  The resulting waveform "stacks" signal power from all in-band frequencies on top of one another, increasing the observed peak to peak signal to noise ratio and offering a larger separation between signal and noise events during analysis cuts.
 
 \section{Polarization cuts}
+	The expected signal from a cosmic ray air shower has a characteristic polarization that can be used as a further discriminator between random noise, which will have a random polarization.  Specifically, the geomagnetically induced radiation component will be linearly polarized and orthogonal to both the shower axis and the magnetic field.  This allows two cuts to be made, one of the linear polarization fraction and one of the linear polarization angle.  Both these rely on the calculation of Stokes parameters made possible by the dual polarization antennas, which capture both these time domain electric fields simultaneously.
 
+	\section{Linear Polarization Fraction}
+
+	\section{Linear Polarization Angle}
+
+	
 \section{Event Reconstruction}
-	The major tool used in the ANITA analysis is a radio astronomy technique that uses the physical separation between the antennas and the correlations of waveforms from these antennas to generate a map of likely pointing directions.  ANITA has three vertical tiers of antennas, each separated from each other, and at least three co-pointing phi sectors that are expected to observe events from any angle.  Using the combined baseline offsets from these antennas, it is possible to overlay 9 different interferometric maps to create a pointing map.  By finding the peak of this map, a vector pointing away from the payload can be traced to the ice, where a map of the vertical height of the continent can be used to create a map of events on the ground.
+	The major tool used in the ANITA analysis is interferometry, a radio astronomy technique that uses the physical separation between the antennas and the correlations of waveforms from these antennas to generate a map of likely pointing directions.  ANITA has three vertical tiers of antennas, each separated from each other, and at least three co-pointing phi sectors that are expected to observe events from any angle.  Using the combined baseline offsets from these antennas, it is possible to overlay 9 different interferometric maps to create a pointing map.  By finding the peak of this map, a vector pointing away from the payload can be traced to the ice, where a map of the vertical height of the continent can be used to create a map of events on the ground.
+	
 	\subsection{Radio Interferometric Mapping}
 		Interferometric mapping is a method developed to compare measured time domain waveforms captured by antennas with a physical baseline offset with the goal of determining likely incoming plane wave direction.  This is accomplished by calculating the timing offsets expected from each direction of a pair of antennas in elevation and azimuth, computing the correlation function of the two waveforms, then weighting each direction in relation to the correlation value at that specific timing offset.  An example of a map created with a single baseline pair is seen in Figure \ref{fig:singleBaselineCorrMap}.  With multiple baseline pairs, each with a different distance vector angle between them, one can overlay multiple correlation maps to determine a most likely incoming plane wave direction.
+		
 		
 	\subsection{Coherent Sum Averaging}
 		The electronic and thermal noise present in each channel limits the sensitivity of the instrument to EAS signals with low power.  Since the power within the radiation of an EAS shower varies linearly with the energy of the particle, low energy showers, which have a higher flux rate, will have signal to noise ratios approaching one.  Additionally, polarization information and frequency content are effected by any noise present in the system.  Averaging waveforms from multiple channels will reduce this incoherent background noise by a factor of $\frac{1}{\sqrt{N}}$.  After determining the peak interferometric pointing direction, it is possible to align the channels that received signal from an incident radiation field and average them together.  An example of this is shown in Figure \ref{fig:coherentSum}.
@@ -55,9 +70,13 @@
 		
 		
 	\subsection{Log-Likelyhood Two Dimensional Gaussian Pointing Error}
-		Neutrinos and cosmic rays are expected to be mostly isotropically distributed across the continent.  
+		Neutrinos and cosmic rays are expected to be isotropically distributed across the continent, with no preferred incident direction.
 	
 	\subsection{Immediate Pointing Cuts}
+
+
+\section{Template Correlation}
+	
 
 
 \section{Known object categorization}
@@ -70,8 +89,16 @@
 	\subsection{Cut Quality}
 
 
-\section{Linear Polarization Fraction}
 
 
 \section{Base and non-base clustering}
 	\subsection{Clustering Purity and Efficiency}
+	
+	
+	
+	\subsection{Log Likelihood}
+	
+	\begin{equation}
+L = \sqrt{(\frac{\sqrt{(\Delta\phi_{AB})^2+(\Delta\phi_{BA})^2}}{{\sigma_{\phi}}})^2+(\frac{\sqrt{(\Delta\theta_{AB})^2+(\Delta\theta_{BA})^2}}{{\sigma_{\theta}}})^2}
+	\end{equation}
+	
