@@ -3,7 +3,7 @@
 \chapter{ANITA Telescope Platform}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Overview}
-	The third iteration of the ANITA telescope platform, seen in Figure \ref{fig:ANITA3_hangtest}, is a passive broad-band radio frequency electromagnetic field transient detector and time domain voltage digitizer.  There have been four ANITA flights at the time of this thesis, numbered one through four.  ANITA1 flew in the 2006-2007 Antarctic balloon campaign\cite{ANITA1}, ANITA2 in 2007-2008\cite{ANITA2}, ANITA3 in 2014-2015 (the topic of this thesis) and most recently ANITA4 in 2016-2017.  
+	The third iteration of the ANITA telescope platform, seen in Figure \ref{fig:ANITA3_hangtest}, is a passive broad-band radio frequency electromagnetic field transient detector and time domain voltage digitizer.  There have been four ANITA flights at the time of this thesis, numbered one through four.  ANITA1 flew in the 2006-2007 Antarctic balloon campaign\cite{ANITA1}, ANITA2 in 2007-2008\cite{ANITA2}, ANITA3 in 2014-2015 (the topic of this thesis) and most recently ANITA4 in 2016-2017.
 	
 \begin{figure}
 \centering
@@ -12,35 +12,28 @@
 	\label{fig:ANITA3_hangtest}
 \end{figure}	
 	
-	The ANITA instrument's scientific goal is to observe UHE neutrino interactions within the ice sheet of Antarctica, however their low flux and changing phenomenological modeling have kept their detection beyond the grasp of previous payloads.  It has an additional detection strength for UHE cosmic ray (UHECR) interactions within the atmosphere above the continent.  The radiative emmission of the resulting showers precipitated from UHECRs has two detection signatures, a direct signal and a signal first reflected off the ice-air boundary at the surface of the continent.
+	\subsection{Signals and backgrounds}
+	The ANITA instrument's scientific goal is to observe UHE neutrino (UHE$\nu$) interactions within the ice sheet of Antarctica.  These UHE$\nu$ showers will produce Askaryan radiation which can transit the ice-air boundary and propagate with low attenuation to ANITA's stratospheric altitudes. However, their low flux and changing phenomenological modeling have prevented their detection, with models remaining slightly beyond the grasp of previous payloads.  It has an additional detection strength for UHE cosmic ray (UHECR) interactions within the atmosphere above the continent.  The radiative emmission of the resulting showers precipitated from UHECRs has two detection signatures, a direct signal and a signal first reflected off the ice-air boundary at the surface of the continent.  Cosmic ray signatures are expected to be primarily horizontally polarized with respect to the payload, while neutrino signatures will be primarily vertically polarized.  The ANITA instrument is optimized for detection and digitization of these signatures.
 	
-	There are two major background noise sources for the ANITA instrument.  These are a thermal Johnson-Nyquist radio frequency background present throughout the field of view, and human activity generating non-thermal anthropogenic electromagnetic radiation.  A simplified diagram showing the signal and background incident on the payload is found in Figure \ref{fig:AnitaInFlightObservable}
+	There are two major background noise sources for the ANITA instrument: thermal Johnson-Nyquist radio frequency background present throughout the field of view, and human activity generating non-thermal anthropogenic electromagnetic radiation.  A simplified diagram showing the signal and background incident on the payload is found in Figure \ref{fig:AnitaInFlightObservable}.
 	
 \begin{figure}
 \centering
 	\includegraphics[width=\textwidth]{figures/AnitaInFlightObservable2}
-	\caption{A cartoon of the impulsive observable signals present in the ANITA3 flight data addressed in this thesis. Not pictured is thermal background noise, which is emitted from all matter within the field of view of the instrument.  Not to scale. }
+	\caption{A cartoon of the three distinct impulsive observable signals present in the ANITA3 flight data addressed in this thesis. Not pictured is thermal background noise, which is emitted from all matter within the field of view of the instrument.  Not to scale. }
 	\label{fig:AnitaInFlightObservable}
 \end{figure}	
 	
 	
-	The main instrument structure consists of a collection of radially positioned, outwardly facing, broad-band, highly-directional quad-ridge horn antennas.  The antennas are separated into three different vertically spaced rings, with each ring separated into 16 different azimuthally facing "phi-sectors." (see Figure \ref{fig:phiSectors})  These co-pointing antennas allow multiple observations of a signal event with a physical distance baseline offset between them. These antennas couple the incident electromagnetic radiation into a coaxial signal line, which is then amplified by a series of low noise-figure amplifiers, band-pass filtered via analoge compound filters into the relevant frequency bandwidth, before finally being digitized by custom on board high-speed digitizer chips and readout electronics (Figure \ref{fig:RFChainBlockDiagram}).  The digitization is self-triggered by a parallel square-law integrating power detector circuit which arrives at a decision with minimal analog waveform buffering.  After digitization, waveforms are read out via a CPCI interconnect backplane to a ruggedized, conductively cooled CPU writing to on-board redundant storage devices.  The payload is capable of reading out ~50Hz of full payload waveforms with low (\textless 5\% ) deadtime to disk.  Geographic position and relative orientation data, as well as multiple diagnostics systems, are recorded and precisely time-stamped by a GPS disciplined clock.  Selections of the waveforms and housekeeping measurements are telemetered down to ground servers for in-flight diagnostics, however full recovery of the data vaults is desired for a complete analysis.  The following chapter will expand upon these systems and the theoretical basis for their design and construction.
-	
+	\subsection{Instrumentation Overview}
+	The main instrument structure consists of a collection of radially positioned, outwardly facing, broad-band, highly-directional quad-ridge horn antennas.  These antennas couple the incident electromagnetic radiation into a coaxial signal line, which is then amplified by a series of low noise-figure amplifiers, band-pass filtered via analoge compound filters into the relevant frequency bandwidth, before finally being digitized by custom on board high-speed digitizer chips and readout electronics (Figure \ref{fig:RFChainBlockDiagram}).  The antennas are separated into three different vertically spaced rings, with each ring separated into 16 different azimuthally facing "phi-sectors." (Figure \ref{fig:phiSectors})  These co-pointing antennas allow multiple observations of a signal event, each with unique physical distance baseline offset between them.   The digitization is self-triggered by a parallel square-law integrating power detector circuit which arrives at a decision with minimal analog waveform buffering.  After digitization, waveforms are read out via a CPCI interconnect backplane to a ruggedized, conductively cooled CPU writing to on-board redundant storage devices.  The payload is capable of reading out ~50Hz of full payload waveforms with low (\textless 5\% ) deadtime to disk.  Geographic position and relative orientation data, as well as multiple diagnostics systems, are recorded and precisely time-stamped by a GPS disciplined clock.  Selections of the waveforms and housekeeping measurements are telemetered down to ground servers for in-flight diagnostics, however full recovery of the data vaults is desired for a complete analysis.  The following chapter will expand upon these systems and the theoretical basis for their design and construction.
 	
 	
 \begin{figure}
 \centering
-	\includegraphics[width=\textwidth]{figures/phiSectors} 
-	\caption{A top down diagram depicting a single ring layout of the horn antennas used to achieve complete azimuthal coverage assuming a 30$^{\circ}$  opening angle.  The antenna gain pattern is discussed further in the Calibration section.}
-	\label{fig:phiSectors}
-\end{figure}
-
-
-\begin{figure}
-\centering
-	\includegraphics[width=\textwidth]{figures/ANITA3_dancefloor}
-	\caption{An image of the ANITA3 during GPS calibration on the "dance-floor" at the Long Duration Balloon (LDB) facility at McMurdo Station in Antarctica prior to launch in 2014.  In the background is Mt. Erebus.  In this image the solar panels are in their retracted state, the instrument crate is visible on the left hand side of the central column, and the NASA Small Instrument Package (SIP) is visible on the right hand side. The orange structure seen under the payload is a stand used during construction and testing of the instrument.}
-	\label{fig:ANITA3_dancefloor}
+	\includegraphics[width=\textwidth]{figures/RFChainBlockDiagram}
+	\caption{A simplified diagram of the ANITA3 signal chain from antenna to data storage or telemetry.}
+	\label{fig:RFChainBlockDiagram}
 \end{figure}
 
 \begin{figure}
@@ -52,14 +45,23 @@
 
 \begin{figure}
 \centering
-	\includegraphics[width=\textwidth]{figures/RFChainBlockDiagram}
-	\caption{A simplified diagram of the ANITA3 signal chain from antenna to data storage or telemetry.}
-	\label{fig:RFChainBlockDiagram}
+	\includegraphics[width=\textwidth]{figures/phiSectors} 
+	\caption{A top down diagram depicting a single ring layout of the horn antennas used to achieve complete azimuthal coverage assuming a 30$^{\circ}$  opening angle.  The antenna gain pattern is discussed further in the Calibration section.}
+	\label{fig:phiSectors}
 \end{figure}
+
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/ANITA3_dancefloor}
+	\caption{An image of the ANITA3 during GPS calibration on the "dance-floor" at the Long Duration Balloon (LDB) facility at McMurdo Station in Antarctica prior to launch in 2014.  In the background is Mt. Erebus.  In this image the solar panels are in their retracted state, the instrument crate is visible on the left hand side of the central column, and the NASA Small Instrument Package (SIP) is visible on the right hand side. The orange structure seen under the payload is a stand used during construction and testing of the instrument.}
+	\label{fig:ANITA3_dancefloor}
+\end{figure}
+
+
 
 	
 \section{Antennas}
-	The ANITA instrument utilizes a collection of dual polarized quad ridge horn antennas to couple the electromagnetic field incident on the payload into an electrical signal that can be digitized and stored for later analysis.  The antenna design specifications prioritize a flat gain and phase response over the full gigahertz of bandwidth, high directionality to reduce noise and boost signal fidelity, two orthogonal polarizations with co-located phase centers, and light weight. 	An in-progress image of the top ring crab antenna assembly is shown in Figure \ref{fig:antennaAssembly} in which the RF ports and attachment mechanisms are visible.
+	The ANITA instrument utilizes a collection of dual polarized quad ridge horn antennas to couple the electromagnetic field incident on the payload into an electrical signal that can be digitized and stored for later analysis.  The antenna design specifications prioritize a flat gain and phase response over the full gigahertz of bandwidth, high directionality to reduce noise and boost signal fidelity, two orthogonal polarizations with co-located phase centers, and light weight. 	An in-progress image of the top ring crab antenna assembly is shown in Figure \ref{fig:antennaAssembly} in which two sides of the antenna can be seen, and where both the RF ports and attachment mechanisms are visible.
 	
 \begin{figure}
 \centering
@@ -68,9 +70,16 @@
 	\label{fig:antennaAssembly}
 \end{figure}	
 	
-	ANITA1 began with only two vertically separated rings and 32 antennas, however subsequent flights have packed more into the available space dictated by the flight vehicle launch envelope.  Between ANITA1 and ANITA2 an additional eight deployable nadir ring antennas were added that unfolded into flight position immediately after launch.  Between ANITA2 and ANITA3 an additional 8 antennas were added to the lower ring, equalizing the number per phi sector and bringing the total count to 48.  ANITA4, being a fast-turn-around re-flight, flew the same number of antennas as ANITA3.  Comparison images of these flights is visible in Figure \ref{fig:anitaGondolaComparison}
+\subsection{Geometry and Orientation}
+	ANITA1 began with only two vertically separated rings and 32 antennas, however subsequent flights have packed more into the available space dictated by the flight vehicle launch envelope.  Between ANITA1 and ANITA2 an additional eight deployable nadir ring antennas were added that unfolded into flight position immediately after launch.  Between ANITA2 and ANITA3 an additional 8 antennas were added to the lower ring, equalizing the number per phi sector and bringing the total count to 48.  ANITA4, being a fast-turn-around re-flight, flew the same number of antennas as ANITA3.  
+	%Comparison images of these flights is visible in Figure \ref{fig:anitaGondolaComparison}
 	
-	Antennas are located to maximize geometric baseline distance between pairs covering the same field of view in order to maximize angular resolution recovered from interferometric pointing.  The benefits of increased baselines are discussed further in the calibration chapter.  The additional antennas added in each ANITA flight increase n;pot only the number of baselines possible for this interferometric pointing, they provide an additional $\frac{1}{\sqrt{N}}$ incoherent noise reduction for coherently summed waveforms, increasing the signal to noise ratio of the final measured event.  The size of the antennas is dictated by the minimum desired frequency (f=C/$\lambda$), a term dominated by both physical payload launch envelope constraints (low frequency signals require large antennas) as well as anthropogenic CW noise, such as FM radio transmissions, in the VHF band.  ANITA3's 180MHz minimim frequency corresponds to a 1.6m wavelength, which, with a quarter wave excitation mode in the antenna ridges, gives a 0.42m (16.4") minimum face width.  This width matches the maximum separation of the antenna ridges, shown in Figure \ref{fig:antRidges}.  The additional requirements of a quad ridge horn, used to increase antenna directivity without adding significant dispersion, add additional width to the antenna geometry, limiting its size.  
+	Antennas are located to maximize geometric baseline distance between pairs covering the same field of view in order to maximize angular resolution recovered from interferometric pointing.  The benefits of increased baselines are discussed further in the calibration chapter.  The additional antennas added in each ANITA flight increase n;pot only the number of baselines possible for this interferometric pointing, they provide an additional $\frac{1}{\sqrt{N}}$ incoherent noise reduction for coherently summed waveforms, increasing the signal to noise ratio of the final measured event.  
+	
+	The antennas are pointed at a $10^{\circ}$ downward angle to put their maximum directivity pointed slightly below the horizon of the Earth where signals are most likely to appear.  The 40km expected float altitude of the payload places the horizon at a 6 degree downward angle.  Signals of any category have their most probably observation location near the horizon, where the amount of tangential interaction mass visible is at a maximum.
+	%Maybe add an image of what the view of the antenna is
+	
+	The size of the antennas is dictated by the minimum desired frequency (f=C/$\lambda$), a term dominated by both physical payload launch envelope constraints as well as anthropogenic CW noise, such as FM radio transmissions, prevalent in the VHF band. Low frequency signals require large antennas, ANITA3's 180MHz minimim frequency corresponds to a 1.6m wavelength, which, with a quarter wave excitation mode in the antenna ridges, gives a 0.42m (16.4") minimum face width.  This width matches the maximum separation of the antenna ridges, shown in Figure \ref{fig:antRidges}.  The use of a quad ridge horn type antenna, used to increase antenna directivity without adding significant dispersion, explains the additional width of the antenna geometry.
 	
 \begin{figure}
 \centering
@@ -80,11 +89,7 @@
 	\label{fig:antRidges}
 \end{figure}	
 	
-	
-	The dual orthogonally facing polarization measurements from each antenna are desired to map out the complete Stokes parameters of any incident signal.  These two polarizations cause each antenna to contribute two signal channels to the total payload waveform readout array.  This measured polarization is effected by transition between air and ice at the surface of the continent.  This interaction is expected to yield an entirely vertically polarized field transient at the payload for shower interactions within the ice, and an entirely horizontally polarized transient for showers above the ice viewed via a reflection off its surface.  
-
-	
-	
+	The dual, orthogonally facing polarization measurements from each antenna are desired to map out the complete Stokes parameters of any incident signal.  These two polarizations allow each antenna to contribute two co-pointed signal channels to the total payload waveform readout array.  As all three possible signals will be linearly polarized at characteristic angles, a thorough understanding of event polarization is required for efficient candidate identification.  A diagram describing the primary field lines for each polarization on the antenna is shown in Figure \ref{fig:AntennaPol}.  
 	
 \begin{figure}
 \centering
@@ -92,23 +97,29 @@
 	\caption{A diagram of the field line components for the Seavey dual polarization broad band horn antennas.  The E field is the principle measurement for each polarization, while the B field is the incidental cross-polarized measurement.  The antennas are specifically designed to minimize cross-polarized signal acceptance.}
 	\label{fig:AntennaPol}
 \end{figure}
-
+		
 	
-	
-	Calibrations of the antennas was performed over a wide range of angles in multiple configurations in order to determine the full beam-pattern of the horns in both the E-field and B-field for each polarization. See Figure \ref{fig:AntennaPol} for relation between the physical antenna and measured field orientation.  These measurements were taken for the boresight of every antenna in order to determine stability of the manufacturing process.  These measurements and variations are discussed later in the Calibration chapter.
+%	Gain and directivity calibrations of the antennas was performed over a wide range of angles in multiple configurations in order to determine the full beam-pattern of the horns in both the E-field and B-field for each polarization. See Figure \ref{fig:AntennaPol} for relation between the physical antenna and measured field orientation.  These measurements were taken for the boresight of every antenna in order to determine stability of the manufacturing process.  These measurements and variations are discussed later in the Calibration chapter.
 	
 %	\subsection{Antenna Theory} %seems unnecessary here?  Maybe in calibration
 %		An antenna is a physical object that couples the impedance of free space to that of a a coaxial transmission wire, thus effectively converting an electric field present in a medium into a voltage that can be measured.  The principle figure of interest is in this case the antenna height, which is a mathematical construct that describes the efficiency of an antenna coupling an incident electromagnetic field into a voltage on a wire.  
 
 	\subsection{Antenna Directivity Justification}
-		The ANITA instrument can utilize its geometric symmetry and full azimuthal coverage to reduce the response angle of the antennas and subsequently improve their signal response while keeping their noise power constant.  ANITA is very much limited by thermal background noise created from the 250K surface of the Antarctic continent, the 3K CMB, added electronic amplifier noise, and randomly placed possibly unknown anthropogenic sources.  Assuming a constant efficiency, an increase in the directivity of an antenna is linearly related to its gain by equation \ref{eqn:antGain}, where G is the antenna gain, $E_{antenna}$ is the efficiency and D is the directivity.
+		The ANITA instrument can utilize its geometric symmetry and full azimuthal coverage to restrict the response angle of the antennas. Increased antenna directivity improve signal response while keeping noise power constant.  ANITA is limited by thermal background noise created from the 250K surface of the Antarctic continent, the 3K CMB, and cascaded electronic amplifier noise.  Antenna thermal noise power is calculated by integrating the average temperature over the field of view of the antenna and amplifier noise is cascaded after the antenna, neither of which will vary with directivity.  However, signal power at the antenna port scales linearly with directivity. Assuming a constant efficiency, an increase in the directivity of an antenna is linearly related to its gain by equation \ref{eqn:antGain}, where G is the antenna gain, $E_{antenna}$ is the efficiency and D is the directivity.
 		
 \begin{equation}
 	\label{eqn:antGain}
 	G = E_{antenna} * D
 \end{equation}
+
 		
-		There are two maximum directivity constraints for both polarizations that each antenna must satisfy.  First, each phi sector's response must overlap with neighboring phi sector pairs to establish azimuthal directionality from interferometric baselines. Second, their elevation must encompass both up-going reflected cosmic ray and neutrino signals, as well as have some sensitivity to earth-skimming and slight down-going air showers.  As each phi sector is $22.5^{circ}$ separated from its nearest neighbor, a $30^{/circ}$ opening angle allows each sector to cover slightly over half the field of view of its neighbor.  The simple desire to have each antenna gain symmetrical in vertical and horizontal polarization then leads to a symmetric opening angle for both ridges.   Additionally, the antennas are pointed at a $10^{/circ}$ downward angle to put their maximum directivity pointed slightly below the horizon of the Earth where signals are most likely to appear.  
+		 Additionally, randomly placed and possibly unknown anthropogenic sources permeate ANITA's field of view.  Smaller antenna opening angles reduce the fractional effect that these small solid angle anthropogenic sources will have on the payload.  Maximizing antenna directivity comes at a cost of requiring additional antennas and digitization channels, increasing power consumption and complexity.
+		
+		There are two maximum directivity constraints that each antenna must satisfy.  First, each phi sector's response must overlap with neighboring phi sector pairs to establish azimuthal directionality from interferometric baselines. Second, their elevation must encompass both up-going reflected cosmic ray and neutrino signals, as well as have some sensitivity to earth-skimming and slight down-going air showers.  As each phi sector is $22.5^{\circ}$ separated from its nearest neighbor, a $60^{\circ}$ opening angle allows each sector to cover slightly over half the field of view of its neighbor.  For simplicity, each polarization of the antenna has symmetrical gain, which leads to a symmetric opening angle for both ridges.
+		
+	Measurements and calibrations of these antennas is explored further in the Calibration chapter.
+	
+	
 	
 	\subsection{ANITA Low Frequency Antenna (ALFA)}
 		In addition to the quad ridge horn antennas, ANITA3 flew with an additional VHF deployable "quad-slot" antenna with an omni-directional azimuthal response mounted underneath the main structure(see Figure \ref{fig:ALFA} and \ref{fig:ALFA_pic}).  As many radio frequency EAS experimental measurements are done at lower frequencies, this antenna was added to allow direct comparison between ANITA's observed particle track radiation events and those at ground based observatories.  Due to a lack of additional digitization channels in the system, as well as on-board high-pass analog filtering on the SURF board, this antenna was heterodyned with a 900MHz Local Oscillator (LO) to up-convert the signal to a measurable frequency before being combined with channel 05TH.  05TH in turn was low-pass filtered to remove it's signal and noise contribution in this signal region.  This non-symmetry in the system must be remembered in all analysis steps, and is discussed further in the calibration section.
@@ -128,20 +139,27 @@
 	\label{fig:ALFA}
 \end{figure}
 
-	
+
 \section{Filtering}
-	\subsection{Importance}
-		The radiative Askaryan and geomagnetic signal from an EAS has a very wide bandwidth, however there are a few considerations that require the signals read by the ANITA telescope be limited to a specified bandwidth.
+		The radiative power from an Askaryan or EAS geomagnetic signal both have a wide bandwidth, however there are a few considerations that require the signals read by the ANITA telescope be band limited.
 		
-		At the high frequency end of the spectrum, above 1.2GHz, the individual radiative particles in the shower core begin to be resolved, resulting in a loss of coherence of radiated power above that band (See Figure \ref{fig:AskaryanSimulation}.  This effect is stronger at angles further from the peak Cherenkov angle away from the shower axis.\cite{PhysRevD.84.103003}  This lack of coherent signal power in the UHF region provides a high frequency suppression to the total signal bandwidth.
+		At the high frequency end of the spectrum, above 1.2GHz, the individual radiative particles in the shower core begin to be resolved, resulting in a loss of coherence of radiated power above that band.  This is visualized in Figure \ref{fig:CROffAngle}.  This effect is stronger at angles further from the peak Cherenkov angle away from the shower axis.\cite{PhysRevD.84.103003}  This lack of coherent signal power in the UHF region provides a high frequency suppression to the total signal bandwidth.
+
+
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/CosmicRayOffAngle}
+	\caption{ZHAires simulated UHECR electric field radiation transients at, and off, the critical coherence angle.  In bright green is the peak coherence angle of the shower radiation, and subsequently increasing distances off that angle in darkening hues.  The correlating frequency power spectrum is on the right in varying hues of red.  As can be seen, high frequency power is significantly reduced at angles off the critical angle. }
+	\label{fig:CROffAngle}
+\end{figure}	
 
 		On the low frequency end of the spectrum, the radiated power from the shower is expected to rise as a function of frequency up to 1GHz.  Manufacturing and design limitations of a long wavelength antenna coupled with the high utilization of the VHF band by radio transmitters on satellites and ground stations lead to a requirement that lower frequencies, below 180MHz in the case of ANITA3, be removed.
 		
-	\subsection{Technical Details}
+	\subsection{Multiple Stages}
 		This band pass filtering is done in two stages, one immediately after the antenna, before the pre-amplifier in order to prevent saturation of the pre-amplifier from out of band signals, and one after the amplification chain in order to remove out of band amplifier noise.  The primary filter must have an extremely low in-band loss, as any loss introduced by the filter is gained in full system noise temperature, a value which is cascaded through the entire amplification chain.  This was accomplished with a custom made LARK band pass filter.  The secondary filtering was accomplished with two discrete low-pass/high-pass filters that do not require such a low in band loss characteristic due to their position in the signal chain.
 		
 	\subsection{Digitizer Bandwidth}
-		The LABRADOR digitizer also influences the selection of the band edges.  The maximum sampling rate of 2.6GS/s yields a 1.3GHz nyquist sampling frequency utilyzing .  Any out of band power will be aliased into the signal band and present itself as increased in-band noise.  Additionally, the 100ns SCA buffer length would only allow a minimum 10MHz full period oscillation to be observed.  However in reality the major limitation at lower frequencies remains to be the antennas.  The effect of the limited trigger window is visible in the ALFA low frequency antenna, as much of the 
+		The LABRADOR digitizer also influences the selection of the band edges.  The maximum sampling rate of 2.6GS/s yields a 1.3GHz Nyquist sampling frequency, however the analog bandwidth of the LABRADOR is limited to 800MHz.\cite{LABASICPAPER}  Any out of band power will be aliased into the signal band and present itself as increased in-band noise.\cite{NyquistSampling}. 
 		
 \section{Amplification}
 	Expected signal strength output from the coupling of the antennas to the 50-ohm RF transmission network requires that signal amplification occurs to be detectible by the available electronic instruments.  The amplification for the ANITA3 instrument was accomplished with two stages, one close to the antenna within the custom built module, and one upon entering the instrument crate itself within the iRFCM (internal radio frequency conditioning module).  
@@ -158,9 +176,9 @@
 
 \begin{figure}
 \centering
-	\includegraphics[width=0.45\textwidth]{figures/AMPA}
-	\includegraphics[width=0.45\textwidth]{figures/DDAMPA}	
-	\caption{The AMPA (left) and DDAMPA (right) internals.  Thanks to Jarred Roberts for AMPA picture}
+	\includegraphics[height=0.45\textheight]{figures/AMPA}
+	\includegraphics[height=0.45\textheight]{figures/DDAMPA}	
+	\caption{The AMPA (top) and DDAMPA (bottom) internals.  Thanks to Jarred Roberts for AMPA picture}
 	\label{fig:AMPAandDDAMPA}
 \end{figure}	
 
@@ -280,6 +298,8 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	The time between samples is controlled by a charge starved transistor chain that controls the connection between the sampling capacitor and the input RF signal.  Due to process inconsistencies in the manufacturing of the ASICs, the timing between subsequent samples is not well controlled.  This yields a variable delta T that needs to be corrected in calibration of each chip individually.  In addition, it leads to an unevenly sampled time domain waveform, which introduces a difficult to correct frequency response, and requires interpolation between points before creating interferometric maps.  This is processing intensive, an issue that makes doing on board interferometry more difficult.
 	
  	Since each LAB chip can only digitize eight channels concurrently, a total of twelve total SURF boards are required to read out any particular event simultaneously.  The dispersal of the readout HOLD signal from the FPGA, and its subsequent latching on each LAB, adds jitter that needs to be corrected out.  The ninth channel on each lab observes a 33.3MHz analog clock signal propagated through the CPCI backplane to each SURF.  By measuring the relative phase of this clock between SURFs, a correction for this jitter can be done.  This is discussed further in the Calibration section.
+ 	
+ 	 Additionally, the 100ns SCA buffer length  limits the minimum full period oscillation observation frequency to 10MHz, however this is below the antenna frequency cutoff.  The effect of the limited trigger window is however visible in the ALFA low frequency antenna.
 	
 	\subsection{Impulse Response}
 	The filtering and amplification chain has a dispersive effect on the signal, which requires a calibration of the system impulse response in order to fully understand the incident electromagnetic field.  An impulse response is the phase and gain distortion created by the RF network to an input signal.  In the ANITA system, an band limited case, the phase shift increases as a function of frequency, which causes the signal power to be temporally spread.  As a cross-correlation between multiple channels is dependent on the full complex parameters of the signal, significant variation between the impulse responses of channels will result in a reduced maximum correlation value regardless of the electromagnetic impulse present at the antennas.  The ANITA instrument is designed to be identical and symmetrical across all 96 channels, making this effect small and constant.  Measurements of this response and calibration are done in the Calibration section, and the effect and deconvolution is detailed in the Analysis section.
@@ -357,10 +377,10 @@ Where P is the thermal noise power observed across a termination resistor in wat
 
 	
 \section{GPS tracking and orientation sensors}
-	Since the payload is attached to a free rotation balloon, the orientation and location of the payload was completely uncontrolled and thus needed to be constantly monitored.  This was primarily accomplished with two co-located ADU5 GPS heading receivers in conjunction with a single G12 GPS system.  These 9 total GPS antennas, read out once a second, provide a constant update for the location and orientation of the payload with a resolution of a fraction of a degree.
+	The payload is attached to a freely floating balloon with no control over rotational orientation or geographic location. This requires that the attitude be constantly monitored.  Multiple GPS systems, including two co-located ADU5 GPS heading receivers in conjunction with a single G12 GPS system, recorded the location of the payload throughout the flight.  The nine total GPS antennas, read out once per second, provide an absolute measureent for the location and orientation of the payload with a resolution of a fraction of a degree.
 	
 	\subsection{Magnetometer}
-		In addition to the heading information provided by the GPS systems, a magnetometer was attached to the payload and used to measure the vector components of the magnetic field throughout the flight.  This system, coupled with a model for the geomagnetic field, could be used as a functional compass, assuming an accurate position, that would corroborate the pointing information returned by the GPS systems.  As the GPS system remained functional throughout the flight, the major contribution from the magnetometer is as a validation of geomagnetic models.
+		In addition to the heading information provided by the GPS systems, a magnetometer was attached to the payload and used to measure the vector components of the magnetic field throughout the flight.  This system, coupled with a model for the geomagnetic field, could be used as a functional compass, assuming an accurate position, that would corroborate the pointing information returned by the GPS systems.  As the GPS system remained functional throughout the flight, the major contribution from the magnetometer is as a validation of geomagnetic models in comparison to the GPS attitude measurement.
 		
 	\subsection{Sun Sensors}
 		Many space borne experiments that require very high pointing and location precision are above the altitude where GPS begins losing accuracy and precision.  Their nominal orientation information is provided through the use of star sensors.  ANITA's flight path over Antarctica during the austral summer, when there is continual daylight, is able to use just one star to obtain accurate heading information.  With an accurate time and knowledge of the earth's rotation around the sun, one can use a simple pinhole camera and the four mounted angular sun sensors to determine the heading information for regions of time when the GPS is unavailable or unreliable.  As the sun is a single source, the full attitude of the payload can not be determined with this measurement alone. However for brief GPS outages, where payload location does not change dramatically, sun sensors can be used to reconstruct payload heading, which has a much faster time scale.  As the GPS system remained functional throughout the flight, the sun sensor data was not used.
