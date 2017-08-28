@@ -162,10 +162,10 @@
 		The LABRADOR digitizer also influences the selection of the band edges.  The maximum sampling rate of 2.6GS/s yields a 1.3GHz Nyquist sampling frequency, however the analog bandwidth of the LABRADOR is limited to 800MHz.\cite{LABASICPAPER}  Any out of band power will be aliased into the signal band and present itself as increased in-band noise.\cite{NyquistSampling}. 
 		
 \section{Amplification}
-	Expected signal strength output from the coupling of the antennas to the 50-ohm RF transmission network requires that signal amplification occurs to be detectible by the available electronic instruments.  The amplification for the ANITA3 instrument was accomplished with two stages, one close to the antenna within the custom built module, and one upon entering the instrument crate itself within the iRFCM (internal radio frequency conditioning module).  
+	The extremely low expected signal power incident on the payload must be significantly amplified in order to have a detectable amount of power.  The amplification for the ANITA3 instrument was accomplished with two stages, one close to the antenna within the custom built module, and one upon entering the instrument crate itself within the iRFCM (internal radio frequency conditioning module).  
 	
 	\subsection{First Stage Amplifier: The AMPA and DDAMPA}
-		The front end amplification was accomplished by two similar custom built modules named the Antenna Mounted Pre-Amplifier (AMPA) and the (historically named) Drop Down AMPA (DDAMPA).  The internals for the AMPAs and DDAMPAs are diagrammed in Figure \ref{fig:AmpaDDampaBlock} and images of the modules are shown in \ref{fig:AMPAandDDAMPA}. Each enclosure contains components for filtering, amplification, and a bias network power trasmission component.  
+		The front end amplification was accomplished by two similar custom built modules named the Antenna Mounted Pre-Amplifier (AMPA) and the (historically named) Drop Down AMPA (DDAMPA).  The internals for the AMPAs and DDAMPAs are diagrammed in Figure \ref{fig:AmpaDDampaBlock} and images of the modules are shown in \ref{fig:AMPAandDDAMPA}. Each enclosure contains components for filtering, amplification, and a bias network power trasmission component.  A summary of the gain and noise figure measurements for the collections of units is shown in Figure \ref{fig:AMPAandDDAMPA_std}.
 		
 \begin{figure}
 \centering
@@ -191,9 +191,15 @@
 \end{figure}	
 	
 	\subsection{iRFCM}
-	The four custom built iRFCM enclosures, one of which can be seen in figure \ref{fig:IRFCMpic} and is described in \ref{fig:IRFCM}, handle the second stage amplification for twenty four of the RF signal channels.  There are three major active RF components for each signal chain present within the module. The AmpLite, a high gain, high dynamic range amplifier built by Patrick Allison of OSU, a tuning attenuator for gain balancing of the 96 different channels, and a bias-tee which, as its name suggests, adds a DC bias to the center conductor of the coaxial transmission cable between the AMPA and the iRFCM.  This bias is used to power the AMPA and DDAMPA amplifier modules.
+	The four custom built Internal Radio Frequency Conditioning Modules (iRFCM), the internals of which can be seen in figure \ref{fig:IRFCMpic} , handle second stage amplification and bias network supply for twenty four of the RF signal channels.  The block diagram for a single iRFCM channel is presented in Figure \ref{fig:IRFCM}.  There are three major active RF components for each signal chain present within the module. The AmpLite, a high gain, high dynamic range amplifier built by Patrick Allison of OSU, a tuning attenuator for gain balancing of the 96 different channels, and a bias-tee which, as its name suggests, adds a DC bias to the center conductor of the coaxial transmission cable between the AMPA and the iRFCM.  This bias is used to power the AMPA and DDAMPA amplifier modules.  The power gain for all 96 iRFCM channels is shown in Figure \ref{fig:IRFCMgain}.
 
-	
+\begin{figure}
+\centering
+	\includegraphics[height=0.9\textheight]{figures/IRFCMpic}
+	\caption{An image of the internals of an iRFCM module after assembly}
+	\label{fig:IRFCMpic}
+\end{figure}
+
 \begin{figure}
 \centering
 	\includegraphics[width=\textwidth]{figures/IRFCM}
@@ -201,30 +207,38 @@
 	\label{fig:IRFCM}
 \end{figure}
 	
-	
 \begin{figure}
 \centering
-	\includegraphics[height=0.9\textheight]{figures/IRFCMpic}
-	\caption{An image of the internals of an iRFCM module after assembly}
-	\label{fig:IRFCMpic}
-\end{figure}
-	
-	
+	\includegraphics[width=0.45\textwidth]{figures/IRFCMA}
+	\includegraphics[width=0.45\textwidth]{figures/IRFCMB}	
+	\includegraphics[width=0.45\textwidth]{figures/IRFCMC}
+	\includegraphics[width=0.45\textwidth]{figures/IRFCMD}	
+	\caption{Gains for all 96 iRFCM channels.  Variation is intentional to balance power between channels.}
+	\label{fig:IRFCMgain}
+\end{figure}		
+
 	\subsection{Expected electromagnetic field variations}
-		Depending on the radiation mechanism being observed, the power of an EAS signal measurable at the detector is proportional to the energy of the incident cosmic ray particle.\cite{EASSignalPower}  This signal power is superimposed on the thermal and anthropogenic background noise present in the field of view of the detector.  The constant thermal emission of matter in the field of view of an antenna introduces a Johnson-Nyquist thermal noise component, which is calculated in Equation \ref{eqn:NyquistNoise}
+		Depending on the radiation mechanism being observed, the power of an EAS signal measurable at the detector is proportional to the energy of the incident cosmic ray particle.\cite{EnergyEstimator}  This is shown in Figure \ref{fig:EASSignalPower} This signal power is superimposed on the thermal and anthropogenic background noise present in the field of view of the detector.  The constant thermal emission of matter in the field of view of an antenna introduces a Johnson-Nyquist thermal noise component, which is calculated in Equation \ref{eqn:NyquistNoise}
 
 \begin{equation}
 	\label{eqn:NyquistNoise}
-	P = k_{b}T\delta F
+	P = k_{b}TB
 \end{equation}
 
-Where P is the thermal noise power observed across a termination resistor in watts, $k_{b}$ is Boltzmanns constant, T is the absolute temperature observed temperature in kelvin, and $\delta F$ is the frequency bandwidth in Hz.  The antenna, creating a smooth transition between the complex impedance of free space and that of the coaxial transmission network, has a noise temperature dictated by the integral of the temperature of objects in its field of view $(T(\theta,\phi))$, weighted by the gain pattern of the antenna $(G(\theta,\phi,\omega))$, shown in equation \ref{eqn:antTemp}.
+Where $P$ is the thermal noise power observed across a termination resistor in watts, $k_{b}$ is Boltzmanns constant, $T$ is the absolute temperature observed temperature in kelvin, and $B$ is the frequency bandwidth in Hz.  The antenna, creating a smooth transition between the complex impedance of free space and that of the coaxial transmission network, has a noise temperature dictated by the integral of the temperature of objects in its field of view $(T(\theta,\phi))$, weighted by the gain pattern of the antenna $(G(\theta,\phi,\omega))$, shown in equation \ref{eqn:antTemp}.
 
 \begin{equation}
 	\label{eqn:antTemp}
 	\int_{-\pi}^{\pi}\int_{\theta}^{2\pi}\int_{0}^{\infty} G(\theta,\phi,\omega)*T(\theta,\phi)sin^{2}\theta d\theta d\phi d\omega
 \end{equation}
 
+
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/EASSignalPower}
+	\caption{The relationship between EAS signal power at the peak coherence angle and primary particle energy.  Taken from \cite{EnergyEstimator}}
+	\label{fig:EASSignalPower}
+\end{figure}
 
 	\subsection{Noise Figure} 
 	The requirement of amplifier chains leads to a minimum of additional electronics noise introduced by the detector.  Besides a background of thermal noise, the dominant continuous noise source is electronics noise from the amplifiers.  This noise is a byproduct of the non-ideal coupling of the amplifier to the input signal that results in the amplification of internal thermal noise seen as a resistance on the front of the amplifier.   This noise, unlike the thermal noise incident on co-pointing antennas, is not coherent as each amplifier adds its own uncorrelated noise component.  The noise figure is additionally increased by any loss of power in front of the amplifiers.  Since the noise figure cascades through an amplifier chain, it is imperative to reduce any additional noise figure at the beginning of the signal chain, and less important in the subsequent amplifiers.  The cascading noise can be calculated using Frii's Formula (Equation \ref{eqn:noiseCascade}), where $T_{total}$ is the resulting noise temperature of the entire signal chain, $T_{n}$ is the noise temperature of a specific element, and $G_{n}$ is the gain magnitude of a specific element.
@@ -244,7 +258,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 
 
 	\subsection{Dynamic Range}
-		The absolute power level of the signal travelling through the system is dependent on the end-of-chain termination and instrumental device, and must be tuned appropriately.  For example, the digitizer ASIC can cover a 2.5V full dynamic range.  An observed voltage with peak amplitude significantly below that level would never exercise the range boundaries of the digitizer.  A negative drawback to this wasted range is that the lesser significance bits lose sensitivity to low voltage oscillations, as fewer total levels fully encompass the full signal.  Equally and oppositely, too high an input power signal would become distorted at high peak amplitudes. Other systems at termination ends of the branching signal chain have similar dynamic range limitations and must be tuned appropriately.
+		The absolute power level of the signal travelling through the system is dependent on the end-of-chain instrumental device, and must be tuned appropriately.  For example, the digitizer ASIC can cover a 2.5V full dynamic range.  An observed voltage with peak amplitude significantly below that level would never exercise the full range of the digitizer and allow bit level digitizer noise to add nontrivially to the total noise background.  Equally and oppositely, too high an input power signal would become distorted at high peak amplitudes, as near full scale voltages the response of the digitizer becomes nonlinear, or "compressed". The other two systems at termination ends of the branching signal chain have similar dynamic range limitations and must be tuned appropriately.
 		
 		
 	\subsection{Gain Justification}
@@ -267,7 +281,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	
 	
 \section{Digitization}
-	The electric field variations incident as a function of time is digitized using an array of fast analog to digital converters (ADCs), custom designed application specific integrated circuits (ASICs).  The ANITA3 instrument utilizes a LABRADOR (Large Analog Bandwidth Recorded And Digital Ordered Readout) chip, designed by Gary Varner.  It is a 12-bit, 2.4GS/s, 256 sample long ADC, yielding a window size of ~100ns.  This is accomplished with a sample and hold ring buffer read out with a wilkinson clock comparing the stored charge in a storage capacitor against a ramp signal driven by a constant current source.  Each chip receives 8 RF analog inputs, as well as a 9th clock channel coincidently propagated to all LAB chips.  The SURF (Signal Unit for Radio Frequency) Board consists of 4 LABRADOR chips in order to create a buffer for continuous sampling.  
+	The time series of electric field variations incident on the payload are digitized using an array of custom designed fast analog to digital converter (ADC) application specific integrated circuits (ASICs).  The ANITA3 instrument utilizes a LABRADOR (Large Analog Bandwidth Recorded And Digital Ordered Readout) chip, designed by Gary Varner.\cite{LABASICPAPER}  It is a 12-bit, 2.4GS/s, 256 sample long ADC, yielding a window size of ~100ns.  This is accomplished with a sample and hold ring buffer read out with a wilkinson clock comparing the stored charge in a storage capacitor against a ramp signal driven by a constant current source.  Each chip receives 8 RF analog inputs, as well as a 9th clock channel coincidently propagated to all LAB chips.  The SURF (Signal Unit for Radio Frequency) Board consists of 4 LABRADOR chips in order to create a buffer for continuous sampling.  
 
 	\subsection{LABRADOR3 ASIC}
 		The third iteration of the Large Analog Bandwidth Recorder And Digitizer with Ordered Readout (LABRADOR, or LAB3) has been in use on ANITA flights due to its extremely low power and high precision.  It consists of a nine RF channels fed into separate 260 cell capacitor ring buffer and can operate at sampling frequencies of 2.6GS/s, or a Nyquist limit of 1.3GHz.  In addition, it has a large dynamic range and a gigahertz of bandwidth in the UHF spectrum.  The sampling time base is driven by a phase inverting Ripple Carry Out pulse that propagates internally to the chip.  The continuous sampling is halted when a trigger is issued to the chip, and a Wilkinson Clock measuring the time to threshold of a constant current ramp voltage converts the stored charge in each capacitor to a digital value that is read out in parallel to an FPGA for storage (see Figure \ref{fig:LAB_Dig}.  Due to the dead time related to the digitization process, four LAB3 chips are placed in parallel in order to ensure continuous sampling even when a single LAB3 is reading out its values.  When a hold is issued, the LAB3 chip returns both an estimate of which RCO phase it is in (which is incorrect near the wraparound region), as well as the locations of the "HitBus", or samples that are currently connected to the RF input. The procedure and results of calibrating this readout is detailed in the Calibration section.
@@ -293,11 +307,18 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	\subsection{Limitations}
 	After a hold is issued to a chip, the digitization freezes the ring buffer and yields the chip unable to sample until readout is complete, a process that can take ~1us.  During a readout, no new data can be captured by the LABRADOR chip.  To alleviate this, the RF input chain is separated into four separate chips which are read out one at a time.  This provides a buffer depth of four which allows the instrument to remain live even while reading out several repetitive events.
 	
-	The analog bandwidth of the LAB3B (used in the ANITA3 and ANITA2 experiments) did not fully cover the full bandwidth of the antennas and signal chain due to coupling into the chip through the bond wires in the package.  This yields a drop-off in sensitivity to high frequency signals.  
+	The analog bandwidth of the LAB3B (used in the ANITA3 and ANITA2 experiments) did not fully cover the full bandwidth of the antennas and signal chain due to coupling into the chip through the bond wires in the package.  This yields a drop-off in sensitivity for high frequency signals.    The total system bandwidth is shown in the calibration Chapter, however a measurement of the analog bandwidth of the LAB3B specifically is shown in Figure \ref{fig:LAB3B_bandwidth}
+	
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/LAB3B_bandwidth}
+	\caption{Bandwidth measurement of the LABRADOR 3B digitizer chip measured through injection of a impulsive signal to a test board.  The signal undergoes a 4-way split on the test board to emulate the SURF board.  In the top figure, the spectral power of a (blue) RF reference pulse and (red) LAB3 readout pulse are shown. At bottom is the difference, where for perfect coupling a -6dB loss would be expected (black line). The 3dB point occurs several hundred MHz below the 1.2GHz desired instrument high frequency limit.\cite{LABASICPAPER}  }
+	\label{fig:LAB3B_bandwidth}
+\end{figure}
 	
 	The time between samples is controlled by a charge starved transistor chain that controls the connection between the sampling capacitor and the input RF signal.  Due to process inconsistencies in the manufacturing of the ASICs, the timing between subsequent samples is not well controlled.  This yields a variable delta T that needs to be corrected in calibration of each chip individually.  In addition, it leads to an unevenly sampled time domain waveform, which introduces a difficult to correct frequency response, and requires interpolation between points before creating interferometric maps.  This is processing intensive, an issue that makes doing on board interferometry more difficult.
 	
- 	Since each LAB chip can only digitize eight channels concurrently, a total of twelve total SURF boards are required to read out any particular event simultaneously.  The dispersal of the readout HOLD signal from the FPGA, and its subsequent latching on each LAB, adds jitter that needs to be corrected out.  The ninth channel on each lab observes a 33.3MHz analog clock signal propagated through the CPCI backplane to each SURF.  By measuring the relative phase of this clock between SURFs, a correction for this jitter can be done.  This is discussed further in the Calibration section.
+ 	Since each LAB chip can only digitize eight channels concurrently, a total of twelve total SURF boards are required to measure all 96 channels of each event simultaneously.  The dispersal of the readout HOLD signal from the FPGA, and its subsequent latching within each LAB, adds jitter that needs to be corrected in analysis.  The ninth channel on each lab observes a single 33.3MHz analog clock signal propagated through the CPCI backplane to each SURF.  By measuring the relative phase of this clock between SURFs, a correction for this jitter can be done.  This is discussed further in the Calibration section.
  	
  	 Additionally, the 100ns SCA buffer length  limits the minimum full period oscillation observation frequency to 10MHz, however this is below the antenna frequency cutoff.  The effect of the limited trigger window is however visible in the ALFA low frequency antenna.
 	
@@ -313,7 +334,7 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	As the time domain digitization window is extremely small (100ns is one ten millionth (1e-7) of a second) and ANITA is limited to a 50Hz readout rate, it is necessary to selectively trigger on segments of time that have a high probability of containing a signal event.  The physics signal created by a UHE particle interaction within the field of view of, and directed towards, the instrument exhibits itself as a picosecond duration impulsive electrical potential emanating from a specific direction.  The background is random incoherent thermal noise or single band constant power anthropogenic sources.  As there is no digitizer buffering or analog delay lines, the triggering system must combine together information from several RF channels without full digitization and form a decision quickly, before the waveform is overwritten in the ring buffer of the LABRADOR digitizer.  For the ANITA3 system, these triggering decisions were made in the Triggering Unit for Radio Frequency (TURF), which receives trigger information for each channel from FPGA comparator electronics on each SURF through the CPCI backplane passthrough connectors.
 	
 	\subsection{SHORT square-law power integrator}
-		A solution to triggering employed in many RF transient detector experiments is to utilize a square-law integrating power detector.  An Ezaki diode (or tunnel diode), is a nonlinear semiconductor circuit that, in a specific input power region, essentially rectifies and integrates an incoming RF signal through the quantum mechanical effect of electron tunneling.  The diode is capable of taking the extremely fast impulsive signal, with a pulse width of under 1ns, and distributes the power over a longer time scale while simultaneously increasing the signal to noise power ratio.  This allows a clocked comparator circuit, usually running with a max of 4ns/cycle, to latch a electrical signal that crosses a certain threshold.  These L1 triggers can be tuned to a reasonable rate, the specifics of which is detailed below, by altering the comparison voltage with an on board DAC, and each channel can be kept running at a similar rate with a PID loop.  Comparing the timing of these "L1" triggers between antennas with similar pointing directions allows a massive decrease in overall trigger rate dictated by combinatorics.
+		A solution to triggering on fast impulsive signals while minimizing incidental background events is to utilize a square-law integrating power detector.  An Ezaki diode (or tunnel diode), is a nonlinear semiconductor circuit that, in a specific input power region, rectifies squares and integrates an incoming RF signal through the quantum mechanical effect of electron tunneling.  The diode is capable of taking the extremely short duration impulsive signal, with a pulse width of under 1ns, and distributes the power over a longer time scale while simultaneously increasing the voltage signal to noise ratio.  This allows a clocked comparator circuit, usually running with a max of 4ns/cycle, to latch an electrical signal that crosses a certain threshold.  These first level, or L1, triggers can be tuned to a reasonable rate, the specifics of which are detailed below, by altering the comparison voltage with an on board DAC, and each channel's L1 rate can be maintained despite time dependent power fluctuations through a PID loop.  Comparing the timing of these L1 triggers between antennas with similar pointing directions allows a massive decrease in overall trigger rate dictated by combinatorics.
 		
 \begin{figure}
 	\centering
@@ -326,22 +347,22 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	\subsection{Trigger Heirarchy Overview}
 		The triggering system is divided into several sub-triggers that layer hierarchically to arrive at a global trigger decision.   These range from the individual power law thresholding to a time windowed combinatoric trigger between multiple channels.  In ANITA3, the trigger is split into a vertical (Vpol) and Horizontal (Hpol) trigger system, as the two differing particle shower sources (in ice neutrino interactions vs geomagnetically dominated air showers) will have mostly orthogonal polarization.  These two trigger paths are identical and have equal weighting in the final global trigger decision.  
 		
-		The first trigger level, or what I'll call the L0 trigger (it is also known as the L1 trigger depending at what value one begins counting), is a comparator circuit on the FPGA between the output of the SHORT and a tunable DAC. It is thus possible to tune each channel individually to give an even weighting in the ultimate trigger decision.  This is done by measuring the number of threshold crossing counts per time fraction observed by each comparator circuit, also called the scalar rate.  This scalar rate is monitored by a software PID servo loop that attempts to keep all channels equal.
+		The first trigger level, L1, is a comparator circuit on the FPGA between the output of the SHORT and a tunable DAC. It is thus possible to tune each channel individually to give an even weighting in the ultimate trigger decision.  This is done by measuring the number of threshold crossing counts per time fraction observed by each comparator circuit, also called the scalar rate.  This scalar rate is monitored by a software PID servo loop that attempts to keep all channels equal.
 		
-		The secondary trigger level, or L1, is a phi sector specific time dependent windowing function that combines the L0 triggers from all three channels in a single phi sector.  A real plane wave signal incident on a phi sector will have a causal separation in time, while incidental noise threshold crossings will be uncorrelated in time.  These timing offsets are used to create a metric for discriminating on noise up to the level of precision provided by the FPGA trigger electronics.  
+		The secondary trigger level, or L2, is a phi sector specific time dependent windowing function that combines the L0 triggers from all three channels in a single phi sector.  A real plane wave signal incident on a phi sector will have a causal separation in time, while incidental noise threshold crossings will be uncorrelated in time.  These timing offsets are used to create a metric for discriminating on noise up to the level of precision provided by the FPGA trigger electronics.  
 		
-		The final trigger, or L2 is a requirement that two neighboring phi sectors decide a L1 trigger within an 8ns window.  This leads to the ultimate requirement that four out of six like-polarized antenna channels with an overlapping field of view observe a transient power fluctuation.  Additional details of each level trigger are detailed below.
+		The final trigger, or L3 is a requirement that two neighboring phi sectors decide a L2 trigger within an 8ns window.  This leads to the ultimate requirement that four out of six like-polarized antenna channels with an overlapping field of view observe a transient power fluctuation.  Additional details of each level trigger are detailed below.
 		
 
-	\subsection{L0 Tiggering efficiency and quality}
+	\subsection{L1 Tiggering efficiency and quality}
 		The trigger must make a trade off between efficiency, the ratio of real signals selected for digitization over the total number of signals incident on the detector, and quality, the ratio of the number of true signal event over total selected events.  A perfect detector would have an efficiency of 1 and a quality of 1.  However in reality these values are both a function of the total maximum readout rate for the detector, which places a maximum limit on the number of events capable of being selected.  As an example, if the trigger constantly selected all moments in time it would be perfectly efficient, but the quality of the signal would be horrific.  Inversely, if the trigger was set to have perfect quality and only select extremely high power impulsive events, it would have poor efficiency for low SNR signals.  The efficiency of the detector can be statistically measured by injecting signals of varying signal to noise ratio (SNR) at a known rate and observing the rate of measured signals.  This will produce a curve (as seen in a plot I will add) which has a characteristic shape, of which the 50\% efficiency point is the defining metric.  This point will be directly related to the allowable incidental noise trigger rate, which was decided to be set at a rate where the payload would be "dead" for approximately 5\% of the time.  I have to add plots for these things!
 		
-	\subsection{L0 Optimization}
+	\subsection{L1 Optimization}
 		What little room lies in optimizing the SHORT circuit is entirely in tuning the input power to the tunnel diode circuit.  The inverse-resistance region, where a decrease in voltage yields an increase in current flow, is the primary region where additional input power yields an output that is a square of the input.  This occurs at an extremely low power level, much below the minimum quantization level of the LABRADOR ADC, and thus the power must be attenuated in the signal chain after the split between the trigger and digitizer paths.  In addition, the output power of a fully optimized tunnel diode circuit is extremely small,	requiring amplification to produce a working range for the comparator circuit commensurate to the output of a DAC.  The resolution ( (trig rate)/(DAC count) ) dictates the stability of the trigger system.  If this value is too high, changing the trigger threshold setting for a specific channel would cause a large jump in the overall trigger rate of the system, and possibly allow a channel to dominate (or be excluded from) the global triggers.
 		
 		
-	\subsection{L1 Pseudo-Pattern Trigger}
-		The L1 trigger consists of a time windowed and multiple antenna combinatoric selection.  As a real signal pulse will have a correlated plane wave that passes across the physical locations of each antenna, a time coincidence of the signal is required.  This helps to reduce thermal noise triggers, which will be uncorrelated to the locations of the antennas.  In addition, this allows us to use the narrow opening angle of the antennas and their high gain to make a rough directional cut on the incoming signal.
+	\subsection{L2 Pseudo-Pattern Trigger}
+		The L2 trigger consists of a time windowed and multiple antenna combinatoric selection.  As a real signal pulse will have a correlated plane wave that passes across the physical locations of each antenna, a time coincidence of the signal is required.  This helps to reduce thermal noise triggers, which will be uncorrelated to the locations of the antennas.  In addition, this allows us to use the narrow opening angle of the antennas and their high gain to make a rough directional cut on the incoming signal.
 		
 \begin{figure}
 	\centering
@@ -350,11 +371,11 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	\label{fig:trigPattern}
 \end{figure}
 		
-	\subsection{L1 Trigger Window Delay Limitations}
-		As the physical offsets between the rings of antennas exceeds one clock period for most of the angles of interest, it is possible to require a timing separation between the arrival of pulses between the separate antennas.  This modification, made between the ANITA2 and ANITA3 flights, decreases the incidental rate of the trigger, increasing the quality, while maintaining the signal rate and efficiency.  This is accomplished by generating a 16ns (four FPGA clock cycles) high logic pulse after a bottom ring antenna L0 trigger, a 12ns (three FPGA clock cycles) high logic pulse after a middle ring L0, and a 4ns window after a top ring L0.  The requirement for a L1 trigger is that two of these windowing pulses overlaps (see Figure \ref{fig:trigPattern}).  This has the unfortunate side effect of allowing the bottom ring of antennas to unfairly bais the system, as a noise L0 trigger generates a pulse with four times the time weight as one from the top ring, and is thus more likely to trigger the system.
+	\subsection{L2 Trigger Window Delay Limitations}
+		As the physical offsets between the rings of antennas exceeds one clock period for most of the angles of interest, it is possible to require a timing separation between the arrival of pulses between the separate antennas.  This modification, made between the ANITA2 and ANITA3 flights, decreases the incidental rate of the trigger, increasing the quality, while maintaining the signal rate and efficiency.  This is accomplished by generating a 16ns (four FPGA clock cycles) high logic pulse after a bottom ring antenna L0 trigger, a 12ns (three FPGA clock cycles) high logic pulse after a middle ring L1, and a 4ns window after a top ring L1.  The requirement for a L1 trigger is that two of these windowing pulses overlaps (see Figure \ref{fig:trigPattern}).  This has the unfortunate side effect of allowing the bottom ring of antennas to unfairly bais the system, as a noise L0 trigger generates a pulse with four times the time weight as one from the top ring, and is thus more likely to trigger the system.
 		
-	\subsection{L2 Multiple Phi Sector Trigger}
-		The final L2 trigger is generated when two or more neighboring phi sectors report an L1 trigger within an 8 nanosecond window.  Once the L2 trigger is reported, the TURF board sends a HOLD command to all SURFS, which propagates to a single LAB and initializes a readout.
+	\subsection{L3 Multiple Phi Sector Trigger}
+		The final L3 trigger is generated when two or more neighboring phi sectors report an L2 trigger within an 8 nanosecond window.  Once the L3 trigger is reported, the TURF board sends a HOLD command to all SURFS, which propagates to a single LAB and initializes a readout.
 
 	\subsection{Phi Sector Masking}
 		In the ANITA1 flight, it was discovered that noise sources on the continent and in the sky had the capability to dominate the trigger rate and effectively blind the entire payload despite a large fraction of the payload observing a thermal environment. To alleviate this issue, a system where an antenna or collection (phi sector) of antennas experiences a comparative increase in trigger rate in comparison to the rest of the payload, it will be excluded from forming the global system trigger.  This allows the instrument to continue observing quiet areas of the continent and increasing the total livetime of the system.  There are additional nuances to this subsystem, including the possibility of very high power noise (or signal) events continuing to leak into the back and side lobes of the antennas from non-masked phi sectors, that need to be taken into account when making a measurement of the total instrumented area for a flight.  During the ANITA3 flight, several unexpected in-band satellite CW signals caused the phi masking to be heavily utilized, which is discussed further in the Cosmic Ray Search chapter.
@@ -410,7 +431,14 @@ Where P is the thermal noise power observed across a termination resistor in wat
 	\subsection{GPU prioritization}
 		The data limitations of the various telemetry downlink systems allow only a fraction of the total data rate to be transmitted.  This limitation motivates a prioritization system in order to only send down events that pass a limited set of post-digitization analysis cuts.  This would allow a limited set of analyzable signals in the event of a catastrophic system failure or non-recovery of the payload.  The two major figures of merit for discriminating between incidental thermal noise events and impulsive signal-like events is the normalized peak height of an interferometric pointing map, and the peak of the Hilbert envelope of the coherently summed waveform for the respective map peak incidence angle.  These time-consuming, computationally intensive, physical baseline dependent, multiple channel correlation processes are nominally done offline in the analysis phase of the experiment, and is likewise further discussed in the analysis chapter of this thesis.  However, to accomplish the task in real time as events are streaming from the instrument, a Graphical Processing Unit (GPU) linked with the flight CPU was utilized to parallelize the computations and reduce any specific event readout's required processing time to that of the minimum instrument readout time.  These values were then used to determine a priority for each event and placed in an appropriate telemetry queue.  The main work on this system was done by Ben Strutt of University College London, and details on its operation and results can be found in his thesis at \cite{BenSThesis}.  Since the instrument was recovered, these computations are re-done for this thesis, and the priority value was not used.
 		
-	\subsection{Balloon and Flight}
-		The ANITA instrument is suspended by a NASA zero pressure long duration high altitude balloon.  This balloon is cool.  It floats at 130kft and we were too heavy for it so it bobbed a lot lower than optimal for the ANITA3 flight.  This possibly gave us an undesirable flight pattern that pushed us out from over the continent, necessitating a termination at 22 days.  However it didn't have leaks like lots of balloons have, and it gave us a clean flight path, so all good!
+\section{Balloon and Flight}
+		The ANITA instrument is suspended by a NASA zero pressure long duration high altitude balloon.  This balloon is cool.  It floats at 130kft and we were too heavy for it so it bobbed a lot lower than optimal for the ANITA3 flight.  This possibly gave us an undesirable flight pattern that pushed us out from over the continent, necessitating a termination at 22 days.  This flight path is shown in Figure \ref{fig:A3FlightPath}.
+		
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/A3FlightPath}
+	\caption{Flight path of the ANITA3 instrument as recorded by the onboard GPS.}
+	\label{fig:A3FlightPath}
+\end{figure}
 			
 			
