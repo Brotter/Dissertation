@@ -432,13 +432,27 @@ Where $P$ is the thermal noise power observed across a termination resistor in w
 		The data limitations of the various telemetry downlink systems allow only a fraction of the total data rate to be transmitted.  This limitation motivates a prioritization system in order to only send down events that pass a limited set of post-digitization analysis cuts.  This would allow a limited set of analyzable signals in the event of a catastrophic system failure or non-recovery of the payload.  The two major figures of merit for discriminating between incidental thermal noise events and impulsive signal-like events is the normalized peak height of an interferometric pointing map, and the peak of the Hilbert envelope of the coherently summed waveform for the respective map peak incidence angle.  These time-consuming, computationally intensive, physical baseline dependent, multiple channel correlation processes are nominally done offline in the analysis phase of the experiment, and is likewise further discussed in the analysis chapter of this thesis.  However, to accomplish the task in real time as events are streaming from the instrument, a Graphical Processing Unit (GPU) linked with the flight CPU was utilized to parallelize the computations and reduce any specific event readout's required processing time to that of the minimum instrument readout time.  These values were then used to determine a priority for each event and placed in an appropriate telemetry queue.  The main work on this system was done by Ben Strutt of University College London, and details on its operation and results can be found in his thesis at \cite{BenSThesis}.  Since the instrument was recovered, these computations are re-done for this thesis, and the priority value was not used.
 		
 \section{Balloon and Flight}
-		The ANITA instrument is suspended by a NASA zero pressure long duration high altitude balloon.  This balloon is cool.  It floats at 130kft and we were too heavy for it so it bobbed a lot lower than optimal for the ANITA3 flight.  This possibly gave us an undesirable flight pattern that pushed us out from over the continent, necessitating a termination at 22 days.  This flight path is shown in Figure \ref{fig:A3FlightPath}.
+		The ANITA instrument is suspended by a NASA zero pressure long duration high altitude balloon over the continent of Antarctica.  The partially inflated balloon and launch team immediately before launch of the ANITA3 payload can be seen in Figure \ref{fig:Launch}.  The 34 million cubic liter balloon, when filled with Helium gas, has a nominal float altitude of 130kft (40km) and has been rated to survive for up to 60 days.  As the balloon ascends, it expands as the gas equilibrates to the surrounding atmosphere, which decreases in density with altitude. The balloon can be seen, partially expanded, in Figure \ref{fig:Balloon}.  The balloon floats freely after launch, with no aeronautical controls. The circumpolar winds present in Antarctica provide a circular trajectory around the continent.  The requirement of a balloon recovery for a complete physics dataset necessitates terminating the flight when the balloon heads northwards towards the ocean.  The ANITA3 flight flew for 22 days before being terminated near Australia's Davis station as it moved close to the coast.  This flight path is shown in Figure \ref{fig:A3FlightPath}.
+
+\begin{figure}
+\centering
+	\includegraphics[width=\textwidth]{figures/Launch}
+	\caption{Image of the launch train for the ANITA3 instrument immediately proceeding launch on December 17th, 2013.  (Left) The LDB launch vehicle suspending ANITA, which is attached to a termination package and balloon).  The tanks in the background are transportation canisters for the Helium gas, which is filling the balloon through the transparent hoses attached on the sides.}
+	\label{fig:Launch}
+\end{figure}
+			
 		
+\begin{figure}
+\centering
+	\includegraphics[height=0.9\textheight]{figures/CelestronBalloon}
+	\caption{Image of the ANITA3 payload approximately 5 hours after launch. Image was captured with aid of a telescope. }
+	\label{fig:Balloon}
+\end{figure}
+
 \begin{figure}
 \centering
 	\includegraphics[width=\textwidth]{figures/A3FlightPath}
 	\caption{Flight path of the ANITA3 instrument as recorded by the onboard GPS.}
 	\label{fig:A3FlightPath}
 \end{figure}
-			
-			
+
