@@ -67,16 +67,19 @@
 	
 	\subsection{Ray Tracing to Continent (with index of refraction)}
 		Another tool made possible through interferometric mapping is that it allows us to point a captured event back to its incoming direction, determining the likely incident cosmic ray interaction location.  Ultimately, it would be most interesting to point an incoming particle back to a location on the sky for statistical source determination.  Additionally, it is important to determine whether a measured event came from a particle physics interaction, or was merely an anthropogenic background noise impulse.  By developing a base list from USAP and other international Antarctic programs, we can determine whether a specific event points back to a known base.
-		
-		
-	\subsection{Log-Likelyhood Two Dimensional Gaussian Pointing Error}
-		Neutrinos and cosmic rays are expected to be isotropically distributed across the continent, with no preferred incident direction.
+
 	
 	\subsection{Immediate Pointing Cuts}
-
+		Real physics signals have a small range of elevation angles where their detection is most likely.  The highest probability incident direction for an EAS is near the horizon, however noise events will point more evenly in all directions.  Using this knowledge, we can cut out events that have very steep elevations.  A distribution of event pointing direction can be seen in Figure \ref{fig:elevationAngle}.
 
 \section{Template Correlation}
+	Though any physics experiment that aims to separate background events from signal events requires a general understanding of characteristics inherent to either group, measurements and simulations of UHECR induced EAS signatures provide a waveform template that can be used to strongly cut on signal events.  The simplest assumption, that an EAS will produce a broad spectrum, short duration, electromagnetic pulse, drives both the overall design of the payload, as well as several of the analysis cuts.  Determining a normalized correlation between a template and the coherently summed waveform provides an additional constraint beyond simply requiring impulsivity, and also requires the gain and phase characteristics of an incident wave are in agreement with an EAS signal.
 	
+	\subsection{Templates}
+		It is possible to generate several different templates that accurately represent an observable EAS signal on the payload.
+	
+	\subsection{Auto-correlation normalization}
+		In order to make the template correlation value of different events directly relatable to one another, it is important to normalize both the template and the coherently summed waveform.  As this measurement is most interesting in determining the amount that any given event ``looks'' like the template, the final value should be a fraction from 0 to 1, where 1 would be a waveform that is an exact copy of the template.  
 
 
 \section{Known object categorization}
@@ -91,14 +94,27 @@
 
 
 
-\section{Base and non-base clustering}
-	\subsection{Clustering Purity and Efficiency}
+\section{Base and event clustering}
+	
+	After enriching the event sample by removing events with a high probability of being thermal noise or non-impulsive anthropogenic background, geographical clustering of the events can be done to further discriminate against backgrounds. Physics signal events are expected to be isotropically distributed evenly across the continent, as there is no preferred cardinal direction for UHECR or UHE$\nu$ detections.  Human activity, on the other hand, tends to cluster around regions of logistical or scientific interest.  Anthropogenic background sources are thus expected to point at other captured events, which can be used to discriminate against them and further refine the data sample. 
+
+	\subsection{Base Clustering}
+		Through communication with various Antarctic institutions, a list of active camps and other human activity on the continent was compiled for the time frame of the ANITAIII flight.  An image of these bases mapped to the continent can be seen in Figure \ref{fig:BaseMap}.  Determining the validity of this base map is plagued with issues, as they are run an managed by a large collection of different nations and groups, many of whom do not wish or care to make their activities publicly available.  Additionally, camps that are reported by groups may be inactive, or have moved from when they were last reported.  Despite these limitations, it is still useful to map events that pass signal cuts to these bases.
+		
+\begin{figure}
+	\includegraphics[width=\textwidth]{figures/BaseMap}
+	\caption{A map of the recorded human activity on the continent of Antarctica during the ANITAIII flight.}
+	\label{fig:BaseMap}
+\end{figure}	
 	
 	
-	
-	\subsection{Log Likelihood}
-	
+	\subsection{Event Clustering and Log Likelihood}
+		The metric that has been used in past ANITA experiments to determine the ``closeness'' of one event to another has been called the Log Likelihood, and is represented by the variable $L$.  This measurement must take into account both the pointing uncertainty of the instrument, as well as the constantly changing payload location.
+		
+		The pointing resolution of the interferometric mapping technique is a function of the SNR, and thus any clustering analysis must factor this into its calculation.  The pointing resolution as a function of SNR was found from analyzing self triggered WAIS pulses and their subsequent pointing to the 
+		
+		As ANITA transits past anthropogenic sources on the continent, the payload coordinate pointing towards that base changes with respect to cardinal North. In order to determine whether the likelihood that any particular event fell close to another, one must project the geographical location where the first event pointed to the continent into the field of view of the second event payload locations.  The opposite must be done as well, projecting the second event source location into the field of view of the first event payload location, as the two processes are not strictly invertible.
 	\begin{equation}
-L = \sqrt{(\frac{\sqrt{(\Delta\phi_{AB})^2+(\Delta\phi_{BA})^2}}{{\sigma_{\phi}}})^2+(\frac{\sqrt{(\Delta\theta_{AB})^2+(\Delta\theta_{BA})^2}}{{\sigma_{\theta}}})^2}
+		L = \sqrt{(\frac{\sqrt{(\Delta\phi_{AB})^2+(\Delta\phi_{BA})^2}}{{\sigma_{\phi}}})^2+(\frac{\sqrt{(\Delta\theta_{AB})^2+(\Delta\theta_{BA})^2}}{{\sigma_{\theta}}})^2}
 	\end{equation}
 	
