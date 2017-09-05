@@ -283,3 +283,13 @@ It still segfaults and doesn't seem to be filling the TProfile2D at all.  The rm
 
 I NEED TO FINISH THE TRANSFER FUNCTION CRAP.  Its just stupid bookkeeping so I have to do it.
 
+
+
+
+
+%%%%%%%
+
+August 26th.
+
+Was mostly taking notes in the notebook so look there.  Got the "M" key fixed on the new mac!  apparently it is a big process to fix it :(  So maybe I have to bring it in a lot???
+
