@@ -7,7 +7,7 @@
 	
 \begin{figure}
 \centering
-	\includegraphics[height=0.9\textheight]{figures/ANITA3_hangtest2_annotated}
+	\includegraphics[width=0.8\textwidth]{figures/ANITA3_hangtest2_annotated}
 	\caption{An image of the ANITAIII telescope during the test deployment in Palestine TX, Summer 2014.  Marked from top to bottom are two of the nine GPS antennas, the three vertically separated rings, the deployed solar panel array, and a deployed ALFA antenna.  The solar panels visible at the top of the payload are those used by the NASA Small Instrument Package (SIP).  Not visible are the ANITA instrument crate and other objects on the deck of the experiment (between middle and top antenna rings).}
 	\label{fig:ANITA3_hangtest}
 \end{figure}	
@@ -172,7 +172,7 @@
 		
 \begin{figure}
 \centering
-	\includegraphics[width=\textwidth]{figures/AmpaDDampaBlock}
+	\includegraphics[width=0.85\textwidth]{figures/AmpaDDampaBlock}
 	\caption{Block diagram for AMPA and DDAMPA front end amplification units}
 	\label{fig:AmpaDDampaBlock}
 \end{figure}
@@ -315,7 +315,7 @@
 \begin{figure}
 \centering
     \textbf{LABRADOR3}\par\medskip
-	\includegraphics[width=\textwidth]{figures/LAB3B_bandwidth}
+	\includegraphics[width=0.8\textwidth]{figures/LAB3B_bandwidth}
 	\caption{Bandwidth measurement of the LAB3 digitizer chip measured through injection of a impulsive signal to a test board.  The signal undergoes a 4-way split on the test board to emulate the SURF board.  In the top figure, the spectral power of a (blue) RF reference pulse and (red) LAB3 readout pulse are shown. At bottom is the difference, where a -6dB board loss would be expected with perfect coupling(black line). The -3dB point occurs several hundred MHz below the 1.2GHz desired instrument high frequency limit.\cite{LABASICPAPER}  }
 	\label{fig:LAB3B_bandwidth}
 \end{figure}
@@ -338,13 +338,13 @@
 	As the time domain digitization window is extremely small (100ns is one ten millionth (1e-7) of a second) and ANITA is limited to a 50Hz readout rate, it is necessary to selectively trigger on segments of time that have a high probability of containing a signal event.  The physics signal created by a UHE particle interaction within the field of view of, and directed towards, the instrument, exhibits itself as a picosecond duration impulsive electrical potential propagating as a plane wave.  The backgrounds are random incoherent thermal noise, and impulsive or single band constant wave anthropogenic sources.  As there is no digitizer buffering or analog delay lines, the triggering system must combine together information from several RF channels without full digitization and form a decision quickly, before the waveform is overwritten in the ring buffer of the LABRADOR digitizer.  For the ANITAIII system, these triggering decisions were made in the Triggering Unit for Radio Frequency (TURF), which receives trigger information for each channel from FPGA comparator electronics on each SURF through the CPCI backplane passthrough connectors.
 	
 	\subsection{SHORT square-law power integrator}
-		A solution to triggering on fast impulsive signals while minimizing incidental background events is to utilize a square-law integrating power detector.  An Ezaki diode (or tunnel diode)\cite{Esaki}, is a nonlinear semiconductor circuit that, in a specific input power region, rectifies squares and integrates an incoming RF signal through the quantum mechanical effect of electron tunneling.  The square law response of the diode can bee seen in Figure \ref{SHORT_square}.  The diode is capable of taking the extremely short duration impulsive signal, with a pulse width of under 1ns, and distributes the power over a longer time scale while simultaneously increasing the voltage signal to noise ratio.  The signal from the diode must be amplified to bring the power within the dynamic range of the FPGA comparator circuit.  The signal is then transformed from single ended to differential pair and travels over a high occupancy cable to the SURF board and FPGA.  A SURF High Occupancy RF Triggering (SHORT) unit consists the diode, amplifier, and transformer for 8 channels.  12 SHORTS are mounted to the top of the instrument box allowing all 96 channels to contribute to the trigger.
+		A solution to triggering on fast impulsive signals while minimizing incidental background events is to utilize a square-law integrating power detector.  An Ezaki diode (or tunnel diode)\cite{Esaki}, is a nonlinear semiconductor circuit that, in a specific input power region, rectifies squares and integrates an incoming RF signal through the quantum mechanical effect of electron tunneling.  The square law response of the diode can bee seen in Figure \ref{fig:SHORT_square}.  The diode is capable of taking the extremely short duration impulsive signal, with a pulse width of under 1ns, and distributes the power over a longer time scale while simultaneously increasing the voltage signal to noise ratio.  The signal from the diode must be amplified to bring the power within the dynamic range of the FPGA comparator circuit.  The signal is then transformed from single ended to differential pair and travels over a high occupancy cable to the SURF board and FPGA.  A SURF High Occupancy RF Triggering (SHORT) unit consists the diode, amplifier, and transformer for 8 channels.  12 SHORTS are mounted to the top of the instrument box allowing all 96 channels to contribute to the trigger.
 		
 		A clocked comparator circuit on the FPGA run at 4ns/cycle latches and propagates a logic signal for any electrical signal from the diode that crosses a certain voltage threshold.  The first level L1 triggering rate can be tuned by altering the comparison voltage with an on board DAC. With this capability, each channel's L1 rate can be stabilized, despite time and heading dependent power fluctuations, through a PID loop.  Comparing the timing of these L1 triggers between antennas with similar pointing directions allows a massive decrease in overall trigger rate dictated by combinatorics.
 		
 \begin{figure}
 	\centering
-	\includegraphics[height=0.8\textheight,angle=-90]{figures/RMS_in_out}
+	\includegraphics[width=0.9\textwidth]{figures/RMS_in_out}
 	\caption{Measurements of the response of the SHORT tunnel diode "square law" RF power detector taken in Palestine TX in 2014.  Plot courtesy of Katie Mulrey.}
 	\label{fig:SHORT_square}
 \end{figure}
@@ -436,7 +436,7 @@
 		
 	
 	\subsection{Telemetry}
-		Downlink of data taken during flight and uplink of commands to change flight configuration are transmitted to and from ground receivers over several systems.  In order of decreasing data trasmission speed, they are the Line Of Sight (LOS) transmitter, an Iridium Pilot$_{\textregistered}$ Openport UDP link, a NASA Tracking and Data Relay Satellite System (TDRSS), and an Iridium$_{\textregistered}$ low rate downlink.  These systems allow in-flight diagnostics of the ANITAIII instrument, as well as an ability to make pre-defined alterations to instrument control configurations, depending on need.  Shortly after flight, the Iridium Pilot$_{\textregistered}$ Openport link failed for unknown reasons.  However, the remaining systems were successful in allowing flight operators to debug and fix several issues that cropped up during the flight.  %The specified downlink rates for each of these systems can be seen in Table \ref{tab:telemRates}.
+		Downlink of data taken during flight and uplink of commands to change flight configuration are transmitted to and from ground receivers over several systems.  In order of decreasing data trasmission speed, they are the Line Of Sight (LOS) transmitter, an Iridium Pilot$_{\text{\textregistered}}$ Openport UDP link, a NASA Tracking and Data Relay Satellite System (TDRSS), and an Iridium$_{\text{\textregistered}}$ low rate downlink.  These systems allow in-flight diagnostics of the ANITAIII instrument, as well as an ability to make pre-defined alterations to instrument control configurations, depending on need.  Shortly after flight, the Iridium Pilot$_{\text{\textregistered}}$ Openport link failed for unknown reasons.  However, the remaining systems were successful in allowing flight operators to debug and fix several issues that cropped up during the flight.  %The specified downlink rates for each of these systems can be seen in Table \ref{tab:telemRates}.
 		
 	\begin{table}
 	
