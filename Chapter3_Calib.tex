@@ -290,10 +290,15 @@
 
 	
 	
-\section{Triggering Sanity Check}
+\section{Triggering Validation}
+	Determining whether the trigger circuit is effectively discriminating between signal and noise type events and reliably latching the digitizer circuit is important to determine the overall sensitivity of the instrument.  The first level L1 triggers are dependent on signal strength, making any trigger efficiency likewise SNR dependent.  The L2, and L3 triggers to an extent, are timing dependent, creating an elevational dependance to the trigger efficiency.  Calibration measurements were taken on the ground before flight, with additional measurements from ground based calibration pulsers taken during flight.  
+
+	\subsection{L1 efficiency}
+		The L1 efficiency of the trigger can be derived by determining the peak power in a digitized waveform in conjunction with the peak efficiency of injected signals.  The peak efficiency observed by ANITAIII plateaus at approximately 80\%, which means that L1 triggers fail to fire some fraction of the time.
+	\subsection{Windowed trigger testing}
 		Before flight, a programmable delay line was used to inject impulses at various picosecond precision delayed impulses into all like polarized channels of two neighboring phi sectors to test for the true angular response of the payload.  Due to the opaque nature of firmware, it is important to discern the exact L0 timing coincidence regions for which a global trigger will be generated.
 	\subsection{Angular Response Characteristics From Data}
-
+		
 
 
 
