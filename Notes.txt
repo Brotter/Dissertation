@@ -293,3 +293,134 @@ August 26th.
 
 Was mostly taking notes in the notebook so look there.  Got the "M" key fixed on the new mac!  apparently it is a big process to fix it :(  So maybe I have to bring it in a lot???
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+September 6th 2017
+
+On a plane!  Looking through CR events, direct and reflected.  I'm unblinding because I'm getting bored and I want to know if I am going to need to defend some crazy event.  I might have to just real quickly, event 15717147 looks like some crazy high energy tau neutrino.
+
+OH MY GOD THESE FUCKING LAT/LON inversions are KILLING me.  God damn holy shit.
+
+8:22pm HST - 11275m and a bit of turbulence (4:28 to go)
+9:15pm HST - ears popped!  11274m still tho?
+
+Direct: 27142546 and 39599205 are the only good ones really, maybe 69050312 but it is a double pulse
+crab
+1)  9855625  - points at LDB (12.12)
+2)  9862052  - points at Scott (10.9)
+3)  27142546 - Really clean, sort of close? (60)
+4)  39599205 - Really clean, towards sun sort of. no bases nearby.  Best one I think
+5)  69050312 - Double pulse!! nowhere close to other bases at all?  Near McM->CHC flight path, maybe a plane?
+6)  78946778 - points directly at Concordia (0.25) Also looks ratty.  Again, nothing else points at Concordia besides this.
+7)  80299371 - Cluster
+8)  80416433 - Cluster
+9)  80428168 - Cluster
+10) 80434384 - Cluster
+11) 80436592 - Cluster
+12) 80700153 - Cluster
+
+crab
+Reflected:  Looks like 18 good ones here.  They are very weird though... not really what I expected?
+1  8135326  - Pretty ratty.  Points very far down (-27), near McM.  Lots of cross pol (probably expected tho)
+*2  9097075  -  Very nice.  17 down, super clean.
+3  11116669 - Fav event number!  Looks nice. Points directly over a base, but way over it.  This actually might be a bug?
+4  11989349 - Points towards pole, plane flight path?  also sort of sun pointed.  Looks nice tho
+*5  15717147 - Waaay down, 35.  looks sorta ratty too?  Almost inverted.  Lots of CW right there too
+6  16952229 - Looks nice, sort of towards sun?
+*7  19459851 - Very nice!  30 down.  40 off HW angle
+*8  23695286 - Closeish to a base (49). Pointing a bit low. Looks good though
+*9  32907848 - Looks really good.  BenS event.
+10 33484995 - Looks really good.  BenS event.
+*11 41529195 - Looks really good.  BenS event. near a bunch of clustered stuff, but pointed totally opposite direction.
+12 58592863 - Looks really good.  BenS event. Off cone for sure.
+13 62273732 - Double (triple?) pulse.  
+*14 66313844 - Another insane upcoming event (38).  looks super clean though.  crab Over ice sheet
+*15 68298837 - Another insane upcoming event (36).  looks super clean though.  Over ice sheet
+*16 70013898 - Very nice looking, right at horizon.  39 off HW angle
+*17 73726742 - steep (27).  sort of looks like garbage?
+*18 75277769 - right at sun.  Lots of these are right at the sun... looks pretty though
+19 83877990 - Pointed right at Taishan base, even though it is pretty far away...  Looks so pretty :(  Nothing else really points at Taishan though, so this might be a real thing...
+20 84114142 - Pointed right at Soyuz base, though super far away.  Looks like ratty garbage though. Also the geomagnetic is way off (35)
+*21 84405480 - Worst looking pulse I saw in the whole set.  Doesn't point at anything though?  Also mostly Vpol.  
+				Probably a neutrino lol.. HW angle off by 40 though, and geomagnetic off by 26.
+
+* - pass more stringent base list cuts (12)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+September 8th 2017
+
+So jet lagged argh.
+
+Messed around with AntarcticaBackground, which seems nice.  Also need to start using BaseList.h since it is better
+
+And make the covarience plots.  Probably just do it for the clustered event bases (these should be in BaseList, I don't get how John stored these things, its definitely done wrong right now), and LDB and WAIS.  Doing it for all of them looks wrong.  I think everything is WAY more correlated than I thought for signal, just not for noise.  This means the background estimate might be higher.
+
+Also do it for linPolFrac and  linPolAngle and write write write!!  I took like two days off writing and now I'm behind.  Tomorrow is a writing day!  Then the days in wisco are too, and at the airport.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+September 13th
+
+TURN ON POLARITY BLINDING!!!! THEN I CAN LOOK AT THINGS.
+
+I need to see if our expectation matches reality for bases.  Like, if i throw a bunch of events at the continent, and look to see how close they land to bases, does that match what I see?  If it does, then the decision to not use bases is much more valid
+
+Frequentist vs Baysian is apparently a thing, so I gotta get that right.
+
+I should do this background estimate for things that I KNOW are background
+
+Revisit the hardware trigger angle, is that right?
+ ->  Cosmin says I should move it to 60, which is fine, it doesn't change much
+
+Look at blast events that point at the continent. Make sure they are blasts.  Also defend the "3" cut.
+ -> Yup they sure are
+
+Make sure I'm doing statistics right, just cite the literature.  Also make sure the values went up not down.
+ -> pretty sure I'm NOT doing this right
+
+%%%%%%%%%%%%%%%%
+September 14th 
+
+Drove all day, was supposed to be writing during it but didn't :(  Maybe tomorrow?
+
+Ended up doing a bit of work at night.  Read more about Bayesian and Frequentist statistics:
+Frequentist: Only takes into account the stuff you saw, and does the standard probability stuff
+Bayesian:  Also takes into account other stuff you know.  Probably the correct one to use.
+
+I am super confident my equation is wrong though.
+
+%%%%%%%%%%%%%%
+September 15th
+
+Didn't really get much done today either, but Kathleen gave me new Beats headphones which is great!  
+
+Wedding rehearsal dinner! 
+
+%%%%%%%%%%%%%%%%
+September 16th
+
+Hung over from wedding rehearsal dinner :(  Went to a coffee shop at noon, gonna just type stuff.
+
+Did the wais divide antenna tilt stuff.  Max to Min is only 45 degrees, not 90 like it should be, so maybe it is something else?
+
+%%%%%%%%%%%%%%%%%%%
+September 17th
+
+Figured out the Bayesian stuff I think.  Think of the bug analogy.  We see LOTS of anthropogenic crap, so we need to sort of weight that into determining how many background events we see.  
+
+%%%%%%%%%%%%%%%%%%
+September 18th 
+
+Notes from the meeting:
+Trying to find the join probability that each event falls within a background distribution
+	
+just make the 4d space and see how many exceed that.
+	
+Improve geomagnetic estimate and propogate the errors.
+	
+add something about unblinding polarity, how likely are we to get the polarity?
+	
+I need to VERY MUCH write this stuff up
+
