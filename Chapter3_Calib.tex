@@ -253,7 +253,13 @@
 		
 		
 	\subsection{HiCal}
-		As real cosmic ray EAS radiation signals are emitted in the atmosphere, it is desired to have a calibration source that mimics this source location.  HiCal utilizes a piezoelectric spark generator driven by a small DC motor attached to a horizontally polarized fat dipole antenna hanging from a balloon payload.
+		As real cosmic ray EAS radiation signals are emitted in the atmosphere, it is desired to have a calibration source that mimics this source location.  HiCal utilizes a piezoelectric spark generator driven by a small DC motor attached to a horizontally polarized fat dipole antenna hanging from a balloon payload.  After a failed launch attempt immediately after the ANITAIII launch, a second module was successfully launched as ANITA passed by LDB on its second orbit on January 6th.  The flight path of HiCal can be seen in Figure \ref{fig:hiCalFlight}.  See \cite{HiCal} for more information about the HiCal flight.
+
+	\begin{figure}
+		\includegraphics[width=\textwidth]{figures/hiCalFlight}
+		\caption{HiCal flight track over Antarctica (green). ANITAIII's first orbit (blue) and second orbit (red) are also visible.}
+		\label{fig:hiCalFlight}
+	\end{figure}		
 
 
 \section{Antenna Phase Center Location Measurements}
@@ -281,9 +287,17 @@
 	
 		
 	\subsection{Calibration Pulse Timing Optimization}
-		Determining the physical location at which the electromagnetic field couples to the antenna, called the phase center, requires an additional calibration.  The phase center is a function of frequency and incident wave direction, so the calibration must consider a large phase space. Though directly related to the physical position and orientation of the antenna, the precision required for interferometric reconstruction requires accuracy beyond photogrammetry. The calibration measurements are done in-situo by a ground pulser transmitting an impulsive signal to the payload as it passes overhead.  This pulse, able to be simultaneously measured by multiple antennas, can be used to determine the relative phase center offsets between nearby antennas.  The positional error of the phase centers relates directly to the pointing error for events seen later in the flight.
+		Determining the physical location at which the electromagnetic field couples to the antenna, called the phase center, requires an additional calibration beyond the simple geometric location of the physical antenna.  The phase center is a function of frequency and incident wave direction, so the calibration must consider a large phase space. Though directly related to the physical position and orientation of the antenna, precise interferometric reconstruction requires accuracy beyond photogrammetry. The calibration measurements are done in-flight by a ground pulser transmitting an impulsive signal to the payload as it passes overhead.  This pulse, able to be simultaneously measured by multiple antennas, can be used to determine the relative phase center offsets between nearby antennas.  The positional error of the phase centers relates directly to the pointing error for events seen later in the flight.  A diagram showing this method can be seen in Figure \ref{fig:phaseCenterDiag}.  Measurements of the vertical and horizontal polarization channels must be done separately, as there is a physical coupling offset required by antenna construction.  Both the WAIS and LDB calibration pulser data is required, as the WAIS v-pol pulser was non-operational.  These multiple measurements can also be used to validate the phase centers.
 		
-		The two pulser locations discussed earlier provide two distinct timeframes during which to measure the phase centers of the antennas.  
+\begin{figure}
+	\label{fig:phaseCenterDiag}
+		\centering
+		\includegraphics[height=\textheight]{figures/phaseCenterCalib}
+		\caption{A diagram showing the process used to calibrate the electrical phase centers of each antenna by comparing waveform arrival times between antenna pairs.  The pulser used was the WAIS divide pulser, which was an azimuthally symmetric autonomous station.  The timing delay was determined by finding the peak correlation of the waveforms, and repeated iteratively for neighboring antenna pairs and all antennas.}
+	\end{figure}	
+		
+	The peak correlation time offset of measured impulsive signals over all antennas can be used as an input to a minimization routine that determines the phase centers for the entire instrument.  The variable parameters in the fit are the static cable delays, and the cylindrical coordinates of the phase center (height, radius and azimuth angle).  Limits from photogrammetry and cable measurements can be used to constrain the phase space in the minimization.
+		
 
 \section{Instrument Impulse Response}
 		The signal observed by the digitizers is strongly effected by the various components in the signal chain.  Chief amongst these is the group delay introduced by the band pass filters.  To properly reconstruct the electric field that was present at the payload at the time of digitization, a full complex phasor array representing the signal chain response and antenna height as a function of frequency must be developed.  This is discussed at length in Appendix B.
@@ -304,11 +318,35 @@
 \section{Triggering Validation}
 	Determining whether the trigger circuit is effectively discriminating between signal and noise type events and reliably latching the digitizer circuit is important to determine the overall sensitivity of the instrument.  The first level L1 triggers are dependent on signal strength, making any trigger efficiency likewise SNR dependent.  The L2, and L3 triggers to an extent, are timing dependent, creating an elevational dependance to the trigger efficiency.  Calibration measurements were taken on the ground before flight, with additional measurements from ground based calibration pulsers taken during flight.  
 
-	\subsection{L1 efficiency}
-		The L1 efficiency of the trigger can be derived by determining the peak power in a digitized waveform in conjunction with the peak efficiency of injected signals.  The peak efficiency observed by ANITAIII plateaus at approximately 80\%, which means that L1 triggers fail to fire some fraction of the time.
+
 	\subsection{Windowed trigger testing}
-		Before flight, a programmable delay line was used to inject impulses at various picosecond precision delayed impulses into all like polarized channels of two neighboring phi sectors to test for the true angular response of the payload.  Due to the opaque nature of firmware, it is important to discern the exact L0 timing coincidence regions for which a global trigger will be generated.
-	\subsection{Angular Response Characteristics From Data}
+		Before flight, a programmable delay line was used to inject impulses at various picosecond precision delayed impulses into all like polarized channels of two neighboring phi sectors to test for the true angular response of the payload.  Due to the opaque nature of firmware, it is important to discern the exact L0 timing coincidence regions for which a global trigger will be generated.  Results of these measurements can be seen in Figure \ref{fig:delayEfficiency} and \ref{fig:elevationEfficiency}.
+
+\begin{figure}
+	\label{fig:delayEfficiency}
+		\centering
+		\includegraphics[width=\textwidth]{figures/ringDelayEfficiency}
+		\caption{Global trigger efficiencies for injected impulsive signals with varying timing delays pre-flight.  Identical signals were injected at 10Hz into six channels in two neighboring phi sectors with varying timing delays.  The timing windows discussed in the Triggering section are validated with this measurement.  Plot courtesy of Keith Bechtol.}
+\end{figure}
+
+\begin{figure}
+	\label{fig:elevationEfficiency}
+		\centering
+		\includegraphics[width=\textwidth]{figures/elevationCalibrationEfficiency}
+		\caption{Global trigger efficiencies for injected impulsive signals with varying timing delays pre-flight.  Identical signals were injected at 10Hz into six channels in two neighboring phi sectors with varying timing delays.  The efficiency of any signal that falls within the triggering window is shown to be equal across the entire window phase space.  Plot courtesy of Keith Bechtol}
+\end{figure}
+		
+		
+		
+	\subsection{Overall Trigger Efficiency}
+		The trigger efficiency of the payload can be determined by measuring the number of recorded WAIS calibration and dividing it by the number of expected signals during that same time period.  The results of this, as a function of SNR, can be seen in Figure \ref{fig:waisEfficiency}.  The reduction in efficiency between pre-flight injected signal calibration (3.5) and in-flight measurements (4.5) can be attributed to anthropogenic noise, both CW and impulsive, causing large variations in L1 thresholds.
+
+\begin{figure}
+	\label{fig:waisEfficiency}
+		\centering
+		\includegraphics[width=\textwidth]{figures/waisEfficiency}
+		\caption{The global trigger efficiency to WAIS calibration pulser events as a function of SNR.  Error bars represent the standard deviation of the underlying histogram.  The color map is the number of events in each bin.  The 50\% efficiency point occurs at approximately 4.5}
+\end{figure}	
 		
 
 
@@ -320,3 +358,17 @@
 
 	From the results of the calibration, there exists one additional outlier channel.  The time domain impulse of 13BH differs visually from the remainder of the channels.  
 
+
+\section{Interferometric Pointing Resolution}
+	An ultimate check on the calibration of the instrument can be seen in the precision and accuracy of interferometric pointing to known impulsive sources.  Using the WAIS pulser events, distributions of event arrival direction and their separation from the true location of the calibration pulser.  The pointing resolution is a function of the SNR of the signal.  Distributions of the pointing accuracy and precision can be seen in Figure \ref{fig:pointingAccuracy}.
+	
+	\begin{figure}
+	\label{fig:pointingAccuracy}
+		\centering
+		\includegraphics[width=\textwidth]{figures/waisPhiResolution}
+		\includegraphics[width=\textwidth]{figures/waisThetaResolution}	
+		\caption{Interferometric pointing resolution as a function of SNR of the ANITAIII instrument for WAIS calibration pulses for azimuth (top) and elevation (bottom).  Error bars represent the standard deviation of the distribution.  The color map shows the number of events captured with that SNR and angular deviation from expectation.}
+	\end{figure}
+	
+	The full interferometric reconstruction method used to determine these values is described in more detail in the Analysis chapter.
+	
