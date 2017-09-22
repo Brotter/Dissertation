@@ -92,7 +92,7 @@
 		
 \begin{figure}
 	\includegraphics[width=\textwidth]{figures/BOFdiagram}
-	\caption{A simplified diagram showing the Bin Occupancy Fraction method.  The raw, unwrapped, LABRADOR waveform readout is shown on top.  The x-axis is capacitor bin number, and the y-axis is ADC counts recorded by the digitizer. The Hitbus region marked in red. The points immediately following the hitbus are the oldest samples, and would be unwrapped to the "front" of the remaining data (as shown by the arrows.  The green stars mark zero crossings, which are used to fill the bottom histogram.  The zero crossing and histogram filling process is repeated for as many waveforms as possible.  The final bin-width calculation is then done by taking the fraction of zero crossings recorded in each capacitor bin against the expected number of crossings as dictated by the number of waveforms and clock frequency (see text).}
+	\caption{ A simplified diagram showing the Bin Occupancy Fraction method.  The raw, unwrapped, LABRADOR waveform readout is shown on top.  The x-axis is capacitor bin number, and the y-axis is ADC counts recorded by the digitizer. The Hitbus region marked in red. The points immediately following the hitbus are the oldest samples, and would be unwrapped to the ``front'' of the remaining data (visualized by the arrows).  The green stars mark zero crossings, which are used to fill the bottom histogram.  The zero crossing and histogram filling process is repeated for as many waveforms as possible.  The final bin-width calculation is then done by taking the fraction of zero crossings recorded in each capacitor bin against the expected number of crossings as dictated by the number of waveforms and clock frequency (see text). }
 	\label{fig:BOFdiagram}
 \end{figure}
 		
@@ -130,14 +130,14 @@
 		Utilyzing this method, I calibrated all capacitor bin dTs and compared the results with the previously measured constants provided in this thesis and other published results\cite{BenSThesis}.  The values are presented in Figure \ref{fig:ellipseResults}.
 		
 	\begin{figure}
-		\includegraphics[width=\textwidth]{figures/ellipseMethodExample}
-		\caption{}
+		\includegraphics[width=\textwidth]{figures/ellipseMethodExample2_arrows}
+		\caption{Two plots showing the variation of the ellipse created by two different capacitor bins with different timing separations.  Using the ratio of the semi-major (green) to semi-minor (red) axes, and knowledge of the injected sine wave frequency, can be used to determine the bin width per capacitor.  The bin pair shown in the top graph has a smaller time separation than the bin pair in the lower graph.}
 		\label{fig:ellipseMethodExample}
 	\end{figure}
 
 	\begin{figure}
 		\includegraphics[width=\textwidth]{figures/ellipseComparison}
-		\caption{}
+		\caption{Comparison of calibration constants determined by the ellipse method and the nominal values.  Single bins with large variations are the result of a poor ellipse fit.  The high level of correlation between the two distributions lends support for the accuracy of the nominal calibration.}
 		\label{fig:ellipseResults}
 	\end{figure}
 
@@ -281,7 +281,7 @@
 	
 		
 	\subsection{Calibration Pulse Timing Optimization}
-		The electrical center-point of the antennas, though directly related to the physical position and orientation of the antenna, requires an additional calibration.  The phase center, or point at which the electromagnetic field couples to the antenna and begins propagating through the signal cables, is a function of frequency and incident wave direction, so the calibration must consider a large phase space.  The calibration measurements are done in-situo by a ground pulser at WAIS divide sending a pulse to the payload as it passes overhead.  This pulse can be used to determine  the relative phase center offsets between nearby antennas.  The positional error of the phase centers relates directly to the pointing error for events seen later in the flight.
+		Determining the physical location at which the electromagnetic field couples to the antenna, called the phase center, requires an additional calibration.  The phase center is a function of frequency and incident wave direction, so the calibration must consider a large phase space. Though directly related to the physical position and orientation of the antenna, the precision required for interferometric reconstruction requires accuracy beyond photogrammetry. The calibration measurements are done in-situo by a ground pulser transmitting an impulsive signal to the payload as it passes overhead.  This pulse, able to be simultaneously measured by multiple antennas, can be used to determine the relative phase center offsets between nearby antennas.  The positional error of the phase centers relates directly to the pointing error for events seen later in the flight.
 		
 		The two pulser locations discussed earlier provide two distinct timeframes during which to measure the phase centers of the antennas.  
 
@@ -289,7 +289,8 @@
 		The signal observed by the digitizers is strongly effected by the various components in the signal chain.  Chief amongst these is the group delay introduced by the band pass filters.  To properly reconstruct the electric field that was present at the payload at the time of digitization, a full complex phasor array representing the signal chain response and antenna height as a function of frequency must be developed.  This is discussed at length in Appendix B.
 		
 	\subsection{Effect of Signal Chain}
-	
+		The electromagnetic impulse from an EAS is extremely short in duration, however the waveform exiting the signal chain experiences a frequency dependent group delay, creating a dispersed signal.  This dispersion is primarily caused by the filtering components.  
+		
 	\subsection{Convolution with Antenna Response}
 		An important effect on the signal measured by the instrument is the angular response of the antennas.  First, there are a few considerations for determining what the optimal antenna response, the ratio of induced voltage on the 50-ohm output terminal of the antenna as a function of electric field on the front face, as a function of angle.  Firstly, it is important for the antennas to have some response outside of their specific 22.5 degree wide phi sector observations region in order to have baselines with measurable signal power (is this true?  It only is an effect if the source is exactly centered with the phi sector, but then you sort of know where it is because neither surrounding phi sector has any power...).  The antennas also need to have a high gain, aka a high directivity, in order to increase signal power as a function of noise power.  If we only used omni-directional antennas, the interferometry would have additional baselines (as additional antennas would observe any specific signal source), however each channel would have a reduced signal power with an identical noise power.  This also doesn't take into account the occlusion of signal by the gondola structure and discrete instrument packages residing ont the deck.  In addition, there exists no perfect antenna with a step function response, and as such we need to characterize the non-ideal antennas that fly on ANITAIII.
 		These antennas have several measurements that describe the complex response (antenna gain and group delay as a function of frequency) of the flight antennas.  One was done by the manufacturer, and several were done by us on the ground.  An additional calibration was possible in flight using the calibration pulsers and the random rotations of the gondola in respect to it.  The absolute measurements are most accurate in gain, as in the far field calibration measurements the absolute timing of the pulser was not synchronized.  However, both gain and phase have relative measurements as a function of angle.
@@ -299,9 +300,6 @@
 	\subsection{Effect of Uneven Time Sampling}
 	The uneven sampling produced by the non-idealities of the LABRADOR sampling timebase requires the waveform to be evenly resampled before it can be properly compared to other waveforms in each event.  In addition, the timing offsets induced by the physical baseline delays between antennas as well as the internal asynchronous hold times are not quantized to the sample bins, and thus must be up-sampled to be properly correlated and averaged.  There are several methods that can be used to accomplish this, each with drawbacks and positives.
 
-	
-
-	
 	
 \section{Triggering Validation}
 	Determining whether the trigger circuit is effectively discriminating between signal and noise type events and reliably latching the digitizer circuit is important to determine the overall sensitivity of the instrument.  The first level L1 triggers are dependent on signal strength, making any trigger efficiency likewise SNR dependent.  The L2, and L3 triggers to an extent, are timing dependent, creating an elevational dependance to the trigger efficiency.  Calibration measurements were taken on the ground before flight, with additional measurements from ground based calibration pulsers taken during flight.  
