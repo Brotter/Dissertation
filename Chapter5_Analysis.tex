@@ -1,19 +1,47 @@
 %%%%%%%%%%%%% 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Analysis of ANITAIII Flight Data}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{ANITAIII Flight Overview}
-	The data recorded by the ANITAIII flight instrument requires a significant analysis effort to extract a meaningful physics result.  The digital values recorded by the instruments on board the payload, when properly calibrated and used in conjunction with one another, can establish whether any electromagnetic signals were traversing the payload at the time that the trigger system latched the digitizers.  The combination of geometric antenna offsets and their corresponding timing delays allows the discrimination of signal versus noise, as well as precision reconstruction of any incident signal.  Using a variety of mathematical methods and an understanding of the expected signal, the nearly 85 million waveforms captured during the flight can be pared down to a manageable number, which can then be looked at more closely.  This chapter details the calculated values, their motivations, and the statistical analyses used to conduct the cosmic ray search.
-		
-%	The data recorded by the ANITAIII flight instrument requires a significant analysis effort to extract a meaningful physics result.  Using the raw digital values recorded from each channel, we can establish the analog electromagnetic environment surrounding the payload during brief moments the trigger system determined a physics event may be occurring.  From this, we can use an understanding of the physical geometry of the antennas mounted on the payload, including their orientation and electrical responses, to determine the cause of any incident wave patterns read out by the digitizers.  Once these wave patterns are identified and classified, they can be sorted into signal and noise, background thermal or anthropogenic, via a series of procedural cuts.  This section details the process and results of this analysis.
+\section{ANITAIII Analysis Overview}
+	The physics event search analysis detailed in this thesis was designed to find ``cosmic ray like'' events.  As there are already published observations of cosmic rays from previous ANITA flights, the workload of doing a full blind analysis for any impulsive signals can be greatly diminished.  However, this has the consequence of excluding signals that do not fit into a measured and modeled EAS radiation pattern.  This search has the possibility of identifying two separate cosmogenic particle interactions, UHECRs interacting in the atmosphere, and up-going tau neutrino regeneration showers.
 	
-\section{Analysis Overview}
-	The analysis search detailed in this thesis was done for "cosmic ray like" events.  As there are already published observations of cosmic rays from previous ANITA flights, I can reduce the workload of doing a full blind analysis for any impulsive signals.  This has the consequence of excluding signals that do not fit into a measured and modeled EAS radiation pattern.  However, this still will allow us to search for two separate cosmogenic particle interactions, cosmic rays and tau neutrino regeneration events.
+	Analysis of the data recorded by the ANITAIII flight instrument requires a significant computational effort to extract a meaningful physics result.  The digital values recorded by the instruments on board the payload, when properly calibrated and used in conjunction with one another, can establish whether any electromagnetic signals were traversing the payload at the time that the trigger system latched the digitizers.  The combination of geometric antenna offsets and their corresponding timing delays allows the discrimination of signal versus noise, as well as precision reconstruction of any incident signal.  Using a variety of mathematical methods and an understanding of the expected signal, the nearly 85 million waveforms captured during the flight can be pared down to a manageable number, which can then be looked at more closely.  This chapter details the calculated values, their motivations, and the statistical analyses used to conduct the cosmic ray search.
+		
+%	The data recorded by the ANITAIII flight instrument requires a significant analysis effort to extract a meaningful physics result.  Using the raw digital values recorded from each channel, we can establish the analog electromagnetic environment surrounding the payload during brief moments the trigger system determined a physics event may be occurring.  From this, we can use an  understanding of the physical geometry of the antennas mounted on the payload, including their orientation and electrical responses, to determine the cause of any incident wave patterns read out by the digitizers.  Once these wave patterns are identified and classified, they can be sorted into signal and noise, background thermal or anthropogenic, via a series of procedural cuts.  This section details the process and results of this analysis.
+	
 
-	\subsection{In Flight Modifications}
-		The majority of the ANITA3 flight required very little input from ground operators.  However there were some minor issues in the beginning of the flight that required fixing, and one in the middle of the flight that resulted in lost data.
+\section{Software Package Overview}
+	The analysis was done with a variety of software packages created by the ANITA collaboration.  The relevant packages used in the analysis described in this thesis are described in the following section.  The range from tools for interfacing with , to ANITA specific calibration and interferometric mapping, to this-thesis specific packages for template correlation, clustering, and background estimation.  The packages are described in order of dependency, with most independent packages listed first.
+	
+	The cosmic ray search was done primarily in C++ using libraries from the ROOT Data Analysis Framework~\cite{ROOT}.  ROOT, developed at CERN, provides a variety of data storage objects and plotting functions optimized for physics experiments.
+
+	\subsection{ROOT FFTW interface: libRootFftwWrapper}
+		Fourier transforms were done using the the Fastest Fourier Transform in the West (FFTW) package.  This package is not designed to be used with the ROOT objects that the remainder of the packages are based around, and so an interface library, named libRootFftwWrapper is used~\cite{libRootFftwWrapper}.  This package not only provides an interface however, it also includes a large number of ANITA related numerical recipes.
+
+	\subsection{Event Reader Software: eventReaderRoot}
+		The data taken by the ANITAIII instrument is written in a compressed c++ binary class format to disk.  This data format requires minimal computational load and very fast write speeds, with minimal storage space overhead.  This data format requires a standardized class structure that is stored in the eventReaderRoot code library~\cite{eventReaderRoot} in order to accurately read and extract any values.  The raw data taken in flight is converted to ROOT objects, which increases data read speed and enforces data quality, with the tradeoff of slightly increased storage space and a one time computationally complex conversion.  The eventReaderRoot library also stores information about each flight, such as the number of antennas and their mapping to RF channel, as well as tools for applying the calibration constants to waveforms.
+
+	\subsection{Coordinated Analysis Framework: AnitaAnalysisFramework}
+		In order to facilitate active collaboration between multiple analyzers, much of the analysis software was consolidated into a library named the Anita Analysis Framework~\cite{anitaAnalysisFramework}.  It provides a standardized set of C++ classes for storing and calibrating digitized LABRADOR waveforms in memory, implementing filtering algorithms, implementing agreed-upon common analysis tools, and a shared output format.
 		
-		At the beginning of the flight, the default time persistance values for phi masking were set too high, resulting in the entire payload becoming masked as it rotated.  The solution to this was to lower user configurable time persistance values via ground operator commands pre-programmed into the payload.  This was tuned so that phi masking would be correctly cycled off as scalar rates dropped back to manageable levels.
+		This framework, most importantly, provides a C++ summary class with agreed upon reduced quantity values of interest.  This object, named the AnitaEventSummary, is created for each event taken during the flight, and is designed to be filled by any analysis routine with all values required to do a full physics analysis of the flight data.  This prevents computationally burdensome calculations used in calibration and interferometry from being repeated multiple times.
+				
+				%crab
+	\subsection{University of Chicago Event Analyzer: UCorrelator}
+		The data taken by the ANITA instrument requires processing to be useful in a physics analysis, and many of the computational techniques can be shared across multiple analyses.  For this analysis, I have used and collaborated to the UCorrelator software packaged developed primarily by Cosmin Deaconu at the University of Chicago~\cite{UCorrelator}.  With the addition of my own bug-testing and feature expansion, this package has been used to do the base-level numerical computations for this analysis.
 		
+		
+	\subsection{Event Display: anitaMagicDisplay}
+		The anitaMagicDisplay package \cite{anitaMagicDisplay} allows a user to quickly and easily display many of the most relevant raw and reduced data values for any event in the flight.  The package provides a Graphical User Interface (GUI) that can simultaneously display waveforms captured from the entire instrument sorted in various ways.  It also include dynamically selectable filtering strategies, maps and summaries of multiple interferometric reconstruction techniques, and payload orientation information.  
+		
+	\subsection{Miscellaneous utility functions: anitaEventCorrelator}
+		A separate library that includes some additional important functionality is anitaEventCorrelator~\cite{anitaEventCorrelator}.  The most important class in this code is UsefulAdu5Pat, which takes raw GPS sensor information, as well as Earth geometry and Antarctic topographical information, and provides a method for mapping spherical payload coordiates to a point on the continent, and vice-versa.
+		
+		
+	\subsection{Thesis analysis specific: benCode}
+		The eclectic accumulation of code used in this analysis is stored in a variety of libraries, macros, and compiled programs collectively named benCode~\cite{benCode}.  Though there are many offshoot routines for debugging and the determination of specific values of interest, the main path for the analysis is summarized in Figure \ref{fig:AnalysisPath}.
+
+	
+	
 	
 \section{Blinding Procedure}
 	Avoiding the introduction of bias into the resulting measurement through the subconsious desires of the analyzer is a constant struggle.  Several techniques have been employed to minimize this insidious bias.
@@ -75,18 +103,10 @@
 
 
 
-\section{De-dispersion}
-	The antenna, filters, cables, and amplifiers are responsible for introducing a frequency dependent gain and group delay to the observed signals.  These elements act to disperse the power in the signal across tens of nanoseconds from what was emitted from the relativistic shower at the critical angle as a highly impulsive, picosecond length essential delta-function like electromagnetic field transient.  The impulse response, or complex phasor representation of this dispersive effect, was measured for the signal chain immediately preceding the flight for each of the 96 channels, and for all 48 antennas in a controlled manner in Palestine the summer beforehand.  These two effects are then combined and used to determine a whole system impulse response that relates the measured ADC values at the LABRADOR digitizer to an electric field incident at the payload.  By reversing the dispersive process, via Weiner deconvolution (described below), we can both increase the instantaneous power of a signal and compare it directly to the electric field radiation output of high energy particle shower simulations such as COREAS or ZHAires.
-	\subsection{Generation of transfer function}
-		The transfer function of the system was painstakingly developed and utilized a variety of both time domain and Fourier transformed frequency domain manipulations.  These each introduce their own errors, as many of them require assumptions about the incoming signal.  I'll detail the full process of generating the transfer function in an appendix.
-	\subsection{Signal to noise ratio of impulse response}
-		Any band limited deconvolution process requires a knowledge of the signal to noise ratio of the transfer function as a function of frequency (SNR(f)).  Since the transfer function merely relays the amplitude and phase differences between an input and output signal (represented in either a complex phasor or a time domain waveform), one must also have an understanding of the total power contained within the input and output signals.  If, for example, both the input and output signal contained very little power out of a specified band pass, it could be wrongly assumed from a transfer function that the signal chain was able to pass frequencies that are out of the band pass.
-		The "signal" and "noise" of this must therefore be defined, as the spectral power has multiple sources.  The principle   
-	\subsection{All-Pass Deconvolution}
-		The impulse response used to deconvolve waveforms has been colloquially named the All-Pass deconvolution method.  An ideal deconvolution, one that uses both phase and amplitude information to remove the instrument response, is poorly defined outside the instrument bandwidth.  Since the instrument blocks any signal outside this frequency range, reversing the procedure introduces what is in essence a "divide by zero" error that grossly amplifies signal power outside the band.  The simplest way to avoid this is to disgard the frequency dependent amplitude information, and only correct for the phase.  Due to the relatively flat spectral response of the ANITA system, this is a good first approximation.  The resulting waveform "stacks" signal power from all in-band frequencies on top of one another, increasing the observed peak to peak signal to noise ratio and offering a larger separation between signal and noise events during analysis cuts.
-
-\section{Event Reconstruction}
-	The major tool used in the ANITA analysis is interferometry, a radio astronomy technique that uses the physical separation between the antennas and the correlations of waveforms from these antennas to generate a map of likely pointing directions.  ANITA has three vertical tiers of antennas, each separated from each other, and at least three co-pointing phi sectors that are expected to observe events from any angle.  Using the combined baseline offsets from these antennas, it is possible to overlay 9 different interferometric maps to create a pointing map.  By finding the peak of this map, a vector pointing away from the payload can be traced to the ice, where a map of the vertical height of the continent can be used to create a map of events on the ground.
+\section{Waveform Reconstruction}
+	To extrapolate the measured signal on the ANITA instrument back to a physics signal or background noise event, we must combine the various waveforms captured around the instrument.  By summing the values various waveforms with specifically determined time offsets, it is possible to determine the level of coherence of the electromagnetic environment.  Once an arrival direction is determined it is possible to reconstruct the signal, averaging out the random thermal and electronic noise.
+	
+	By correlating the waveforms captured between various antenna pairs it is possible to establish time delays in which multiple channels maximally constructively interfere.  Known as interferometry, a radio astronomy technique, it makes use of the known physical separation vector between the antennas and the propagation delay for any incident plane wave.  generate a map of likely pointing directions.  ANITA has three vertical tiers of antennas, each separated from each other, and at least three co-pointing phi sectors that are expected to observe events from any angle.  Using the combined baseline offsets from these antennas, it is possible to overlay 9 different interferometric maps to create a pointing map.  By finding the peak of this map, a vector pointing away from the payload can be traced to the ice, where a map of the vertical height of the continent can be used to create a map of events on the ground.
 	
 	\subsection{Radio Interferometric Mapping}
 		Interferometric mapping is a method developed to compare measured time domain waveforms captured by antennas with a physical baseline offset with the goal of determining likely incoming plane wave direction.  This is accomplished by calculating the timing offsets expected from each direction of a pair of antennas in elevation and azimuth, computing the correlation function of the two waveforms, then weighting each direction in relation to the correlation value at that specific timing offset.  An example of a map created with a single baseline pair is seen in Figure \ref{fig:singleBaselineCorrMap}.  With multiple baseline pairs, each with a different distance vector angle between them, one can overlay multiple correlation maps to determine a most likely incoming plane wave direction.
@@ -108,6 +128,19 @@
 	\subsection{Immediate Pointing Cuts}
 		Real physics signals have a small range of elevation angles where their detection is most likely.  The highest probability incident direction for an EAS is near the horizon, however noise events will point more evenly in all directions.  Using this knowledge, we can cut out events that have very steep elevations.  A distribution of event pointing direction can be seen in Figure \ref{fig:elevationAngle}.
 
+
+\section{De-dispersion}
+	The antenna, filters, cables, and amplifiers are responsible for introducing a frequency dependent gain and group delay to the observed signals.  These elements act to disperse the power in the signal across tens of nanoseconds from what was emitted from the relativistic shower at the critical angle as a highly impulsive, picosecond length essential delta-function like electromagnetic field transient.  The impulse response, or complex phasor representation of this dispersive effect, was measured for the signal chain immediately preceding the flight for each of the 96 channels, and for all 48 antennas in a controlled manner in Palestine the summer beforehand.  These two effects are then combined and used to determine a whole system impulse response that relates the measured ADC values at the LABRADOR digitizer to an electric field incident at the payload.  By reversing the dispersive process, via Weiner deconvolution (described below), we can both increase the instantaneous power of a signal and compare it directly to the electric field radiation output of high energy particle shower simulations such as COREAS or ZHAires.
+	\subsection{Generation of transfer function}
+		The transfer function of the system was painstakingly developed and utilized a variety of both time domain and Fourier transformed frequency domain manipulations.  These each introduce their own errors, as many of them require assumptions about the incoming signal.  I'll detail the full process of generating the transfer function in an appendix.
+	\subsection{Signal to noise ratio of impulse response}
+		Any band limited deconvolution process requires a knowledge of the signal to noise ratio of the transfer function as a function of frequency (SNR(f)).  Since the transfer function merely relays the amplitude and phase differences between an input and output signal (represented in either a complex phasor or a time domain waveform), one must also have an understanding of the total power contained within the input and output signals.  If, for example, both the input and output signal contained very little power out of a specified band pass, it could be wrongly assumed from a transfer function that the signal chain was able to pass frequencies that are out of the band pass.
+		The "signal" and "noise" of this must therefore be defined, as the spectral power has multiple sources.  The principle   
+	\subsection{All-Pass Deconvolution}
+		The impulse response used to deconvolve waveforms has been colloquially named the All-Pass deconvolution method.  An ideal deconvolution, one that uses both phase and amplitude information to remove the instrument response, is poorly defined outside the instrument bandwidth.  Since the instrument blocks any signal outside this frequency range, reversing the procedure introduces what is in essence a "divide by zero" error that grossly amplifies signal power outside the band.  The simplest way to avoid this is to disgard the frequency dependent amplitude information, and only correct for the phase.  Due to the relatively flat spectral response of the ANITA system, this is a good first approximation.  The resulting waveform "stacks" signal power from all in-band frequencies on top of one another, increasing the observed peak to peak signal to noise ratio and offering a larger separation between signal and noise events during analysis cuts.
+
+
+
 \section{Template Correlation}
 	Though any physics experiment that aims to separate background events from signal events requires a general understanding of characteristics inherent to either group, measurements and simulations of UHECR induced EAS signatures provide a waveform template that can be used to strongly cut on signal events.  The simplest assumption, that an EAS will produce a broad spectrum, short duration, electromagnetic pulse, drives both the overall design of the payload, as well as several of the analysis cuts.  Determining a normalized correlation between a template and the coherently summed waveform provides an additional constraint beyond simply requiring impulsivity, and also requires the gain and phase characteristics of an incident wave are in agreement with an EAS signal.
 	
@@ -116,6 +149,8 @@
 	
 	\subsection{Auto-correlation normalization}
 		In order to make the template correlation value of different events directly relatable to one another, it is important to normalize both the template and the coherently summed waveform.  As this measurement is most interesting in determining the amount that any given event ``looks'' like the template, the final value should be a fraction from 0 to 1, where 1 would be a waveform that is an exact copy of the template.  
+
+	\subsection{Issues with filtering}
 
 
 \section{Polarization cuts}
@@ -129,7 +164,7 @@
 
 	\subsection{Expected vs Measured Geomagnetic Polarization Angle}
 	
-\section{Known object categorization}
+\section{Known object identification}
 	Many bases on the Antarctic continent are already cataloged by the various national programs that operate them.  Using these known bases we can eliminate events that interferometrically point to objects of expected anthropogenic noise.  There also likely exist bases that are, for whatever reason, not included in our catalog.  We also use a list of "pseudo-bases" generated from clustered event lists from previous ANITA flights to eliminate possible anthropogenic interference.  The resulting effect these excluded regions have on the flight can be determined by its flight path and a log-likelyhood method for generating pointing error elipses around the bases.  I'll put a plot of that here.
 	\subsection{Sun and Its Reflection, Thermal Noise Effect}
 	\subsection{Satellites, Bases, and other Anthropogenic Sources}
@@ -141,12 +176,11 @@
 
 
 
-\section{Base and event clustering}
-	
+\section{Geographic Clustering}
 	After enriching the event sample by removing events with a high probability of being thermal noise or non-impulsive anthropogenic background, geographical clustering of the events can be done to further discriminate against backgrounds. Physics signal events are expected to be isotropically distributed evenly across the continent, as there is no preferred cardinal direction for UHECR or UHE$\nu$ detections.  Human activity, on the other hand, tends to cluster around regions of logistical or scientific interest.  Anthropogenic background sources are thus expected to point at other captured events, which can be used to discriminate against them and further refine the data sample. 
 
 	\subsection{Base Clustering}
-		Through communication with various international Antarctic institutions, a list of active camps and other human activity on the continent was compiled for the time frame of the ANITAIII flight.  An image of these bases mapped to the continent can be seen in Figure \ref{fig:BaseMap}.  Determining the validity of this base map is plagued with issues, as they are run an managed by a large collection of different nations and groups, many of whom do not wish or care to make their activities publicly available.  Additionally, camps that are reported by groups may be inactive, or have moved from when they were last reported.  Despite these limitations, it is still useful to map events that pass signal cuts to these bases.
+		Through communication with various international Antarctic institutions, a list of active camps and other human activity on the continent was compiled for the time frame of the ANITAIII flight.  An image of these bases mapped to the continent can be seen in Figure \ref{fig:BaseMap}.  Determining the validity of this base map is plagued with issues, as they are run an managed by a large collection of different nations and groups, many of whom do not wish or care to make their activities publicly available.  Additionally, camps that are reported by groups may be inactive, or have moved from when they were last reported.  Due to this non-statistical uncertainty, the relationship between any impulsive event and a camp present on the list does not significantly enhance our understanding of the source of such event.  We must employ alternate means to estimate the likelihood that a specific event is anthropogenic or astrophysical in nature.
 		
 \begin{figure}
 	\includegraphics[width=\textwidth]{figures/BaseMap}
@@ -156,7 +190,7 @@
 	
 	
 	\subsection{Event Clustering and Log Likelihood}
-		The metric that has been used in past ANITA experiments to determine the ``closeness'' of one event to another has been called the Log Likelihood, and is represented by the variable $L$.  This measurement must take into account both the pointing uncertainty of the instrument, as well as the constantly changing payload location.
+		Impulsive events that point back to a geographically isolated source location have the highest likelihood to be astrophysical in nature.  The metric that has been used in past ANITA experiments to determine the ``closeness'' of one event to another has been called the Log Likelihood, and is represented by the variable $L$.  This measurement must take into account both the pointing uncertainty of the instrument, as well as the constantly changing payload location.
 		
 		The pointing resolution of the interferometric mapping technique is a function of the SNR, and thus any clustering analysis must factor this into its calculation.  The pointing resolution as a function of SNR was found from analyzing self triggered WAIS pulses and their subsequent pointing to the 
 		
@@ -167,3 +201,5 @@
 	
 
 
+	\subsection{Impulsive source clustering}
+	

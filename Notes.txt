@@ -413,14 +413,30 @@ Figured out the Bayesian stuff I think.  Think of the bug analogy.  We see LOTS 
 %%%%%%%%%%%%%%%%%%
 September 18th 
 
+In Jersey, hard to work, did stuff in the morning at starbucks and then had the phone call at Betty's.
+
 Notes from the meeting:
 Trying to find the join probability that each event falls within a background distribution
-	
-just make the 4d space and see how many exceed that.
+->just make the 4d space and see how many exceed that.
 	
 Improve geomagnetic estimate and propogate the errors.
 	
 add something about unblinding polarity, how likely are we to get the polarity?
 	
 I need to VERY MUCH write this stuff up
+
+%%%%%%%%%%%%%%%%%%%
+September 19th (tuesday) -> 21st (thursday)
+
+Tuesday: Wrote up the geomagnetic thing and propagated the errors.  two commits for this day.  Uncertainty on calculated is really low 
+	-> This shit doesn't work anymore though, and I have no idea what happened.
+	-> Now the _normal_ one does
+	
+Wednesday: Didn't have time to get stuff done before the meeting, slept in I think?  Helped Margie move her furniture around, then went to the hotel, then went to the Mason Jennings show which was super fun!  Joan got sick at night :(  Still had a great day.  No commits :(
+
+Thursday: No time to get stuff done at all.  Hung over in the morning, went to the Hilton sales thing, went to lunch, went to The Met (which was really cool and I took some pictures) then walked back through central park and hung out with Joan all night (who is sad and scared for the plane).  Worked a bit at night, made a plot, didn't commit anything.
+
+%%%%%%%%%%%%%%%%%%%%%
+
+
 
