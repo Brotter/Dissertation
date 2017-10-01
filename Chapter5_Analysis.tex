@@ -5,6 +5,15 @@
 	The physics event search analysis detailed in this thesis was designed to find ``cosmic ray like'' events.  As there are already published observations of cosmic rays from previous ANITA flights, the workload of doing a full blind analysis for any impulsive signals can be greatly diminished.  However, this has the consequence of excluding signals that do not fit into a measured and modeled EAS radiation pattern.  This search has the possibility of identifying two separate cosmogenic particle interactions, UHECRs interacting in the atmosphere, and up-going tau neutrino regeneration showers.
 	
 	Analysis of the data recorded by the ANITAIII flight instrument requires a significant computational effort to extract a meaningful physics result.  The digital values recorded by the instruments on board the payload, when properly calibrated and used in conjunction with one another, can establish whether any electromagnetic signals were traversing the payload at the time that the trigger system latched the digitizers.  The combination of geometric antenna offsets and their corresponding timing delays allows the discrimination of signal versus noise, as well as precision reconstruction of any incident signal.  Using a variety of mathematical methods and an understanding of the expected signal, the nearly 85 million waveforms captured during the flight can be pared down to a manageable number, which can then be looked at more closely.  This chapter details the calculated values, their motivations, and the statistical analyses used to conduct the cosmic ray search.
+	
+	A diagram that depicts the order in which analysis steps are taken is shown in Figure \ref{fig:AnalysisDiagram}. 
+	
+\begin{figure}
+	\label{fig:AnalysisDiagram}
+	\centering
+	\includegraphics[height=0.8\textheight]{figures/AnalysisDiagram}
+	\caption{A diagram depicting the order in which analysis steps are taken, the intermediate storage files saved to disk, and the function names and ROOT macros where the code is located.  These steps are described in detail throughout this chapter.  The storage locations of final results are noted with red stars.}
+\end{figure}	
 		
 %	The data recorded by the ANITAIII flight instrument requires a significant analysis effort to extract a meaningful physics result.  Using the raw digital values recorded from each channel, we can establish the analog electromagnetic environment surrounding the payload during brief moments the trigger system determined a physics event may be occurring.  From this, we can use an  understanding of the physical geometry of the antennas mounted on the payload, including their orientation and electrical responses, to determine the cause of any incident wave patterns read out by the digitizers.  Once these wave patterns are identified and classified, they can be sorted into signal and noise, background thermal or anthropogenic, via a series of procedural cuts.  This section details the process and results of this analysis.
 	
@@ -38,13 +47,30 @@
 		
 		
 	\subsection{Thesis analysis specific: benCode}
-		The eclectic accumulation of code used in this analysis is stored in a variety of libraries, macros, and compiled programs collectively named benCode~\cite{benCode}.  Though there are many offshoot routines for debugging and the determination of specific values of interest, the main path for the analysis is summarized in Figure \ref{fig:AnalysisPath}.
+		The eclectic accumulation of code used in this analysis is stored in a variety of libraries, macros, and compiled programs collectively named benCode~\cite{benCode}.  Though there are many offshoot routines for debugging and the determination of specific values of interest, the main path for the analysis is summarized in Figure \ref{fig:AnalysisDiagram}.
 
 	
 	
 	
-\section{Blinding Procedure}
-	Avoiding the introduction of bias into the resulting measurement through the subconsious desires of the analyzer is a constant struggle.  Several techniques have been employed to minimize this insidious bias.
+\section{Dataset and Blinding Procedure}
+	The ANITAIII flight took Avoiding the introduction of bias into the resulting measurement through the subconsious desires of the analyzer is a constant struggle.  Several techniques have been employed to minimize this insidious bias.
+	
+	\subsection{Dataset for analysis}
+		The ANITAIII instrument was put into flight configuration on December 9th 2014, which marks the beginning of the run numbering.  However, due to non-optimal launch conditions, the payload was not launched for another week.  During this time, the system remained on, taking data at a reduced rate for last minute data validation and bug fixes.  The successful launch on December 17th 2014 at 19:23 UTC is shown in Figure \ref{fig:AnitaLaunchAltitude}.  The pre-amplifiers were turned on midway through the ascent in order to protect them from the high powered anthropogenic noise at the launch facility. Run 130 is the first run at altitude with all systems operating in final flight configuration.  Run 439 was the final run recorded to disk before the instrument was powered down for descent.  The final event was taken on January 9th 2015 at 05:52 UTC.
+			
+\begin{figure}
+	\label{fig:AnitaLaunchAltitude}
+	\centering
+	\includegraphics[width=\textwidth]{figures/LaunchAltitude}
+	\caption{Altitude data captured by the on board GPS on launch day.  Colors refer to the run number of that data.  Run 130 is the first run where the instrument was in full data-taking configuration and at float altitude.}
+\end{figure}	
+
+		During the 22 days and 10 hours of active data collection at altitude, between run 130 and run 439, ANITAIII captured 78,630,542 events.  Runs 257 through 263 contain no data due to a bug in the Prioritizer daemon causing the Ramdisk to fill, and preventing the acquisition software from recording events.  This outage occurred on Christmas day, and resulted in an 11 hour data blackout, from December 25th at 17:13 to December 26th at 04:28.
+		
+		For the cosmic ray analysis, only events that fired the horizontally polarized L3 trigger are considered. The geomagnetic radiation that is predicted to dominate the electromagnetic emission of an EAS is expected to be mostly horizontally polzarised. 40,098,640 events fall into this dataset.  77,336 events fired both the horizontal and vertical L3 trigger, however they are not treated in any unique manner.
+		
+		Additionally, the payload initialized a digitization twice per second regardless of the RF trigger, once initiated by the GPS second and once initiated by the CPU.  There were 839,762 of these ``minimum bias'' events recorded during the flight.  These events are also processed and used to determine the background noise environment during the flight.
+		
 	
 	\subsection{Philosophical reasoning For blinding and past methods}
 		Much discussion took place within the collaboration in order to prevent unwanted analyzer bias from being a significant effect of any analysis result.  Unconscious bias is an inherently human trait, the cold unfeeling rules of nature do not bend to the whims of our emotions or desires.  However, by allowing analyzers to pick and choose methods and procedures and cuts, it is possible that a result may unwittingly reflect those same desires and emotions.  For example, an ambitious physicist, who desires to further his career, may see the opportunity to do so through an exciting and controversial result that makes other scientists take note of his work.  On the other extreme, an exhausted physicist, who does not want to defend a controversial result, could ``play it safe'' and tune his analysis to find a result in agreement with other experiments.  Both these biases are undesirable, but both could be subtly effecting results though no fault of either scientist.
@@ -87,11 +113,18 @@
 \end{figure}
 	
 	\subsection{SURF Saturation}
-		A small fraction of events have recorded voltage values outside the dynamic range of the LABRADOR digitizer.  Though several of these are from extremely high power sources within the field of view, several saturation events are caused by single bit errors in LABRADOR digitization.  These have the characteristic of having a single point a power of two higher than the remaining points in a waveform.  For simplicity, all events with 
+		A small fraction of events have recorded voltage values outside the dynamic range of the LABRADOR digitizer.  Though several of these are from extremely high power sources within the field of view, several saturation events are caused by single bit errors in LABRADOR digitization.  These have the characteristic of having a single point a power of two higher than the remaining points in a waveform.  For simplicity, all events with these bit errors are excluded.
 		
-\section{Constant wave filtering}
-	Anthropogenic signals often take the form of circularly polarized constant wave (CW) sources.  These signals, useful in digital communications, are present in much of the data.  Their sources include both manned and unmanned bases distributed throughout the continent, as well as orbiting satellites visible above the horizon.  They have a significant effect on both the trigger circuit and the post-flight analysis of digitized data.  A spectrogram of a period of the flight can be seen in Figure \ref{fig:spectrogram}, with the CW peaks from satellite noise clearly visible at 220MHz and 400MHz.
-	
+\section{Digital filtering}
+	The stored digital waveforms can be improved by the removal of well understood background signals.  Anthropogenic digital communications often take the form of circularly polarized constant wave (CW) sources, and are present superimposed in much of the data.  Their sources include both manned and unmanned bases distributed throughout the continent, as well as orbiting satellites visible above the horizon.  These CW signals have a significant effect on both the trigger circuit and the post-flight analysis of digitized data. A spectrogram of a period of the flight can be seen in Figure \ref{fig:spectrogram}, with the CW peaks from satellite noise clearly visible at 220MHz and 380MHz.
+
+\begin{figure}
+	\label{fig:spectrogram}
+	\centering
+	\includegraphics[width=\textwidth]{figures/spectrogram}
+	\caption{A spectrogram of the measured RF signal from a single antenna pointed north during the beginning of run 371.  The Z-axis is linear power.  The red regions at 220MHz and 380MHz are frequency bands with high power due to orbiting satellites.} 
+\end{figure}
+
 	The effect these CW signals have on the trigger is twofold.  Firstly, they compress the tunnel diode by increasing the total power of the input signal, pushing the diode response out of its square-law range.  Additionally, CW sources force an increase in the threshold voltage used on the comparator circuit used to trigger on the signals in order to maintain an acceptable global trigger rate.  In many cases, the amount of power from CW sources forces mulitple phi sectors to self-mask, as no DAC threshold setting can appropriately limit the L2 trigger rates from a specific phi sector.  These negative effects cause a decrease in the sensitivity of the instrument to physics events with low signal power, and decrease the overall instrumented volume.  For the ANITAIV flight, a programmable analog notch filter board was flown to eliminate these effects, designed using the known CW frequencies observed in the ANITAIII flight.
 
 	
@@ -99,9 +132,18 @@
 	
 	
 	\subsection{Sine Subtraction Filtering}
-		The filtering technique used in this analysis has been dubbed sine-wave subtraction.  Digital Finite Impulse Response (FIR) filters introduce dispersion, which will negatively effect the reconstruction accuracy and final SNR of any incident physics signal.  To alleviate this, a method was developed which involves procedurally fitting the phase, amplitude, and frequency of a sine wave to each waveform, then subtracting that sine wave from the signal.  This is repeated iteratively until the resulting subtracted wave does not have a large fractional power decrease.  This acts to remove single frequency bands from each channel without adding a significant amount of dispersion, nor diminishing physics signal or thermal noise power.  The drawback of this method is that it requires multiple fits per waveform, which is computationally expensive.  The computations for this filtering strategy takes approximately half of the total computation time.
+		The filtering technique used in this analysis has been dubbed sine-wave subtraction.  Digital Finite Impulse Response (FIR) filters introduce dispersion, which will negatively effect the reconstruction accuracy and final SNR of any incident physics signal.  To alleviate this, a method was developed which involves procedurally fitting the phase, amplitude, and frequency of a sine wave to each waveform, then subtracting that sine wave from the signal.  This is repeated iteratively until the resulting subtracted wave does not have a large fractional power decrease.  This acts to remove single frequency bands from each channel without adding a significant amount of dispersion, nor diminishing physics signal or thermal noise power.  The drawback of this method is that it requires multiple fits per waveform, which is computationally expensive.  The computations for this filtering strategy takes approximately half of the total computation time.  The framework and coding of the SineSubtract algorithm was done by Cosmin Deaconu.  
 
-
+	The sine subtraction works by iteratively fitting a sine wave to each captured waveform individually, minimizing on the amplitude, phase, and frequency.   To aid in computational efficiency, the range of frequencies and amplitudes that the fit could minimize over were adaptively altered based on a previously generated full flight frequency spectrogram.  This adaptive component has a configurable ``exponent'' variable that controls how strictly   This best-fit function is then subtracted from the waveform, yielding data with a single frequency component removed.  This process is repeated until the ratio of the power subtracted from the waveform over the total power in the original waveform is below some configurable threshold a specified sequential number of times.  For this analysis, a ratio of 0.1 was used, and 3 failed iterations were allowed.  The key used to generate this filter in the AnitaAnalysisFramework is ``sinsub\_10\_3\_ad\_2''.  
+	
+	An example of the effect that the filtering has on a calibration pulser can be seen in Figure \ref{fig:SineSubtractMaps}.
+	
+\begin{figure}
+	\label{fig:SineSubtractMaps}
+	\centering
+	\includegraphics[height=0.5\textheight]{figures/SineSubtractMaps}
+	\caption{The effect that sine subtraction filtering has on interferometric mapping.  This particular event, 56765803, is a WAIS pulser event.  35.9\% of the initial power was removed in the filtering process.  Without filtering on this event, the peak of the interferometric map is not pointed at WAIS divide (denoted by the black star).} 
+\end{figure}
 
 \section{Waveform Reconstruction}
 	To extrapolate the measured signal on the ANITA instrument back to a physics signal or background noise event, we must combine the various waveforms captured around the instrument.  By summing the values various waveforms with specifically determined time offsets, it is possible to determine the level of coherence of the electromagnetic environment.  Once an arrival direction is determined it is possible to reconstruct the signal, averaging out the random thermal and electronic noise.
@@ -154,16 +196,16 @@
 
 
 \section{Polarization cuts}
-	The expected signal from a cosmic ray air shower has a characteristic polarization that can be used as a further discriminator between random noise, which will have a random polarization.  Specifically, the geomagnetically induced radiation component will be linearly polarized and orthogonal to both the shower axis and the magnetic field.  This allows two cuts to be made, one of the linear polarization fraction and one of the linear polarization angle.  Both these rely on the calculation of Stokes parameters made possible by the dual polarization antennas, which capture both these time domain electric fields simultaneously.
+	have a  orientation The expected signal from a cosmic ray air shower has a characteristic polarization that can be used as a further discriminator between random noise, which will have a random polarization.  Specifically, the geomagnetically induced radiation component will be linearly polarized and orthogonal to both the shower axis and the magnetic field.  This allows two cuts to be made, one of the linear polarization fraction and one of the linear polarization angle.  Both these rely on the calculation of Stokes parameters made possible by the dual polarization antennas, which capture both these time domain electric fields simultaneously.
 
 	\subsection{Stokes Parameters}
-
+		
 	\subsection{Linear Polarization Fraction}
 		
 	\subsection{Linear Polarization Angle}
 
 	\subsection{Expected vs Measured Geomagnetic Polarization Angle}
-	
+		
 \section{Known object identification}
 	Many bases on the Antarctic continent are already cataloged by the various national programs that operate them.  Using these known bases we can eliminate events that interferometrically point to objects of expected anthropogenic noise.  There also likely exist bases that are, for whatever reason, not included in our catalog.  We also use a list of "pseudo-bases" generated from clustered event lists from previous ANITA flights to eliminate possible anthropogenic interference.  The resulting effect these excluded regions have on the flight can be determined by its flight path and a log-likelyhood method for generating pointing error elipses around the bases.  I'll put a plot of that here.
 	\subsection{Sun and Its Reflection, Thermal Noise Effect}
