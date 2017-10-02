@@ -9,10 +9,10 @@
 	A diagram that depicts the order in which analysis steps are taken is shown in Figure \ref{fig:AnalysisDiagram}. 
 	
 \begin{figure}
-	\label{fig:AnalysisDiagram}
 	\centering
 	\includegraphics[height=0.8\textheight]{figures/AnalysisDiagram}
 	\caption{A diagram depicting the order in which analysis steps are taken, the intermediate storage files saved to disk, and the function names and ROOT macros where the code is located.  These steps are described in detail throughout this chapter.  The storage locations of final results are noted with red stars.}
+	\label{fig:AnalysisDiagram}
 \end{figure}	
 		
 %	The data recorded by the ANITAIII flight instrument requires a significant analysis effort to extract a meaningful physics result.  Using the raw digital values recorded from each channel, we can establish the analog electromagnetic environment surrounding the payload during brief moments the trigger system determined a physics event may be occurring.  From this, we can use an  understanding of the physical geometry of the antennas mounted on the payload, including their orientation and electrical responses, to determine the cause of any incident wave patterns read out by the digitizers.  Once these wave patterns are identified and classified, they can be sorted into signal and noise, background thermal or anthropogenic, via a series of procedural cuts.  This section details the process and results of this analysis.
@@ -53,16 +53,15 @@
 	
 	
 \section{Dataset and Blinding Procedure}
-	The ANITAIII flight took Avoiding the introduction of bias into the resulting measurement through the subconsious desires of the analyzer is a constant struggle.  Several techniques have been employed to minimize this insidious bias.
 	
 	\subsection{Dataset for analysis}
 		The ANITAIII instrument was put into flight configuration on December 9th 2014, which marks the beginning of the run numbering.  However, due to non-optimal launch conditions, the payload was not launched for another week.  During this time, the system remained on, taking data at a reduced rate for last minute data validation and bug fixes.  The successful launch on December 17th 2014 at 19:23 UTC is shown in Figure \ref{fig:AnitaLaunchAltitude}.  The pre-amplifiers were turned on midway through the ascent in order to protect them from the high powered anthropogenic noise at the launch facility. Run 130 is the first run at altitude with all systems operating in final flight configuration.  Run 439 was the final run recorded to disk before the instrument was powered down for descent.  The final event was taken on January 9th 2015 at 05:52 UTC.
 			
 \begin{figure}
-	\label{fig:AnitaLaunchAltitude}
 	\centering
 	\includegraphics[width=\textwidth]{figures/LaunchAltitude}
 	\caption{Altitude data captured by the on board GPS on launch day.  Colors refer to the run number of that data.  Run 130 is the first run where the instrument was in full data-taking configuration and at float altitude.}
+	\label{fig:AnitaLaunchAltitude}
 \end{figure}	
 
 		During the 22 days and 10 hours of active data collection at altitude, between run 130 and run 439, ANITAIII captured 78,630,542 events.  Runs 257 through 263 contain no data due to a bug in the Prioritizer daemon causing the Ramdisk to fill, and preventing the acquisition software from recording events.  This outage occurred on Christmas day, and resulted in an 11 hour data blackout, from December 25th at 17:13 to December 26th at 04:28.
@@ -72,13 +71,13 @@
 		Additionally, the payload initialized a digitization twice per second regardless of the RF trigger, once initiated by the GPS second and once initiated by the CPU.  There were 839,762 of these ``minimum bias'' events recorded during the flight.  These events are also processed and used to determine the background noise environment during the flight.
 		
 	
-	\subsection{Philosophical reasoning For blinding and past methods}
+	\subsection{Philosophical reasoning for blinding and past methods}
 		Much discussion took place within the collaboration in order to prevent unwanted analyzer bias from being a significant effect of any analysis result.  Unconscious bias is an inherently human trait, the cold unfeeling rules of nature do not bend to the whims of our emotions or desires.  However, by allowing analyzers to pick and choose methods and procedures and cuts, it is possible that a result may unwittingly reflect those same desires and emotions.  For example, an ambitious physicist, who desires to further his career, may see the opportunity to do so through an exciting and controversial result that makes other scientists take note of his work.  On the other extreme, an exhausted physicist, who does not want to defend a controversial result, could ``play it safe'' and tune his analysis to find a result in agreement with other experiments.  Both these biases are undesirable, but both could be subtly effecting results though no fault of either scientist.
 		
 		The solution to this problem is to introduce a method in which the result is entirely outside of the experimenters control until all analysis procedures are complete.  In previous ANITA analyses, this was accomplished by ``hiding'' 90\% of the signal data, only allowing analyzers to use a 10\% fraction of the full set to tune their cuts.  Once the cuts were set to meet a desired background rejection fraction, the reminder of the events that did \textit{not} meet the cut requirements would be revealed.  A statistical method, known as the ABCD method, could be used to estimate the number of background events within the signal box from purely random statistical fluctuations.  Any number of events in excess of this background estimate would then be considered signal.  This method had several drawbacks. First, an inability to determine signal from background on an event by event basis leaves a possibility that the most interesting events are background.  Additionally, it allow anthropogenic background to escape observation within the 10\% data set, requiring it to be removed manually by hand later, re-introducing bias.
 		
 	\subsection{ANITAIII CR blinding technique}
-		For the ANITAIII CR search, it was decided that a 10\% - 90\% blinding requirement was unnecessary.  The energy spectrum and flux density of CRs are measured well up to the UHE range.  Additionally, both ANITAI and radio extension projects at terrestrial cosmic ray observatories have measured the radio EAS signature of a CR interaction with the atmosphere.  The ANITAIII results have also been subject to a fully blind analysis previously in a neutrino search that reported 4 transient events matching signal.  For this reason, a novel and more lax blinding procedure was agreed to for this earch.
+		For the ANITAIII CR search, it was decided that a 10\% - 90\% blinding requirement was unnecessary.  The energy spectrum and flux density of CRs are measured well up to the UHE range and the estimated number of observable events for the flight is much larger than one.  Additionally, both ANITAI and radio extension projects at terrestrial cosmic ray observatories have measured the radio EAS signature of a CR interaction with the atmosphere.  The ANITAIII results have also been subject to a fully blind analysis previously in a neutrino search that reported 4 transient events matching signal.  For this reason, a novel and more lax blinding procedure was agreed to for this earch.
 
 		The signal of greatest interest in this analysis is a regenerated tau neutrino transiting through the earth and hadronically decaying in the atmosphere.  Though the primary particle is different from a CR EAS, the shower will evolve in a similar fashion and produce a similar radio pulse.  The defining characteristic of this signal is a polarity with the same sign as a direct EAS shower observation, but with an incidence angle below the horizon (beyond misreconstruction uncertainty).  To prevent any bias in this signal channel, the polarity of all events has been randomly inverted.  This will create a random distribution of polarities, and prevent an analyzer from determining whether any particular event is of interest.
 		
@@ -94,22 +93,22 @@
 		The primary metric used to select and remove these events is this ratio of total waveform power between top and bottom rings (Equation \ref{eqn:topToBottom}). This distribution can be seen in Figure \ref{fig:payloadBlastDist}.  The cut for these events was placed at a value of 3, which eliminates approximately 731k  events (1.77\%) of events from the Hpol data set, while effecting a trivial number of non-RF triggered thermal events.  The source of these blasts is unknown, though there is much speculation to their cause, and were present in both the ANITAI and ANITAII flights.  Removing these events from the dataset is done prior to all other analysis steps.  
 		
 \begin{equation}
-	\label{eqn:topToBottom}
 	R_{topToBottom} = \cfrac{\sum\limits_{n=0}^{N} V^{2}_{bottom}}{\sum\limits_{n=0}^{N} V^{2}_{top}}
+	\label{eqn:topToBottom}
 \end{equation}
 		
 \begin{figure}
-	\label{fig:payloadBlast}
 	\centering
 	\includegraphics[height=0.5\textheight]{figures/payloadBlast}
 	\caption{A magicDisplay screen capture of a suspected payload blast event.  This event was selected due to the high ratio of power between the top and bottom antenna, 6.15 for this particular event.  This pulse is additionally part of a 14 event train of pulses}
+	\label{fig:payloadBlast}
 \end{figure}
 
 \begin{figure}
-	\label{fig:payloadBlastDist}
 	\centering
 	\includegraphics[height=0.5\textheight]{figures/payloadBlastDistribution}
 	\caption{The event distribution of the ratio between the power measured in top and bottom rings of antenna for all horizontal polarization triggered phi sectors.  The distribution for non-RF triggered events is displayed as well, within the full distribution plot.  Red dashed lines denote the location of the quality cut.}
+	\label{fig:payloadBlastDist}
 \end{figure}
 	
 	\subsection{SURF Saturation}
@@ -119,10 +118,10 @@
 	The stored digital waveforms can be improved by the removal of well understood background signals.  Anthropogenic digital communications often take the form of circularly polarized constant wave (CW) sources, and are present superimposed in much of the data.  Their sources include both manned and unmanned bases distributed throughout the continent, as well as orbiting satellites visible above the horizon.  These CW signals have a significant effect on both the trigger circuit and the post-flight analysis of digitized data. A spectrogram of a period of the flight can be seen in Figure \ref{fig:spectrogram}, with the CW peaks from satellite noise clearly visible at 220MHz and 380MHz.
 
 \begin{figure}
-	\label{fig:spectrogram}
 	\centering
 	\includegraphics[width=\textwidth]{figures/spectrogram}
 	\caption{A spectrogram of the measured RF signal from a single antenna pointed north during the beginning of run 371.  The Z-axis is linear power.  The red regions at 220MHz and 380MHz are frequency bands with high power due to orbiting satellites.} 
+	\label{fig:spectrogram}
 \end{figure}
 
 	The effect these CW signals have on the trigger is twofold.  Firstly, they compress the tunnel diode by increasing the total power of the input signal, pushing the diode response out of its square-law range.  Additionally, CW sources force an increase in the threshold voltage used on the comparator circuit used to trigger on the signals in order to maintain an acceptable global trigger rate.  In many cases, the amount of power from CW sources forces mulitple phi sectors to self-mask, as no DAC threshold setting can appropriately limit the L2 trigger rates from a specific phi sector.  These negative effects cause a decrease in the sensitivity of the instrument to physics events with low signal power, and decrease the overall instrumented volume.  For the ANITAIV flight, a programmable analog notch filter board was flown to eliminate these effects, designed using the known CW frequencies observed in the ANITAIII flight.
@@ -136,13 +135,25 @@
 
 	The sine subtraction works by iteratively fitting a sine wave to each captured waveform individually, minimizing on the amplitude, phase, and frequency.   To aid in computational efficiency, the range of frequencies and amplitudes that the fit could minimize over were adaptively altered based on a previously generated full flight frequency spectrogram.  This adaptive component has a configurable ``exponent'' variable that controls how strictly   This best-fit function is then subtracted from the waveform, yielding data with a single frequency component removed.  This process is repeated until the ratio of the power subtracted from the waveform over the total power in the original waveform is below some configurable threshold a specified sequential number of times.  For this analysis, a ratio of 0.1 was used, and 3 failed iterations were allowed.  The key used to generate this filter in the AnitaAnalysisFramework is ``sinsub\_10\_3\_ad\_2''.  
 	
-	An example of the effect that the filtering has on a calibration pulser can be seen in Figure \ref{fig:SineSubtractMaps}.
+	An example of the effect that the filtering has on the interferometric map of a calibration pulser event can be seen in Figure \ref{fig:SineSubtractMaps}.  An example of the sine fit and removal over five iterations for the a single waveform of the same event can be seen in \ref{fig:SineSubtractExample} 
 	
 \begin{figure}
-	\label{fig:SineSubtractMaps}
 	\centering
 	\includegraphics[height=0.5\textheight]{figures/SineSubtractMaps}
 	\caption{The effect that sine subtraction filtering has on interferometric mapping.  This particular event, 56765803, is a WAIS pulser event.  35.9\% of the initial power was removed in the filtering process.  Without filtering on this event, the peak of the interferometric map is not pointed at WAIS divide (denoted by the black star).} 
+	\label{fig:SineSubtractMaps}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[height=0.15\textheight]{figures/sineSubtract_0}		
+	\includegraphics[height=0.15\textheight]{figures/sineSubtract_1}
+	\includegraphics[height=0.15\textheight]{figures/sineSubtract_2}
+	\includegraphics[height=0.15\textheight]{figures/sineSubtract_3}
+	\includegraphics[height=0.15\textheight]{figures/sineSubtract_4}
+	\includegraphics[height=0.15\textheight]{figures/sineSubtract_5}
+	\caption{The effect that sine subtraction filtering has on a single waveform for event 56765803.  The top-most set of plots is the initial waveform, and the bottom-most set is the final ``filtered'' waveform. (Left) The amount of power removed per iteration.  (Middle) In black is the waveform used for the fit, and in red is the fit sine wave function.  Also visible are the final fit parameters.  From top to bottom they are the amplitude, frequency (in GHz), and phase.  (Right) The spectral power of the corresponding waveform prior to the sine wave being subtracted.} 
+	\label{fig:SineSubtractExample}
 \end{figure}
 
 \section{Waveform Reconstruction}
@@ -159,16 +170,25 @@
 	
 	
 	\subsection{Ray Tracing to Continent (with index of refraction)}
-		Another tool made possible through interferometric mapping is that it allows us to point a captured event back to its incoming direction, determining the likely incident cosmic ray interaction location.  Ultimately, it would be most interesting to point an incoming particle back to a location on the sky for statistical source determination.  Additionally, it is important to determine whether a measured event came from a particle physics interaction, or was merely an anthropogenic background noise impulse.  By developing a base list from USAP and other international Antarctic programs, we can determine whether a specific event points back to a known base.
+		 The location that an interferometric map peak points to on the ice can be determined by tracing back to the continent.  To do this, it is important to have an accurate topographical map of both the Earth's surface, as well as the ice sheet that covers it.  These maps are provided by the Radarsat Antarctic Mapping Project Digital Elevation Model Version 2(RAMPDEMv2)~\cite{RAMPDEM}.  RAMPDEMv2 provides topography as referenced to the geoid model of the earth.  Without a correct topological information, events would point to areas that are shadowed from view by mountainous terrain.  An example of pointing to various topographical models, and description of the technique, are shown in Figure \ref{fig:traceBackToContinent}
+		 
+\begin{figure}
+	\centering
+	\includegraphics[height=0.5\textheight]{figures/traceBackToContinent}
+	\caption{A diagram showing how events are traced back to the continent.  First the latitude and longitude of an event at the highest altitude on the continent (Mt. Vincent at 5000m) is determined.  Then the vector is iteratively lengthened until it intersects with a topographical dataset provided by RAMPDEMv2.  This is done for both a map of ice field heigh, and a bedrock map.  The latitude, longitude, and altitude trace back to the continent is then saved for the event for the top two peaks.} 
+	\label{fig:traceBackToContinent}
+\end{figure}	 
 		
-	\begin{equation}
-		\theta_{horiz} = ArcCos(\cfrac{R_{e}}{R_{e}+H})
-		\label{eqn:thetaHoriz}
-	\end{equation}
-	Where $R_{e}$ is the radius of the earth, and $H$ is the altitude of the payload
-	
 	\subsection{Immediate Pointing Cuts}
 		Real physics signals have a small range of elevation angles where their detection is most likely.  The highest probability incident direction for an EAS is near the horizon, however noise events will point more evenly in all directions.  Using this knowledge, we can cut out events that have very steep elevations.  A distribution of event pointing direction can be seen in Figure \ref{fig:elevationAngle}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/elevationAngle}
+	\caption{The distribution of elevation angles of the first interferometric peak for all waveforms.  Zero points perpendicular to the vertical payload vector, and negative values denote events that point ``downwards'' from the payload.  The horizon, which depends on surface height and payload altitude, has an average value of around -6 degrees.  The most common source above the horizon is the sun.} 
+	\label{fig:elevationAngle}
+\end{figure}	 
+		
 
 
 \section{De-dispersion}
@@ -187,13 +207,22 @@
 	Though any physics experiment that aims to separate background events from signal events requires a general understanding of characteristics inherent to either group, measurements and simulations of UHECR induced EAS signatures provide a waveform template that can be used to strongly cut on signal events.  The simplest assumption, that an EAS will produce a broad spectrum, short duration, electromagnetic pulse, drives both the overall design of the payload, as well as several of the analysis cuts.  Determining a normalized correlation between a template and the coherently summed waveform provides an additional constraint beyond simply requiring impulsivity, and also requires the gain and phase characteristics of an incident wave are in agreement with an EAS signal.
 	
 	\subsection{Templates}
-		It is possible to generate several different templates that accurately represent an observable EAS signal on the payload.
+		It is possible to generate several different templates that accurately represent an observable EAS signal on the payload.  Additionally, templates can be developed from averaging together calibration pulser or other anthropogenic signals of interest.  For this analysis, the template used for a cut value was a simulated EAS electric field measured at 0.175 degrees outside the critical coherence angle, convolved with the instrument impulse response.  Figure \ref{fig:templates} shows a comparison between the 9 CR templates, as well as the impulse response template and averaged WAIS pulser template.  The WAIS pulser template was used to establish cut efficiency on WAIS pulses, as they do not have the same phase structure as EAS signals.
+		
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/templates}
+	\caption{The 11 templates used in this analysis.  The leftmost 9 templates were generated from ZHAires simulations convolved with the system impulse response. The center waveform, in the red box, was used for setting cuts for the analysis.  The peak coherence angle for this simulated shower occurred at 0.675$^{\circ}$ from the shower axis, and each waveform was measured at steps of 0.04$^{\circ}$ from that peak.  The top right is a template derived by correlating and averaging 10,000 WAIS pulser events, and is used for determining reasonable cut parameters based on calibration pulser efficiency.  The bottom right is the impulse response of the system.} 
+	\label{fig:templates}
+\end{figure}		
+		
+		
 	
 	\subsection{Auto-correlation normalization}
-		In order to make the template correlation value of different events directly relatable to one another, it is important to normalize both the template and the coherently summed waveform.  As this measurement is most interesting in determining the amount that any given event ``looks'' like the template, the final value should be a fraction from 0 to 1, where 1 would be a waveform that is an exact copy of the template.  
+		In order to make the template correlation value of different events directly relatable to one another, it is important to normalize both the template and the coherently summed waveform.  As this measurement is most interesting in determining the amount that any given event ``looks'' like the template, the final value should be a fraction from 0 to 1, where 1 would be a waveform that is an exact copy of the template.
 
 	\subsection{Issues with filtering}
-
+		Ideally these templates would be compared against the coherently summed waveforms that have been filtered for CW interference on a channel by channel basis.  However, the distortion of the phase structure induced by all of the filtering strategies 
 
 \section{Polarization cuts}
 	have a  orientation The expected signal from a cosmic ray air shower has a characteristic polarization that can be used as a further discriminator between random noise, which will have a random polarization.  Specifically, the geomagnetically induced radiation component will be linearly polarized and orthogonal to both the shower axis and the magnetic field.  This allows two cuts to be made, one of the linear polarization fraction and one of the linear polarization angle.  Both these rely on the calculation of Stokes parameters made possible by the dual polarization antennas, which capture both these time domain electric fields simultaneously.
@@ -232,14 +261,30 @@
 	
 	
 	\subsection{Event Clustering and Log Likelihood}
-		Impulsive events that point back to a geographically isolated source location have the highest likelihood to be astrophysical in nature.  The metric that has been used in past ANITA experiments to determine the ``closeness'' of one event to another has been called the Log Likelihood, and is represented by the variable $L$.  This measurement must take into account both the pointing uncertainty of the instrument, as well as the constantly changing payload location.
+		Impulsive events that point back to a geographically isolated source location have the highest likelihood to be astrophysical in nature.  The metric that has been used in past ANITA experiments to determine the ``closeness'' of one event to another has been called the Log Likelihood, and is represented by the variable $L$.  This measurement must take into account both the pointing uncertainty of the instrument, as well as the constantly changing payload location.  Since each event can be seen from a different angle, the angular separation between the projected location of one event on the ice from the perspective of another event may not be the same as the inverse.  This is shown graphically in Figure \ref{fig:clusteringProjection}.  
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/clusteringProjection}
+	\caption{A simplified diagram showing the projection of two events recorded from two different locations into the field of view of each other.  The Xs denote the location on the continent where the event pointed.  The elliptical paths drawn around each location represent the $1\sigma$, $2\sigma$, and $3\sigma$ pointing confidence intervals.  In this example, event B (blue) is less than$2\sigma$ away event R (red) from the point of view of event R.  However event R is more than $3\sigma$ away from event B from the perspective of event B.} 
+	\label{fig:clusteringProjection}
+\end{figure}
 		
-		The pointing resolution of the interferometric mapping technique is a function of the SNR, and thus any clustering analysis must factor this into its calculation.  The pointing resolution as a function of SNR was found from analyzing self triggered WAIS pulses and their subsequent pointing to the 
+		Additionally, the pointing resolution of of any single event is a function of the SNR, and thus any clustering analysis must factor this into its calculation.  The pointing resolution as a function of SNR was found from analyzing self triggered WAIS pulses and their subsequent pointing to the known calibration pulser location on the continent.  This was discussed earlier in the Calibration chapter.  Events with SNR values lower than the lowest WAIS pulse, a value of approximately 5.0, are treated as if they had the corresponding pointing uncertainty.
 		
-		As ANITA transits past anthropogenic sources on the continent, the payload coordinate pointing towards that base changes with respect to cardinal North. In order to determine whether the likelihood that any particular event fell close to another, one must project the geographical location where the first event pointed to the continent into the field of view of the second event payload locations.  The opposite must be done as well, projecting the second event source location into the field of view of the first event payload location, as the two processes are not strictly invertible.
+		Using the geometric sum of the angular separations normalized by the pointing resolution of each event as a function of SNR, we get Equation \ref{eqn:LogLikelihood}.
+		
 	\begin{equation}
 		L = \sqrt{(\frac{\sqrt{(\Delta\phi_{AB})^2+(\Delta\phi_{BA})^2}}{{\sigma_{\phi}}})^2+(\frac{\sqrt{(\Delta\theta_{AB})^2+(\Delta\theta_{BA})^2}}{{\sigma_{\theta}}})^2}
+		\label{eqn:LogLikelihood}
 	\end{equation}
+		
+		Using this equation we can determine the relative ``closeness'' of any two events.  
+		
+
+		
+		As ANITA transits past anthropogenic sources on the continent, the payload coordinate pointing towards that base changes with respect to cardinal North. In order to determine whether the likelihood that any particular event fell close to another, one must project the geographical location where the first event pointed to the continent into the field of view of the second event payload locations.  The opposite must be done as well, projecting the second event source location into the field of view of the first event payload location, as the two processes are not strictly invertible.
+
 	
 
 
