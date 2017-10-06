@@ -66,9 +66,9 @@
 
 		During the 22 days and 10 hours of active data collection at altitude, between run 130 and run 439, ANITAIII captured 78,630,542 events.  Runs 257 through 263 contain no data due to a bug in the Prioritizer daemon causing the Ramdisk to fill, and preventing the acquisition software from recording events.  This outage occurred on Christmas day, and resulted in an 11 hour data blackout, from December 25th at 17:13 to December 26th at 04:28.
 		
-		For the cosmic ray analysis, only events that fired the horizontally polarized L3 trigger are considered. The geomagnetic radiation that is predicted to dominate the electromagnetic emission of an EAS is expected to be mostly horizontally polzarised. 40,098,640 events fall into this dataset.  77,336 events fired both the horizontal and vertical L3 trigger, however they are not treated in any unique manner.
+		For the cosmic ray analysis, only events that fired the horizontally polarized L3 trigger are considered. The geomagnetic radiation that is predicted to dominate the electromagnetic emission of an EAS is expected to be mostly horizontally polzarised. 41,566,966 events fall into this dataset.  360,055 events fired both the horizontal and vertical L3 trigger, however they are not treated in any unique manner.
 		
-		Additionally, the payload initialized a digitization twice per second regardless of the RF trigger, once initiated by the GPS second and once initiated by the CPU.  There were 839,762 of these ``minimum bias'' events recorded during the flight.  These events are also processed and used to determine the background noise environment during the flight.
+		Additionally, the payload initialized a digitization twice per second regardless of the RF trigger, once initiated by the GPS second and once initiated by the CPU.  There were 3,551,509 of these ``minimum bias'' events recorded during the flight.  These events are also processed and used to determine the background noise environment during the flight.
 		
 	
 	\subsection{Philosophical reasoning for blinding and past methods}
@@ -85,7 +85,16 @@
 		
 			
 \section{Event Quality Cuts}
-	Events taken with the ANITA instrument must first pass basic checks on their quality.  ANITAIII does not seem to suffer from significant issues related to the digitization or storage of waveforms, however there are several observed bad event types that can be identified and removed prior to analysis.
+	All events taken with the ANITA instrument must first pass basic checks on their ability to be considered in a sample of astrophysical impulses.  ANITAIII does not seem to suffer from significant issues related to the digitization or storage of waveforms, however there are several observed event types that can be identified and removed prior to analysis.
+
+	\subsection{RF Triggered}
+		The first requirement for an impulse to be considered is that the RF trigger must have initiated the readout.  The 2Hz of minimum bias triggers are therefore excluded from the analysis.
+
+	\subsection{Calibration Pulsers}
+		Accurate tagging of calibration pulsers allows us to remove them from the sample considered in the physics analysis.  This is done using the recorded nanosecond precision trigger time, a knowledge of the time in each second where each pulser fired, and the time of flight between the payload at the event record time and the calibration pusler.
+		
+	\subsection{Major Bases}
+		WAIS Divide and McMurdo Station are, for this analysis, defined as major bases which are removed prior to analysis.  These bases have some of the highest activity on the continent, and the sheer number of events that come from these two bases has the effect of biasing the remainder of the analysis.
 
 	\subsection{Payload Blasts}
 		The ANITAIII flight was plagued by high power signals that seem to emanate from the payload.  These events, called payload blasts, have a large amplitude signal in several neighboring phi sectors and tend to happen in rapid succession.  A sample payload blast event can be seen in Figure \ref{fig:payloadBlast}.  The blasts characteristically have high total RF power in the bottom two rings of antennas, but very little signal power in the top ring, suggesting that these events have a source on-board the payload.  Blasts also do not have high interferometric peaks, adding further evidence that they are spherically propagating electromagnetic waves with a source on the payload, and suggesting that they will likely be removed through signal cuts later in the analysis process.
@@ -113,6 +122,11 @@
 	
 	\subsection{SURF Saturation}
 		A small fraction of events have recorded voltage values outside the dynamic range of the LABRADOR digitizer.  Though several of these are from extremely high power sources within the field of view, several saturation events are caused by single bit errors in LABRADOR digitization.  These have the characteristic of having a single point a power of two higher than the remaining points in a waveform.  For simplicity, all events with these bit errors are excluded.
+		
+		
+	\subsection{Downward pointing events}
+		Events that have an interferometric map peak that points upwards cannot be created by any any of the astrophysical event types under consideration for this analysis.  ANITAIII floats at the top of the stratosphere, above which there is sparingly small amounts of atmosphere with which a particle can interact.  Even direct CRs will have impulsive signals that emanate from within the atmosphere.  Because of this, all events that have peak elevation angles above zero can be safely discarded.
+		
 		
 \section{Digital filtering}
 	The stored digital waveforms can be improved by the removal of well understood background signals.  Anthropogenic digital communications often take the form of circularly polarized constant wave (CW) sources, and are present superimposed in much of the data.  Their sources include both manned and unmanned bases distributed throughout the continent, as well as orbiting satellites visible above the horizon.  These CW signals have a significant effect on both the trigger circuit and the post-flight analysis of digitized data. A spectrogram of a period of the flight can be seen in Figure \ref{fig:spectrogram}, with the CW peaks from satellite noise clearly visible at 220MHz and 380MHz.
@@ -169,7 +183,7 @@
 		The electronic and thermal noise present in each channel limits the sensitivity of the instrument to EAS signals with low power.  Since the power within the radiation of an EAS shower varies linearly with the energy of the particle, low energy showers, which have a higher flux rate, will have signal to noise ratios approaching one.  Additionally, polarization information and frequency content are effected by any noise present in the system.  Averaging waveforms from multiple channels will reduce this incoherent background noise by a factor of $\frac{1}{\sqrt{N}}$.  After determining the peak interferometric pointing direction, it is possible to align the channels that received signal from an incident radiation field and average them together.  An example of this is shown in Figure \ref{fig:coherentSum}.
 	
 	
-	\subsection{Ray Tracing to Continent (with index of refraction)}
+	\subsection{Ray Tracing to Continent}
 		 The location that an interferometric map peak points to on the ice can be determined by tracing back to the continent.  To do this, it is important to have an accurate topographical map of both the Earth's surface, as well as the ice sheet that covers it.  These maps are provided by the Radarsat Antarctic Mapping Project Digital Elevation Model Version 2(RAMPDEMv2)~\cite{RAMPDEM}.  RAMPDEMv2 provides topography as referenced to the geoid model of the earth.  Without a correct topological information, events would point to areas that are shadowed from view by mountainous terrain.  An example of pointing to various topographical models, and description of the technique, are shown in Figure \ref{fig:traceBackToContinent}
 		 
 \begin{figure}
@@ -212,7 +226,7 @@
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{figures/templates}
-	\caption{The 11 templates used in this analysis.  The leftmost 9 templates were generated from ZHAires simulations convolved with the system impulse response. The center waveform, in the red box, was used for setting cuts for the analysis.  The peak coherence angle for this simulated shower occurred at 0.675$^{\circ}$ from the shower axis, and each waveform was measured at steps of 0.04$^{\circ}$ from that peak.  The top right is a template derived by correlating and averaging 10,000 WAIS pulser events, and is used for determining reasonable cut parameters based on calibration pulser efficiency.  The bottom right is the impulse response of the system.} 
+	\caption{The 11 templates used in this analysis.  The leftmost 9 templates were generated from ZHAires simulations convolved with the system impulse response. The center waveform, in the red box, was used for setting cuts for the analysis.  The peak coherence angle for this simulated shower occurred at 0.675$^{\circ}$ from the shower axis, and each waveform was measured at steps of 0.04$^{\circ}$ from that peak.  The top right is a template derived by correlating and averaging 10,000 WAIS pulser events, and is used for determining reasonable cut parameters based on calibration pulser efficiency.  The bottom right is the impulse response of the system.  All waveforms are normalized so that their autocorrelation is one.} 
 	\label{fig:templates}
 \end{figure}		
 		
@@ -222,7 +236,7 @@
 		In order to make the template correlation value of different events directly relatable to one another, it is important to normalize both the template and the coherently summed waveform.  As this measurement is most interesting in determining the amount that any given event ``looks'' like the template, the final value should be a fraction from 0 to 1, where 1 would be a waveform that is an exact copy of the template.
 
 	\subsection{Issues with filtering}
-		Ideally these templates would be compared against the coherently summed waveforms that have been filtered for CW interference on a channel by channel basis.  However, the distortion of the phase structure induced by all of the filtering strategies 
+		Ideally these templates would be compared against the coherently summed waveforms that have been filtered for CW interference on a channel by channel basis.  However, the distortion of the phase structure induced by all of the filtering strategies, including sine subtraction, reduces the correlation to values below that of un-filtered waveforms.  
 
 \section{Polarization cuts}
 	have a  orientation The expected signal from a cosmic ray air shower has a characteristic polarization that can be used as a further discriminator between random noise, which will have a random polarization.  Specifically, the geomagnetically induced radiation component will be linearly polarized and orthogonal to both the shower axis and the magnetic field.  This allows two cuts to be made, one of the linear polarization fraction and one of the linear polarization angle.  Both these rely on the calculation of Stokes parameters made possible by the dual polarization antennas, which capture both these time domain electric fields simultaneously.
@@ -270,23 +284,32 @@
 	\label{fig:clusteringProjection}
 \end{figure}
 		
-		Additionally, the pointing resolution of of any single event is a function of the SNR, and thus any clustering analysis must factor this into its calculation.  The pointing resolution as a function of SNR was found from analyzing self triggered WAIS pulses and their subsequent pointing to the known calibration pulser location on the continent.  This was discussed earlier in the Calibration chapter.  Events with SNR values lower than the lowest WAIS pulse, a value of approximately 5.0, are treated as if they had the corresponding pointing uncertainty.
 		
-		Using the geometric sum of the angular separations normalized by the pointing resolution of each event as a function of SNR, we get Equation \ref{eqn:LogLikelihood}.
+		Lets assume that we have two events that are projected nearby onto the continent, $A$ and $B$.  From the payload location where event $A$ is captured, you can measure the angular separation between the two projected positions in elevation($\theta$) and azimuth ($\phi$).  These angular separations will be denoted as $\Delta\theta_{AB}$ and $\Delta\phi_{AB}$  Equivalently, these separations can be measured from the payload position from which event $B$ was captured, which will be denoted as $\Delta\theta_{BA}$ and $\Delta\phi_{BA}$.  Since the elevation and azimuth angles are orthogonal, the total angular separation would be Equation \ref{eqn:angularSeparation}
 		
 	\begin{equation}
-		L = \sqrt{(\frac{\sqrt{(\Delta\phi_{AB})^2+(\Delta\phi_{BA})^2}}{{\sigma_{\phi}}})^2+(\frac{\sqrt{(\Delta\theta_{AB})^2+(\Delta\theta_{BA})^2}}{{\sigma_{\theta}}})^2}
+		\sqrt{\Delta\phi^2 + \Delta\theta^2}
+		\label{eqn:angularSeparation}
+	\end{equation}
+	
+	This equation however does not factor in the pointing uncertainty difference between azimuth ($\sigma_phi$) and elevation ($\sigma_theta$). Due to the longer baseline differences, elevation angles an be pointed with higher certainty than azimuthal angles.  The normalized angular separation, which has units of angular uncertainty, is shown in Equation \ref{eqn:angularSeparationNormalized}.
+	
+	\begin{equation}
+		\sqrt{\cfrac{\Delta\phi}{\sigma_{phi}(SNR)}^2 + \cfrac{\Delta\theta}{\sigma_{theta}(SNR)}^2}
+		\label{eqn:angularSeparationNormalized}
+	\end{equation}
+		Note that the pointing resolution  of of any single event is a function of the SNR, and thus any clustering analysis must factor this into its calculation.  The pointing resolution as a function of SNR was found from analyzing self triggered WAIS pulses and their subsequent pointing to the known calibration pulser location on the continent.  This was discussed earlier in the Calibration chapter.  Events with SNR values lower than the lowest WAIS pulse, a value of approximately 5.0, are treated as if they had the corresponding pointing uncertainty.
+		
+		The figure of merit is then the geometric sum of the pointing uncertainty normalized angular separation from each event observation location, shown in Equation \ref{eqn:LogLikelihood}.
+		
+	\begin{equation}
+		L = \sqrt{\frac{\Delta\phi_{AB}^2   + \Delta\phi_{BA}^2}{\sigma_{\phi}(SNR)} + \frac{\Delta\theta_{AB}^2 + \Delta\theta_{BA}^2}{\sigma_{\theta}(SNR)}}
 		\label{eqn:LogLikelihood}
 	\end{equation}
-		
+
+
 		Using this equation we can determine the relative ``closeness'' of any two events.  
 		
-
-		
-		As ANITA transits past anthropogenic sources on the continent, the payload coordinate pointing towards that base changes with respect to cardinal North. In order to determine whether the likelihood that any particular event fell close to another, one must project the geographical location where the first event pointed to the continent into the field of view of the second event payload locations.  The opposite must be done as well, projecting the second event source location into the field of view of the first event payload location, as the two processes are not strictly invertible.
-
 	
-
-
 	\subsection{Impulsive source clustering}
 	
