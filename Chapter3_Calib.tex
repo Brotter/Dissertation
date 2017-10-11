@@ -97,18 +97,13 @@
 \end{figure}
 		
 		
-		This calibration was done for ANITAIII with two timing sources, an injected 432.1MHz sine wave and the 33.3MHz square wave sync clock injected into the system for the entire flight.  A BOF calibration using an injected sine wave was preformed by Ben Strutt, and detailed in his thesis (\cite{BenSThesis}). This is the nominal calibration whose values are used for the remainder of this thesis.  The array can be seen in Figures \ref{fig:dTNominal2D} and \ref{fig:dTNominal2D}.  All other bin width matrix timing calibrations detailed below were done as a check on those values, and were found to be in agreement.
+		This calibration was done for ANITAIII with two timing sources, an injected 432.1MHz sine wave and the 33.3MHz square wave sync clock injected into the system for the entire flight.  A BOF calibration using an injected sine wave was preformed by Ben Strutt, and detailed in his thesis (\cite{BenSThesis}). This is the nominal calibration whose values are used for the remainder of this thesis.  The array and distribution of bin widths can be seen in Figure \ref{fig:dTNominal}.  All other bin width matrix timing calibrations detailed below were done as a check on those values, and were found to be in agreement.
 		
 	\begin{figure}
-		\includegraphics[width=\textwidth]{figures/dTNominal2D}
-		\caption{Nominal LAB3 Time Domain Bin Width "dT" values generated using a 432.1MHz injected sine wave calibration signal and the bin occupancy fraction method.  Values were determined by Ben Strutt\cite{BenSThesis}.}
-		\label{fig:dTNominal2D}
-	\end{figure}
-	
-	
-	\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{figures/ANITA3BinSize}
 		\includegraphics[width=\textwidth]{figures/dTNominal}
-		\caption{Nominal LAB3 Time Domain Bin Width "dT" values generated using a 432.1MHz injected sine wave calibration signal and the bin occupancy fraction method.  Nominal values displayed in this plot and used for initial analysis were determined by Ben Strutt\cite{BenSThesis}.}
+		\caption{Nominal LAB3 Time Domain Bin Width "dT" values generated using a 432.1MHz injected sine wave calibration signal and the bin occupancy fraction method.  Values were determined by Ben Strutt\cite{BenSThesis}. (Top) A bin-by-bin 2d histogram of the sampling widths for all capacitor bins, organized by SURF, LAB chip, and RCO phase.  (Bottom) The distribution of all 24960 calibrated timing widths.}
 		\label{fig:dTNominal}
 	\end{figure}
 		
@@ -125,7 +120,7 @@
 	\subsubsection{Ellipse Method}	
 		The second calibration technique is slightly more clever, and involves utilyzing a characteristic of a significant number of phase offset sine waves captures and will be called the Ellipse method.  Plotting the sum and difference of sequential samples of a pure sinusoidal function yields an ellipse whose semi-major and semi-minor axes determine the fractional time of each sample.  
 		
-		Using this method, whose derivation is detailed in Appendix B, it is possible to determine the width of each bin by comparing the sum and difference of digitized values from neighboring bins that are offset by some time $\delta t$ both observing the same sine wave.  It is useful to consider the edge cases of such a system, for example two bins that have a negligible dT separation.  In this case the measured voltage difference between them will always be small if not zero, while the addition axis has a can a large range of values, the maximum being the crests of a sine wave. This will yield an ellipse with a very large eccentricity.  Inversely will have the inverse eccentricity, bins that are separated by exactly one half wavelength of the injected frequency will always have wide range of possible differences, and sums always approaching zero.  Nominal sampling between these extremes will provide an ellipse approaching a circle, as seen in Figure \ref{fig:ellipseMethodExample}.  This method is useful in that it requires far less data than the Bin Occupancy Fraction method.  
+		Using this method, whose derivation is detailed in Appendix B, it is possible to determine the width of each bin by comparing the sum and difference of digitized values from neighboring bins that are offset by some time $\delta t$ both observing the same sine wave.  It is useful to consider the edge cases of such a system, for example two bins that have a negligible dT separation.  In this case the measured voltage difference between them will always be small if not zero, while the addition axis can occupy a large range of values, the maximum being the crests of a sine wave. This will yield an ellipse with a very large eccentricity.  Inversely will have the inverse eccentricity, bins that are separated by exactly one half wavelength of the injected frequency will always have wide range of possible differences, and sums always approaching zero.  Nominal sampling between these extremes will provide an ellipse approaching a circle, as seen in Figure \ref{fig:ellipseMethodExample}.  This method is useful in that it requires far less data than the Bin Occupancy Fraction method.  
 		
 		Utilyzing this method, I calibrated all capacitor bin dTs and compared the results with the previously measured constants provided in this thesis and other published results\cite{BenSThesis}.  The values are presented in Figure \ref{fig:ellipseResults}.
 		

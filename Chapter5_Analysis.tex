@@ -242,7 +242,7 @@
 		In order to make the template correlation value of different events directly relatable to one another, it is important to normalize both the template and the coherently summed waveform.  As this measurement is most interesting in determining the amount that any given event ``looks'' like the template, the final value should be a fraction from 0 to 1, where 1 would be a waveform that is an exact copy of the template.
 
 	\subsection{Issues with filtering}
-		Ideally these templates would be compared against the coherently summed waveforms that have been filtered for CW interference on a channel by channel basis.  However, the distortion of the phase structure induced by all of the filtering strategies, including sine subtraction, reduces the correlation to values below that of un-filtered waveforms.  
+		Ideally these templates would be compared against the coherently summed waveforms that have been filtered for CW interference on a channel by channel basis.  However, the distortion of the phase structure induced by all of the filtering strategies, including sine subtraction, reduces the correlation to values below that of un-filtered waveforms.  For this reason, only the template correlation value for unfiltered coherently summed waveforms is used.
 
 \section{Polarization cuts}
 	have a  orientation The expected signal from a cosmic ray air shower has a characteristic polarization that can be used as a further discriminator between random noise, which will have a random polarization.  Specifically, the geomagnetically induced radiation component will be linearly polarized and orthogonal to both the shower axis and the magnetic field.  This allows two cuts to be made, one of the linear polarization fraction and one of the linear polarization angle.  Both these rely on the calculation of Stokes parameters made possible by the dual polarization antennas, which capture both these time domain electric fields simultaneously.
@@ -311,19 +311,31 @@
 		Since the convention of the sign of the polarization of the signal is a matter of definition, for simplicity the values of $\Psi_{L}$ are restricted to angles between $0^\circ$ and $90^\circ$.
 		
 	\subsection{Expected vs measured geomagnetic polarization angle}
-		The expected linear polarization angle of radiation emitted by an EAS will correspond primarily to the cross product between the the shower axis and the geomagnetic field vector at the shower maximum.  Comparing the expected and measured polarization angle for observed isolated impulsive events can be used as a final discriminator on the likelihood that they are from an astrophysical interaction.  Calculating this expected angle requires a knowledge of the pointed event location on the continent of Antarctica, its reconstructed incidence elevation angle, and the geomagnetic field at the location in the atmosphere where shower max occurred.
+		The expected linear polarization angle of radiation emitted by an EAS will correspond primarily to the cross product between the the shower axis and the geomagnetic field vector at the shower maximum.  Comparing the expected and measured polarization angle for observed isolated impulsive events can be used as a final discriminator on the likelihood that they are from an astrophysical interaction.  
+		
+		Calculating this expected angle requires a knowledge of the pointed event location on the continent of Antarctica, its reconstructed incidence elevation angle, and the geomagnetic field at the location in the atmosphere where shower max occurred.  Additionally, a majority of detectable EAS events will have reflected off the ice sheet of the continent, requiring the the calculation to include the Fresnel reflection coefficients for components of the incident radiation Poynting vector perpendicular and parallel to the ice-air boundary.  This reflection also inverts the polarity of the parallel components of the electromagnetic field.
+		
+		Up-going tau neutrino candidates are also expected to be dominated by linearly polarized geomagnetic radiation, however the location of the shower maximum will be above the ice sheet between the pointed source location and the payload.  These events will then have different expected geomagnetic polarization angles than if the event was a reflected down-going cosmic ray induced extensive air shower.  In order to preserve both astrophysical signals in the final candidate list, the expected geomagnetic angle is calculated for both cases, and the measurement falling close to the expectation of either case is treated as sufficient to pass cuts.
 		
 		
-\section{Known object identification}
-	Many bases on the Antarctic continent are already cataloged by the various national programs that operate them.  Using these known bases we can eliminate events that interferometrically point to objects of expected anthropogenic noise.  There also likely exist bases that are, for whatever reason, not included in our catalog.  We also use a list of "pseudo-bases" generated from clustered event lists from previous ANITA flights to eliminate possible anthropogenic interference.  The resulting effect these excluded regions have on the flight can be determined by its flight path and a log-likelyhood method for generating pointing error elipses around the bases.  I'll put a plot of that here.
+\section{Polarity Estimator}
+	In order to identify up-going tau neutrino candidates within the detected cosmic ray candidate set, it is important to have a method for determining the sign of the polarity for any particular event.  Since a reflection off the ice will invert the polarity of the electromagnetic field impulse, it is clear that an event with a steep elevation angle but polarization that is inverted from the bulk of the CR candidates will be from an astrophysical particle exiting the continent and creating a shower within the atmosphere.
+	
+	The polarity estimation for this thesis was accomplished by determining whether the maximum or minimum of the template correlation is the absolute peak of the correlation.  Since detection of a tau neutrino would be both exciting and controversial, the mis-identification of this method is desired to be as small as possible.
+
+		
+\section{Known and Measured Source Identification}
+	Many bases on the Antarctic continent are already cataloged by the various national programs that operate them.  Using these known bases we can eliminate events that interferometrically point to objects of expected anthropogenic noise.  There also likely exist bases that are, for whatever reason, not included in our catalog.  We also use a list of "pseudo-bases" generated from clustered event lists from previous ANITA flights to eliminate possible anthropogenic interference.  The resulting effect these excluded regions have on the flight can be determined by its flight path and a log-likelyhood method for generating pointing error elipses around the bases.  The regions excluded by these known 
+	
+	
 	\subsection{Sun and Its Reflection, Thermal Noise Effect}
-	\subsection{Satellites, Bases, and other Anthropogenic Sources}
+		The Sun does pass below the horizon during the austral summer, and it stays within the field of view of the ANITAIII instrument throughout the flight.  While the thermal noise from the sun is random and unpolarized in nature, it presents as a coherent noise source to the antennas where it is within their field of view.  For many events measured in the flight, the Sun presents itself as the highest interferometric peak.  However, since the sun is above an elevation angle of zero these events will not pass quality cuts. However, when the sun is at high elevation angles far from the antenna beam patter, the reflection of the sun off the ice, which is also coherent, can dominate the interferometric image.
+	
+	\subsection{Satellites, bases, and other ``known'' anthropogenic sources}
+		The continent of Antarctica is under constant study by many scientific groups spread across the ice.  Additionally, humanity has launched orbiting artificial satellites that are equipped with radio frequency communications.  Both these sources are known to exist, and can be compiled into a list and used to mask portions of the field of view.  
 
-\section{Thermal Noise Separation Results}
-	\subsection{Cut Efficiency}
-	\subsection{Cut Quality}
-
-
+	\subsection{Pseudo-bases: unknown anthropogenic sources}
+		Despite the best efforts of the collaboration, it is not possible to compile a complete list of Antarctic camps during the flight to a high degree of certainty.  Because of this, it becomes necessary to use measurements from the payload itself to discern locations of human activity.  
 
 
 \section{Geographic Clustering}
@@ -378,3 +390,8 @@
 	
 	\subsection{Impulsive source clustering}
 	
+
+
+
+\section{Analysis Cut Methodology}
+	Determining cut values that separate astrophysical sourcesIn order to extract the events with measured quantities most similar to an expected CR EAS radiation pattern while preserving information about anthropogenic sources that may produce background events that leak into the , two cut 
