@@ -68,7 +68,7 @@
 		
 		For the cosmic ray analysis, only events that fired the horizontally polarized L3 trigger are considered. The geomagnetic radiation that is predicted to dominate the electromagnetic emission of an EAS is expected to be mostly horizontally polzarised. 41,566,966 events fall into this dataset.  360,055 events fired both the horizontal and vertical L3 trigger, however they are not treated in any unique manner.
 		
-		Additionally, the payload initialized a digitization twice per second regardless of the RF trigger, once initiated by the GPS second and once initiated by the CPU.  There were 3,551,509 of these ``minimum bias'' events recorded during the flight.  These events are also processed and used to determine the background noise environment during the flight.
+		Additionally, the payload initialized a digitization twice per second regardless of the RF trigger, once initiated by the GPS second and once initiated by the CPU.  There were 3,551,509 of these ``minimum bias'' events recorded during the flight.  These events are also processed and used to determine the background noise environment during the flight and set cuts on thermal background.
 		
 	
 	\subsection{Philosophical reasoning for blinding and past methods}
@@ -131,7 +131,7 @@
 	\subsection{Reconstructed angle to hardware trigger angle}
 		The dynamic phi sector masking introduces a class of events in which the waveform ``falls off'' the end of the digitization record, subsequently losing information about the earliest structure in the waveform.  This is caused when impulsive events have a sufficient amount of power to still trigger in channels with antennas in un-masked phi sectors at angles far from their boresight.  The majority of the signal power will still be observed in channels pointing towards incident impulsive source, however the free space propagation time between the masked and unmasked phi sectors delays the trigger formation enough so that the waveform is truncated.  An example of this non-ideality can be seen in Figure \ref{fig:earyWaveform}.
 		
-		Since these waveforms are corrupted beyond repair and can not be included in a final signal sample, they can be removed prior to further analysis.
+		Since these waveforms are missing important data and can not be included in a final signal sample, they can be removed prior to further analysis.
 		
 		
 \section{Digital filtering}
@@ -181,12 +181,42 @@
 	
 	By correlating the waveforms captured between various antenna pairs it is possible to establish time delays in which multiple channels maximally constructively interfere.  Known as interferometry, a radio astronomy technique, it makes use of the known physical separation vector between the antennas and the propagation delay for any incident plane wave.  generate a map of likely pointing directions.  ANITA has three vertical tiers of antennas, each separated from each other, and at least three co-pointing phi sectors that are expected to observe events from any angle.  Using the combined baseline offsets from these antennas, it is possible to overlay 9 different interferometric maps to create a pointing map.  By finding the peak of this map, a vector pointing away from the payload can be traced to the ice, where a map of the vertical height of the continent can be used to create a map of events on the ground.
 	
+	\subsection{Interpolation}
+		As discussed earlier, the waveforms have a nominal sampling rate of 2.6GS/s, yielding a mean timing separation of 385ps.  This presents an issue, namely that baseline timing delays between antenna pairs are not quantized in multiples of this value.  In order to accurately overlay the recorded waveforms of different channels, upsampling the signal to a higher rate with a lower time separation between points is required.  Additionally, the variation in time separation between samples caused by process parameter spread in the LABRADOR ASICs presents computational difficulties for Fourier analysis of signals.
+		
+		There are several methods that can take unevenly sampled waveforms as an input, and output an evenly sampled approximation of the signal by extrapolating between points, a process called interpolation.  An Akima spline iteratively fits a cubic polynomial to a range of sampled points, then uses that fit to determine the intermediate points.  Akima splines do a good job at determining an equivalent evenly sampled waveform, but introduces spectral distortion when used for increasing the sampling frequency.  Another method of interpolation, which I'll call Fourier domain upsampling, computes the complex Fourier transform of a waveform, appends zeros to the end until the desired frequency is reached, then calculates the inverse Fourier transform of that extended frequency domain signal.  This method introduces no in-band spectral distortion, though for computational simplicity it must be performed on an evenly sampled waveform.  A comparison of these two methods in interpolating a raw, 2.6GS/s, unevenly sampled LAB output waveform to an evenly sampled 10GS/s waveform is shown in Figure \ref{fig:interpolation}.
+		
+		The methodology used in this thesis for interpolation is to use an Akima spline to evenly sample the recorded waveforms, then using the Fourier domain upsampling technique to increase the sampling rate to 10GS/s.
+		
+\begin{figure}
+\centering
+\makebox[\textwidth]{%
+	\includegraphics[width=0.9\textwidth]{sigChain_upsample} }
+	\caption{An example from channel 01BH of even resampling and up-sampling the original unevenly sampled LABRADOR digital readout.  The peak of the impulse is shown zoomed, while a view of the entire waveform can be seen in the inset frame showing the macro-consistency of the methods.  The method used in this analysis is  FFT up-sampling.  Despite undershooting some points, it minimally distorts the spectral power and phase response of the signal.}
+\label{fig:interpolation}
+\end{figure}		
+	
 	\subsection{Radio Interferometric Mapping}
 		Interferometric mapping is a method developed to compare measured time domain waveforms captured by antennas with a physical baseline offset with the goal of determining likely incoming plane wave direction.  This is accomplished by calculating the timing offsets expected from each direction of a pair of antennas in elevation and azimuth, computing the correlation function of the two waveforms, then weighting each direction in relation to the correlation value at that specific timing offset.  An example of a map created with a single baseline pair is seen in Figure \ref{fig:singleBaselineCorrMap}.  With multiple baseline pairs, each with a different distance vector angle between them, one can overlay multiple correlation maps to determine a most likely incoming plane wave direction.
 		
 		
 	\subsection{Coherent Waveform Sum}
-		The electronic and thermal noise present in each channel limits the sensitivity of the instrument to EAS signals with low power.  Since the power within the radiation of an EAS shower varies linearly with the energy of the particle, low energy showers, which have a higher flux rate, will have signal to noise ratios approaching one.  Additionally, polarization information and frequency content are effected by any noise present in the system.  Averaging waveforms from multiple channels will reduce this incoherent background noise by a factor of $\frac{1}{\sqrt{N}}$.  After determining the peak interferometric pointing direction, it is possible to align the channels that received signal from an incident radiation field and average them together.  An example of this is shown in Figure \ref{fig:coherentSum}.
+		The electronic and thermal noise present in each channel limits the sensitivity of the instrument to EAS signals with low power.  Since the power within the radiation of an EAS shower varies linearly with the energy of the particle, low energy showers, which have a higher flux rate, will have signal to noise ratios approaching one.  Additionally, polarization information and frequency content are effected by any noise present in the system.  Averaging waveforms from multiple channels will reduce this incoherent background noise by a factor of $\sqrt{N}$.  After determining the peak interferometric pointing direction, it is possible to align the channels that received signal from an incident radiation field and average them together.  An example of this is shown in Figure \ref{fig:coherentSum}.
+		
+		For this analysis 15 antennas, comprising 5 phi sectors, are used to construct the coherently summed waveform.  The 15 antennas are chosen based on the peak of the interferometric map, so that the closest 5 phi sectors are included.  
+		
+		The waveforms are then delayed based on the physical offsets between the phase centers of the antennas and a zero-point defined at the center of the payload, and added together with that timing offset preserved.  This preserves the absolute timing information of the signal, since all coherently summed waveforms will have the same reference point.
+		
+		
+	\subsection{Signal to Noise Ratio (SNR)}
+		The Signal to Noise Ratio (SNR) is a measure of the ratio of powers between the coherent signal present in the waveform  and the average noise power of that same waveform.  This value is calculated by dividing the average of positive peak ($V_+$) and negative peak $(V_-$) voltages of the coherently summed waveform, and dividing it by an average of the root mean squared (RMS) of the  past one minute of minimum bias waveforms for the channels that are used in the coherent sum.  Equation \ref{eqn:SNR} describes this calculation.
+		
+	\begin{equation}
+	SNR = \frac{V_{+}-V_{-}}{\sum^{60}_{i=0} V_{rms,n}}
+	\label{eqn:SNR}
+	\end{equation}
+	
+	In this thesis when I refer to SNR, I mean the value that is calculated from the voltage and timing calibration signal as stored to disk.  This includes the dispersion of the signal chain and antennas, as well as the additional cascaded electronic noise introduced by the amplifiers.  The SNR of the incident electric field will have a different value.
 	
 	
 	\subsection{Ray Tracing to Continent}
@@ -225,6 +255,14 @@
 
 \section{Template Correlation}
 	Though any physics experiment that aims to separate background events from signal events requires a general understanding of characteristics inherent to either group, measurements and simulations of UHECR induced EAS signatures provide a waveform template that can be used to strongly cut on signal events.  The simplest assumption, that an EAS will produce a broad spectrum, short duration, electromagnetic pulse, drives both the overall design of the payload, as well as several of the analysis cuts.  Determining a normalized correlation between a template and the coherently summed waveform provides an additional constraint beyond simply requiring impulsivity, and also requires the gain and phase characteristics of an incident wave are in agreement with an EAS signal.
+
+	\subsection{ZHAires Shower Modeling}
+		Simulating the radio emission of cosmic ray air showers is accomplished by using the ZHS extension to the AIRshower Extended Simulations (AIRES) package.\cite{AlvarezMuñiz2012325}  Concatenated, these two packages make up the ZHAires simulation framework.  This framework, developed by Jaime Alvarez-Muniz, Washington Rodrigues de Carvalho Jr. and Enrique Zas, generates a time varient electric field for a configurable incident particle at some instrumentation point in the atmosphere.  Recent work, with ANITA specifically in mind, has further extended the simulation to accurately depict reflections off the ice sheet.
+		
+		Simulations provide an important method to determine the overall sensitivity of the ANITA instrument to air shower events as a function of incident angle, energy, and payload location.  Due to the coherent beamed characteristic of air shower radio emmission, specifically a peak at the critical Cherenkov angle from the shower axis, ANITA is only sensitive to a small fraction of showers that occur within its field of view.
+		
+		The spectral content of EAS radiation falls off sharply as a function of offset from the critical Cherenkov angle.  Without being within a few degrees of the peak coherence angle, low frequency radiation, below the band of the ANITA instrument, dominates the spectrum.  This was shown in Figure \ref{fig:EASSignalPower}
+
 	
 	\subsection{Templates}
 		It is possible to generate several different templates that accurately represent an observable EAS signal on the payload.  Additionally, templates can be developed from averaging together calibration pulser or other anthropogenic signals of interest.  For this analysis, the template used for a cut value was a simulated EAS electric field measured at 0.175 degrees outside the critical coherence angle, convolved with the instrument impulse response.  Figure \ref{fig:templates} shows a comparison between the 9 CR templates, as well as the impulse response template and averaged WAIS pulser template.  The WAIS pulser template was used to establish cut efficiency on WAIS pulses, as they do not have the same phase structure as EAS signals.
@@ -394,4 +432,42 @@
 
 
 \section{Analysis Cut Methodology}
-	Determining cut values that separate astrophysical sourcesIn order to extract the events with measured quantities most similar to an expected CR EAS radiation pattern while preserving information about anthropogenic sources that may produce background events that leak into the , two cut 
+	Determining cut values that separate astrophysical sources from thermal and non-impulsive anthropogenic background is done by examining the distributions of various cut values for non-RF triggered events and WAIS calibration pulses.  In order to extract the events with measured quantities most similar to an expected CR EAS radiation pattern, while preserving information about anthropogenic sources that may produce background events that leak into the signal region, two cuts were made. A ``weak'' cut, which excludes events that do not point or are are not impulsive, and a ``harsh'' cut, which will exclude all events that either are not candidates or cluster to pseudo-bases.
+	
+	Four calculated values were considered for the ``weak'' cut.  These are: the peak of the interferometric map (map peak), the peak of the Hilbert envelope of the waveform created from coherently summing waveforms with delays corresponding to the peak of the interferometric map (hilbert peak), the linear polarization fraction, and the template correlation peak value.  Plots of these values for the non-RF triggered events and for the WAIS pulses are shown in Figures \ref{fig:mapPeakCut}, \ref{fig:hilbertCut}, \ref{fig:linPolCut}, and \ref{fig:tempCorrCut}.
+	
+	
+\begin{figure}
+	\centering
+%	\includegraphics[width=\textwidth]{figures/mapPeakCut}
+	\caption{asdf} 
+	\label{fig:mapPeakCut}
+\end{figure}
+	
+\begin{figure}
+	\centering
+%	\includegraphics[width=\textwidth]{figures/hilbertCut}
+	\caption{asdf} 
+	\label{fig:hilbertCut}
+\end{figure}
+
+\begin{figure}
+	\centering
+%	\includegraphics[width=\textwidth]{figures/linPolCut}
+	\caption{asdf} 
+	\label{fig:linPolCut}
+\end{figure}
+
+\begin{figure}
+	\centering
+%	\includegraphics[width=\textwidth]{figures/tempCorrCut}
+	\caption{asdf} 
+	\label{fig:tempCorrCut}
+\end{figure}
+	
+	
+
+	
+	
+	
+	

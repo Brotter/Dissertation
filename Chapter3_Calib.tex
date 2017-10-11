@@ -30,7 +30,7 @@
 \end{figure}	
 				
 				
-	\subsection{Least Significant Bit Masking}
+	\subsection{Least significant bit masking}
 		Though the LABRADOR chip reads out a 12 bit digitized ADC value, the value written to disk is only 11 bits. The least significant two bits are known to be systematically biased and are thus masked.  The entire value is then bit shifted downward, leaving a single continuously masked bin and 10 bits of effective dynamic range.  The final ADC value stored by the acquisition software is an 11 bit signed integer, with the least significant bit determined by the pedestal correction.  This means that a single capacitor bin will have either even or odd values, but not both.  This effect can be seen in Figure \ref{fig:evenOddPeds}.  Functionally it allows the stored pedestal values to have half bit resolution while not requiring float arithmetic for any real time CPU computations.
 		
 		
@@ -42,8 +42,8 @@
 		
 	
 	
-	\subsubsection{Simple Voltage to ADC Count Calibration}
-	To initially measure the scaling between voltage and ADC counts of the LABRADOR chips, an identical RF pulse was inserted into two preamplifier channels, then measured both after the full signal chain immediately before entering the SURF RF input with a calibrated Tektronix oscilloscope, and again from the LABs using the ANITA readout software.  The calibration set up is shown in Figure \ref{fig:calSetup}, note that this figure is used in multiple calibration analyses.  The peak to peak height of the measured signal from the LAB chips was then compared against the pulse read out by the acquisition software and used to determine a scaling on a chip to chip basis.  While keeping the reference channel constant, the test signal was moved throughout the remaining 95 channels.
+	\subsubsection{ADC count voltage normalization}
+	To initially measure the scaling between observed voltage and recorded ADC counts of the LABRADOR chips, an identical RF pulse was inserted into two preamplifier channels, then measured both after the full signal chain immediately before entering the SURF RF input with a calibrated Tektronix oscilloscope, and again from the LABs using the ANITA readout software.  The calibration set up is shown in Figure \ref{fig:calSetup}, note that this figure is used in multiple calibration analyses.  The peak to peak height of the measured signal from the LAB chips was then compared against the pulse read out by the acquisition software and used to determine a scaling on a chip to chip basis.  While keeping the reference channel constant, the test signal was moved throughout the remaining 95 channels.
 		
 			
 	\begin{figure}
@@ -117,7 +117,7 @@
 	\end{figure}
 
 
-	\subsubsection{Ellipse Method}	
+	\subsubsection{Ellipse calibration method}	
 		The second calibration technique is slightly more clever, and involves utilyzing a characteristic of a significant number of phase offset sine waves captures and will be called the Ellipse method.  Plotting the sum and difference of sequential samples of a pure sinusoidal function yields an ellipse whose semi-major and semi-minor axes determine the fractional time of each sample.  
 		
 		Using this method, whose derivation is detailed in Appendix B, it is possible to determine the width of each bin by comparing the sum and difference of digitized values from neighboring bins that are offset by some time $\delta t$ both observing the same sine wave.  It is useful to consider the edge cases of such a system, for example two bins that have a negligible dT separation.  In this case the measured voltage difference between them will always be small if not zero, while the addition axis can occupy a large range of values, the maximum being the crests of a sine wave. This will yield an ellipse with a very large eccentricity.  Inversely will have the inverse eccentricity, bins that are separated by exactly one half wavelength of the injected frequency will always have wide range of possible differences, and sums always approaching zero.  Nominal sampling between these extremes will provide an ellipse approaching a circle, as seen in Figure \ref{fig:ellipseMethodExample}.  This method is useful in that it requires far less data than the Bin Occupancy Fraction method.  
@@ -137,7 +137,7 @@
 	\end{figure}
 
 
-	\subsection{Sine Wave Fitting Method}
+	\subsection{Sine Wave Fitting Calibration}
 	
 	There exists a third method for calibrating each digitizer bin's timing width, which is applying an iterative least-squares fit of the inserted sine wave and determining the relative phase offsets of the voltage of each recorded point versus the same value of the fit.  This was done as an additional method for determining the validity and event to event stability of the dT constants.  This method has the additional benefit of requiring extremely low statistics, with a measurement of the width possible on a single captured waveform.  Of course, the four LAB buffer and dual RCO phases results in each bin only being measured one eighth of the total event read out.  Additionally, the only periodic input function was a sine wave which has a large fractional region where small voltage offsets effect large timing offsets, or regions where the derivative is small.  The bin occupancy fraction method is in a way a simplification of this method, using only times where the derivative is largest.  Additionally, it is noteworthy that this method is already used to determine the Epsilon wraparound time (discussed later in this chapter).
 	
@@ -299,10 +299,24 @@
 	\subsection{Effect of Signal Chain}
 		The electromagnetic impulse from an EAS is extremely short in duration, however the waveform exiting the signal chain experiences a frequency dependent group delay, creating a dispersed signal.  This dispersion is primarily caused by the filtering components.  
 		
+		Impulse response measurements for each of the 96 signal chains flown in the ANITA3 instrument were taken in Antarctica immediately preceding the flight. A broad band impulse was injected into each channel sequentially and measured by the on board flight electronics.  This signal was split at the source and simultaneously measured by an oscilloscope, providing an input and output reference signal which we can compare to determine the full complex transfer function.  A diagram of the setup is seen in Figure
+		
 	\subsection{Convolution with Antenna Response}
 		An important effect on the signal measured by the instrument is the angular response of the antennas.  First, there are a few considerations for determining what the optimal antenna response, the ratio of induced voltage on the 50-ohm output terminal of the antenna as a function of electric field on the front face, as a function of angle.  Firstly, it is important for the antennas to have some response outside of their specific 22.5 degree wide phi sector observations region in order to have baselines with measurable signal power (is this true?  It only is an effect if the source is exactly centered with the phi sector, but then you sort of know where it is because neither surrounding phi sector has any power...).  The antennas also need to have a high gain, aka a high directivity, in order to increase signal power as a function of noise power.  If we only used omni-directional antennas, the interferometry would have additional baselines (as additional antennas would observe any specific signal source), however each channel would have a reduced signal power with an identical noise power.  This also doesn't take into account the occlusion of signal by the gondola structure and discrete instrument packages residing ont the deck.  In addition, there exists no perfect antenna with a step function response, and as such we need to characterize the non-ideal antennas that fly on ANITAIII.
-		These antennas have several measurements that describe the complex response (antenna gain and group delay as a function of frequency) of the flight antennas.  One was done by the manufacturer, and several were done by us on the ground.  An additional calibration was possible in flight using the calibration pulsers and the random rotations of the gondola in respect to it.  The absolute measurements are most accurate in gain, as in the far field calibration measurements the absolute timing of the pulser was not synchronized.  However, both gain and phase have relative measurements as a function of angle.
+		
+		
+		These antennas have several measurements that describe the complex response (antenna gain and group delay as a function of frequency) of the flight antennas.  One was done by the manufacturer (shown in Figure \ref{fig:seaveyResponse}), and several were done on the ground in various configurations.  An additional calibration was possible in flight using the calibration pulsers and the random rotations of the gondola with respect to it.  The absolute measurements are most accurate in gain, as in the far field calibration measurements the absolute timing of the pulser was not synchronized.  However, both gain and phase have relative measurements as a function of angle.
+		
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/Seavey_offAngleMeasurements}
+	\caption{Replotted off angle antenna responses received from Seavey measured in post-manufacturing quality assurance.  Gains are referenced to the maximum received power, which is not required to be the boresight angle.  Responses are in reference to the electric field incident on the respective polarization ridge of the antenna.}
+	\label{fig:seaveyResponse}
+\end{figure}			
+	
 		There are two measurements that go into the response of the antenna.  The first is the S11 (or VSWR) of the antenna.  This describes the amount of input power is actually transmitted radiatively out of the antenna as a function of frequency.  The second is the actual gain pattern, which describes \textit{where} that power is transmitted in space.  Both are invertible, and together can be used to determine the antenna height which is a relation between the electric field incident on the antenna and the voltage transmitted to the transmission line.
+		
+		
 		Additionally there is a polarization component.  As we have interest in the polarization components (Stokes parameters) of the signal, the antennas are designed to be measure both vertical and horizontal polarizations independently.  Each polarization of the antenna has some non-trivial response in the opposite polarization however, especially in signals that have a combined vertical and horizontal component, which must be measured and factored out when for determining incident signal polarization.  For this, we have few measurements, and it may have to be done purely with in flight observations of known circularly polarized anthropogenic sources (such as satellites), thought that has an additional ionospheric component that would need to be measured.  In the end we may need to just extend error bars for this in leu of additional chamber measurements.
 		
 	\subsection{Effect of Uneven Time Sampling}
