@@ -77,7 +77,7 @@
 		The solution to this problem is to introduce a method in which the result is entirely outside of the experimenters control until all analysis procedures are complete.  In previous ANITA analyses, this was accomplished by ``hiding'' 90\% of the signal data, only allowing analyzers to use a 10\% fraction of the full set to tune their cuts.  Once the cuts were set to meet a desired background rejection fraction, the reminder of the events that did \textit{not} meet the cut requirements would be revealed.  A statistical method, known as the ABCD method, could be used to estimate the number of background events within the signal box from purely random statistical fluctuations.  Any number of events in excess of this background estimate would then be considered signal.  This method had several drawbacks. First, an inability to determine signal from background on an event by event basis leaves a possibility that the most interesting events are background.  Additionally, it allow anthropogenic background to escape observation within the 10\% data set, requiring it to be removed manually by hand later, re-introducing bias.
 		
 	\subsection{ANITAIII CR blinding technique}
-		For the ANITAIII CR search, it was decided that a 10\% - 90\% blinding requirement was unnecessary.  The energy spectrum and flux density of CRs are measured well up to the UHE range and the estimated number of observable events for the flight is much larger than one.  Additionally, both ANITAI and radio extension projects at terrestrial cosmic ray observatories have measured the radio EAS signature of a CR interaction with the atmosphere.  The ANITAIII results have also been subject to a fully blind analysis previously in a neutrino search that reported 4 transient events matching signal.  For this reason, a novel and more lax blinding procedure was agreed to for this earch.
+		For the ANITAIII CR search, it was decided that a 10\% - 90\% blinding requirement was unnecessary.  The energy spectrum and flux density of CRs are measured well up to the UHE range and the estimated number of observable events for the flight is much larger than one.  Additionally, both ANITAI and radio extension projects at terrestrial cosmic ray observatories have measured the radio EAS signature of a CR interaction with the atmosphere.  The ANITAIII results have also been subject to a fully blind analysis previously in a neutrino search that reported 4 transient events matching signal.  For this reason, a novel and more lax blinding procedure was agreed to for this search.
 
 		The signal of greatest interest in this analysis is a regenerated tau neutrino transiting through the earth and hadronically decaying in the atmosphere.  Though the primary particle is different from a CR EAS, the shower will evolve in a similar fashion and produce a similar radio pulse.  The defining characteristic of this signal is a polarity with the same sign as a direct EAS shower observation, but with an incidence angle below the horizon (beyond misreconstruction uncertainty).  To prevent any bias in this signal channel, the polarity of all events has been randomly inverted.  This will create a random distribution of polarities, and prevent an analyzer from determining whether any particular event is of interest.
 		
@@ -126,6 +126,12 @@
 		
 	\subsection{Downward pointing events}
 		Events that have an interferometric map peak that points upwards cannot be created by any any of the astrophysical event types under consideration for this analysis.  ANITAIII floats at the top of the stratosphere, above which there is sparingly small amounts of atmosphere with which a particle can interact.  Even direct CRs will have impulsive signals that emanate from within the atmosphere.  Because of this, all events that have peak elevation angles above zero can be safely discarded.
+		
+	
+	\subsection{Reconstructed angle to hardware trigger angle}
+		The dynamic phi sector masking introduces a class of events in which the waveform ``falls off'' the end of the digitization record, subsequently losing information about the earliest structure in the waveform.  This is caused when impulsive events have a sufficient amount of power to still trigger in channels with antennas in un-masked phi sectors at angles far from their boresight.  The majority of the signal power will still be observed in channels pointing towards incident impulsive source, however the free space propagation time between the masked and unmasked phi sectors delays the trigger formation enough so that the waveform is truncated.  An example of this non-ideality can be seen in Figure \ref{fig:earyWaveform}.
+		
+		Since these waveforms are corrupted beyond repair and can not be included in a final signal sample, they can be removed prior to further analysis.
 		
 		
 \section{Digital filtering}
@@ -242,12 +248,71 @@
 	have a  orientation The expected signal from a cosmic ray air shower has a characteristic polarization that can be used as a further discriminator between random noise, which will have a random polarization.  Specifically, the geomagnetically induced radiation component will be linearly polarized and orthogonal to both the shower axis and the magnetic field.  This allows two cuts to be made, one of the linear polarization fraction and one of the linear polarization angle.  Both these rely on the calculation of Stokes parameters made possible by the dual polarization antennas, which capture both these time domain electric fields simultaneously.
 
 	\subsection{Stokes Parameters}
+		The Stokes parameters are a mathematical method for describing the polarization of electromagnetic radiation with a four-vector of values.  The four parameters in the Stokes vector are $I$, which describes the total intensity, $V$ which describes the circular polarization, and $U$ and $Q$, which describe the linear polarization in two rotated bases.  $Q$ corresponds to linear polarization in coordinate basis that is either parallel or perpendicular to the complex electric field measurements, and $U$ is the basis rotated $45^{\circ}$ from that.  A visual representation of the Stokes parameters is shown in Figure \ref{fig:Stokes}.  These values can be determined for each digitized event by comparing the temporally dynamic electromagnetic fields of the orthogonally positioned Hpol and Vpol channels from each antenna.  The equations for calculating these values are shown in Equation \ref{eqn:Stokes}.
 		
-	\subsection{Linear Polarization Fraction}
-		
-	\subsection{Linear Polarization Angle}
+	\begin{gather*}
+	\varepsilon_{i} = E_{i} + i\hat{E}_{i} \\
+	I =	\frac{1}{n}\sum^{n-1}_{0}(|\varepsilon|^{2}_{i,H} + |\varepsilon|^{2}_{i,V}) \\
+	Q =	\frac{1}{n}\sum^{n-1}_{0}(|\varepsilon|^{2}_{i,H} - |\varepsilon|^{2}_{i,V}) \\
+	U =	Re(\frac{1}{n}\sum^{n-1}_{0}(\varepsilon_{i,H} \varepsilon_{i,V}*)) \\
+	V =	Im(\frac{1}{n}\sum^{n-1}_{0}(\varepsilon_{i,H} \varepsilon_{i,V}*)) \\
+	\label{eqn:Stokes}
+	\end{gather*}
 
-	\subsection{Expected vs Measured Geomagnetic Polarization Angle}
+		
+	 $\hat{E}$ is the Hilbert transform of the electric field waveform, $E_{H}$ is the signal from the horizontally oriented antenna channel, and $E_{V}$ is the vertically polarized signal.  The $i$ is the sample number from the evenly spaced waveform.  $\varepsilon$ is then the complex voltage of the signal, where $i=\sqrt{-1}$.  $Re$ and $Im$ denote taking the real or imaginary part of the value, and $*$ is the complex conjugate operator.  This equation has axes referenced to the horizontal, perpendicular to the vector normal to the Earth. \cite{PhysRevD.94.103010}
+	 
+	 To reduce the effect that background noise has on the calculation of the Stokes vector, the waveform was truncated after 500 points ($n=500$ in Equation \ref{eqn:Stokes}), or 50ns after the beginning of the coherently summed waveform.  This was chosen to capture the entirety of measured WAIS calibration pulses, but remove the trailing edge.
+	 
+	 Determining the uncertainty on the calculation of these values was done by calculating the Stokes parameters for each waveform used in the coherent sum and determining the spread of the distribution of calculated values around the value calculated for the coherent sum.
+	 
+	\subsection{Linear Polarization Fraction}
+		The fraction of the signal that is linearly polarized can be calculated using Stokes Parameters.  The $Q$ and $U$ components of the vector represent the linearly polarized portions of the signal, which can be normalized to the total coherent radiation $I$ and added in quadrature to determine the fraction of power that is linearly polarized, $L$, as shown in Equation \ref{eqn:LinPolFrac}.
+		
+	\begin{equation}
+		L=\sqrt{U^2 + Q^2}
+	\label{eqn:LinPolFrac}
+	\end{equation}
+		
+	It is expected that signal-like events will be mostly linearly polarized, while incoherent thermal sources will have low values of $L$.  This can be used as a cut parameter for a cosmic ray search.  The distribution of $L$ for events that pass quality cuts can be seen in Figure \ref{fig:LinPolFrac_goodEvs}.
+	
+	\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/linPolFrac_goodEvs}
+	\caption{The distribution of linear polarization fraction for events measured during the ANITAIII flight that pass quality cuts.  As expected, the majority of events are thermal in nature, and have low measured values of $L$.} 
+	\label{fig:LinPolFrac_goodEvs}
+\end{figure}
+	
+	
+	\subsection{Total polarization fraction}
+		The two major contributors to CR induced EAS radiation, radially polarized Askaryan and linearly polarized Geomagnetic, can combine to create a signal with a circularly polarized element.  It is therefore useful to calculate the total polarization fraction of the measured events.  Since $U$, $Q$, and $V$ all measure components of polarized coherent radiation, the quadrature sum of the total coherent radiation normalized parameters gives the total polarization fraction $I_{p}$, shown in Equation \ref{eqn:Ip}.
+		
+	\begin{equation}
+		I_p = \sqrt{\frac{U}{I}^2 + \frac{Q}{I}^2 + \frac{V}{I}^2}
+	\label{eqn:Ip}
+	\end{equation}
+
+		Equation \ref{eqn:Ip} simplifies to Equation \ref{eqn:Ip2}.
+		
+	\begin{equation}
+		I_p = \frac{\sqrt{U^2 + Q^2 + V^2}}{I}
+	\label{eqn:Ip2}
+	\end{equation}
+
+		This 
+	\subsection{Plane and angle of linear polarization}
+		The predominant geometric plane of linearly polarized radiation is referred to the plane of polarization.  The angle between the horizontally polarized antenna electric field axis and this plane is the linear polarization angle , and will be denoted by $\Psi_{L}$.  This angle can be calculated by computing the angle between projections of the $U$ and $Q$ Stokes parameters onto their corresponding coordinate bases, shown in Equation \ref{eqn:polAngle}.
+	
+	\begin{equation}
+		\Psi_{L} = \frac{1}{2}tan^{-1}(\frac{U}{Q})
+	\label{eqn:polAngle}
+	\end{equation}
+		
+		Since the convention of the sign of the polarization of the signal is a matter of definition, for simplicity the values of $\Psi_{L}$ are restricted to angles between $0^\circ$ and $90^\circ$.
+		
+	\subsection{Expected vs measured geomagnetic polarization angle}
+		The expected linear polarization angle of radiation emitted by an EAS will correspond primarily to the cross product between the the shower axis and the geomagnetic field vector at the shower maximum.  Comparing the expected and measured polarization angle for observed isolated impulsive events can be used as a final discriminator on the likelihood that they are from an astrophysical interaction.  Calculating this expected angle requires a knowledge of the pointed event location on the continent of Antarctica, its reconstructed incidence elevation angle, and the geomagnetic field at the location in the atmosphere where shower max occurred.
+		
 		
 \section{Known object identification}
 	Many bases on the Antarctic continent are already cataloged by the various national programs that operate them.  Using these known bases we can eliminate events that interferometrically point to objects of expected anthropogenic noise.  There also likely exist bases that are, for whatever reason, not included in our catalog.  We also use a list of "pseudo-bases" generated from clustered event lists from previous ANITA flights to eliminate possible anthropogenic interference.  The resulting effect these excluded regions have on the flight can be determined by its flight path and a log-likelyhood method for generating pointing error elipses around the bases.  I'll put a plot of that here.
