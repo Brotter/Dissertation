@@ -137,18 +137,31 @@
 		
 		There are several methods that can take unevenly sampled waveforms as an input, and output an evenly sampled approximation of the signal by extrapolating between points, a process called interpolation.  An Akima spline iteratively fits a cubic polynomial to a range of sampled points, then uses that fit to determine the intermediate points.  Akima splines do a good job at determining an equivalent evenly sampled waveform, but introduces spectral distortion when used for increasing the sampling frequency.  Another method of interpolation, which I'll call Fourier domain upsampling, computes the complex Fourier transform of a waveform, appends zeros to the end until the desired frequency is reached, then calculates the inverse Fourier transform of that extended frequency domain signal.  This method introduces no in-band spectral distortion, though for computational simplicity it must be performed on an evenly sampled waveform.  A comparison of these two methods in interpolating a raw, 2.6GS/s, unevenly sampled LAB output waveform to an evenly sampled 10GS/s waveform is shown in Figure \ref{fig:interpolation}.
 		
-		The methodology used in this thesis for interpolation is to use an Akima spline to evenly sample the recorded waveforms, then using the Fourier domain upsampling technique to increase the sampling rate to 10GS/s.
+		The methodology used in this thesis for interpolation is to use an Akima spline to evenly sample the recorded waveforms, then using the Fourier domain upsampling technique to increase the sampling rate by a factor of three, to 7.8GS/s.
 		
 \begin{figure}
 \centering
-\makebox[\textwidth]{
-	\includegraphics[width=0.9\textwidth]{sigChain_upsample} }
+	\includegraphics[width=0.9\textwidth]{sigChain_upsample}
 	\caption{An example from channel 01BH of even resampling and up-sampling the original unevenly sampled LABRADOR digital readout.  The peak of the impulse is shown zoomed, while a view of the entire waveform can be seen in the inset frame showing the macro-consistency of the methods.  The method used in this analysis is  FFT up-sampling.  Despite undershooting some points, it minimally distorts the spectral power and phase response of the signal.}
 \label{fig:interpolation}
 \end{figure}		
 	
 	\subsection{Radio Interferometric Mapping}
-		Interferometric mapping is a method developed to compare measured time domain waveforms captured by antennas with a physical baseline offset with the goal of determining likely incoming plane wave direction.  This is accomplished by calculating the timing offsets expected from each direction of a pair of antennas in elevation and azimuth, computing the correlation function of the two waveforms, then weighting each direction in relation to the correlation value at that specific timing offset.  An example of a map created with a single baseline pair is seen in Figure \ref{fig:singleBaselineCorrMap}.  With multiple baseline pairs, each with a different distance vector angle between them, one can overlay multiple correlation maps to determine a most likely incoming plane wave direction.
+		Interferometric mapping is a method developed to compare measured time domain waveforms captured by antennas with a physical baseline offset with the goal of determining likely incoming plane wave direction.\cite{interferometry}  This is accomplished by calculating the timing offsets expected from each direction of a pair of antennas in elevation and azimuth, computing the correlation function of the two waveforms, then building an interferogram by weighting each direction in relation to the correlation value at that specific timing offset.  The number of unique permutations for $N$ antennas choosing two at a time is given by the binomial coefficient, shown in Equation \ref{eqn:binomial}
+		
+	\begin{equation}
+	{{N}\choose{2}} = \cfrac{N!}{2(N-2)!}
+	\label{eqn:binomial}
+	\end{equation}
+		
+		For the analysis inthis theis, $N=15$ antennas were used, yielding 105 baseline pairs per map point.  An example of four antennas yielding six single baseline pairs and the subsequent interferometric map can be seen in Figure \ref{fig:mapCreation}.
+		
+\begin{figure}
+\centering
+	\includegraphics[width=0.9\textwidth]{interferometricMapCreation}
+	\caption{Six interferograms for single baseline correlation offsets between four antennas, and their combined full interferometric map.  The signal being reconstructed for this image is a WAIS pulser event.  The four antennas used are all three in the phi sector pointing nearest the incident pulse, as well as the middle ring antenna in the neighboring phi sector.  Maps created in the full analysis combine interferograms from 15 antennas}
+	\label{fig:mapCreation}
+\end{figure}
 		
 		
 	\subsection{Coherent Waveform Sum}
@@ -163,7 +176,7 @@
 		The Signal to Noise Ratio (SNR) is a measure of the ratio of powers between the coherent signal present in the waveform  and the average noise power of that same waveform.  This value is calculated by dividing the average of positive peak ($V_+$) and negative peak $(V_-$) voltages of the coherently summed waveform, and dividing it by an average of the root mean squared (RMS) of the  past one minute of minimum bias waveforms for the channels that are used in the coherent sum.  Equation \ref{eqn:SNR} describes this calculation.
 		
 	\begin{equation}
-	SNR = \frac{V_{+}-V_{-}}{\sum^{60}_{i=0} V_{rms,n}}
+	SNR = \frac{V_{+}-V_{-}}{\sum^{60}_{i=0} V_{rms,i}}
 	\label{eqn:SNR}
 	\end{equation}
 	
@@ -197,7 +210,7 @@
 
 
 	\subsection{Generation of transfer function}
-		The transfer function of the system was painstakingly developed and utilized a variety of both time domain and Fourier transformed frequency domain manipulations.  These each introduce their own errors, as many of them require assumptions about the incoming signal.  I'll detail the full process of generating the transfer function in an appendix.
+		The transfer function of the system was painstakingly developed and utilized a variety of both time domain and Fourier transformed frequency domain manipulations.  These each introduce their own errors, as many of them require assumptions about the incoming signal.  I detail the full process of generating the transfer function in Appendix A.
 
 
 	\subsection{Signal to noise ratio of impulse response}
@@ -316,7 +329,16 @@
 \section{Polarity Estimator}%9
 	In order to identify up-going tau neutrino candidates within the detected cosmic ray candidate set, it is important to have a method for determining the sign of the polarity for any particular event.  Since a reflection off the ice will invert the polarity of the electromagnetic field impulse, it is clear that an event with a steep elevation angle but polarization that is inverted from the bulk of the CR candidates will be from an astrophysical particle exiting the continent and creating a shower within the atmosphere.
 	
-	The polarity estimation for this thesis was accomplished by determining whether the maximum or minimum of the template correlation is the absolute peak of the correlation.  Since detection of a tau neutrino would be both exciting and controversial, the mis-identification of this method is desired to be as small as possible.
+	The polarity estimation for this thesis was accomplished by determining whether the absolute value of the peak of the correlation is the maximum or minimum, i.e. if the sign of the peak is negative or positive.  Since detection of a tau neutrino would be both exciting and controversial, the mis-identification of this method is desired to be as small as possible.  The sign of the peak of the correlation is recorded for both the coherently summed and the de-dispersed waveforms.  When this method is applied to the 118,268 tagged WAIS pulser events, which all have the same polarity, only one was identified as the incorrect polarity by using the coherent sum, a misidentification rate of $8.46\times10^{-6}$.  However, using the de-dispersed waveform, 200 events (including the single mis-identified event from the coherent sum) were found, a misidentification rate of $1.69\times10^{-3}$.  This is shown graphically in Figure \ref{fig:waisPolarity}.  To be considered properly identified, the estimates for the dispersed and coherent waveforms are required to be identical.  This yields 1 ($8.46\times10^{-6}$) WAIS event that is mis-identified, and 199 ($1.68\times10^{-3}$) events of indeterminate polarity.
+	
+		
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/waisPolarity}
+	\caption{The results of the polarization identification on the 118,268 WAIS pulses.  The algorithm has a $8.46\times10^{-6}$ misidentification rate, and a $1.68\times10^{-3}$ probability of returning an indeterminate polarity.} 
+	\label{fig:waisPolarity}
+\end{figure}
+	
 
 		
 \section{Known and Measured Source Identification}%10
@@ -392,9 +414,13 @@
 		
 
 \section{Analysis Cut Methodology}%12
-	Determining cut values that separate astrophysical sources from thermal and non-impulsive anthropogenic background is done by examining the distributions of various cut values for non-RF triggered events and WAIS calibration pulses.  In order to extract the events with measured quantities most similar to an expected CR EAS radiation pattern, while preserving information about anthropogenic sources that may produce background events that leak into the signal region, two cuts were made. A ``weak'' cut, which excludes events that do not point or are not impulsive, and a ``harsh'' cut, which will exclude all events that either are not candidates or cluster to pseudo-bases.
+	Cut values that separate astrophysical sources from thermal and non-astrophysical anthropogenic background are determined by examining the distributions of various cut values for non-RF triggered events and WAIS calibration pulses.  The most desirable cut value will be one that maximizes the ratio of captured calibration pulser signals to excluded thermally triggered events.  However, in order to extract the events with measured quantities most similar to an expected CR EAS radiation pattern, while preserving information about anthropogenic sources that may produce background events that leak into the signal region, two cuts levels were selected.  
 	
-	Four calculated values were considered for the ``weak'' cut.  These are: the peak of the interferometric map (map peak), the peak of the Hilbert envelope of the waveform created from coherently summing waveforms with delays corresponding to the peak of the interferometric map (hilbert peak), the linear polarization fraction, and the template correlation peak value.  Plots of these values for the non-RF triggered events and for the WAIS pulses are shown in Figures \ref{fig:mapPeakCut}, \ref{fig:hilbertCut}, \ref{fig:linPolCut}, and \ref{fig:tempCorrCut}.
+	First, a ``weak'' cut, which I'll refer to as the non-thermal cut, that removes events that are likely to be thermal, but allowing a wide range of passing events with high impulsivity and non-thermal characteristics.  The events included in the non-thermal sample can be used to identify anthropogenic noise sources and develop an understanding of the types of measured signals they create.  
+	
+	Secondly, a ``harsh'' cut, which I will call the signal cut, will exclude all events that do not closely match the expectation for a measured EAS impulsive signal.  The events that pass the signal cut and do not cluster with any events in the non-thermal cut will be assumed to be either signal, or part of an irreducible statistical background which will be estimated before examining the measured events.  The correlation cuts are developed so that they can include simulated CR events that are convolved with a thermal noise normalized to a low SNR signal.  The linear polarization cuts are designed to capture a smaller fraction of WAIS events, which assumes that WAIS events have a lower value than true CRs would due to the calibration antenna design.
+	
+	Five calculated values were considered for the ``weak'' cut.  These are: the peak of the interferometric map (map peak), the peak of the Hilbert envelope of the waveform created from coherently summing waveforms with delays corresponding to the peak of the interferometric map (hilbert peak), the linear polarization fraction, and the template correlation peak value for both the coherently summed and for the de-dispersed waveforms.  Plots of these values for the non-RF triggered events and for the WAIS pulses are shown in Figures \ref{fig:mapPeakCut}, \ref{fig:hilbertCut}, \ref{fig:linPolCut}, \ref{fig:templateCoherCut}, and \ref{fig:templateDeconvCut}.
 	
 	
 \begin{figure}
@@ -422,12 +448,34 @@
 	\centering
 	\includegraphics[width=\textwidth]{figures/tempCorrCut}
 	\caption{Distribution of peak cosmic ray template correlation values for events that pass quality cuts and WAIS calibration pulser events.} 
-	\label{fig:tempCorrCut}
+	\label{fig:templateCoherCut}
+\end{figure}
+
+\begin{figure}
+	\centering
+%	\includegraphics[width=\textwidth]{figures/tempDeconvCut}
+	\caption{Distribution of peak cosmic ray template correlation values for events that pass quality cuts and WAIS calibration pulser events.} 
+	\label{fig:tempDeconvCut}
 \end{figure}
 	
 	
+The values for the two cuts are shown in Table \ref{tab:cutValues}.  Signal cut values marked with a hyphen are not raised beyond those set for the non-thermal cut.
 
-	
+\begin{figure}
+\begin{tabular}[c]{|l|c|c|}
+\hline
+Quantity Name & Non-thermal Cut value & Signal Cut value \\
+\hline
+Map Peak & 0.0435 & - \\
+Hilbert Peak & 24 & - \\
+Linear Polarization Fraction & 0.3 & 0.6 \\
+Coherent Template Correlation & 0.5 & 0.75 \\
+Deconvolved Tempalte Correlation & 0.5 & 0.75 \\
+\hline
+\end{tabular}
+\caption{Values used for non-thermal and signal cuts.  Non-thermal cuts are derived from efficiency on the WAIS pulser events and exclusion of thermal noise events.  Determinations of the cuts is detailed in the text.}
+\label{tab:cutValues}
+\end{figure}
 
 
 
@@ -444,7 +492,7 @@
 \end{figure}	
 	
 	
-	\subsection{Event Clustering and Log Likelihood}
+	\subsection{Log likelihood clustering metric}
 		Impulsive events that point back to a geographically isolated source location have the highest likelihood to be astrophysical in nature.  The metric that has been used in past ANITA experiments to determine the ``closeness'' of one event to another has been called the Log Likelihood, and is represented by the variable $L$.  This measurement must take into account both the pointing uncertainty of the instrument, as well as the constantly changing payload location.  Since each event can be seen from a different angle, the angular separation between the projected location of one event on the ice from the perspective of another event may not be the same as the inverse.  This is shown graphically in Figure \ref{fig:clusteringProjection}.  
 
 \begin{figure}
@@ -481,8 +529,11 @@
 		Using this equation we can determine the relative ``closeness'' of any two events.  
 		
 	
-	\subsection{Impulsive source clustering}
-	
+	\subsection{Impulsive source identification}
+		In order to exclude events that are likely to be anthropogenic background, it is necessary to determine locations on the continent from which impulsive RF transients are produced.  Since events created by Humans are likely to emanate from discrete sources, this can be done by determining locations in which many impulsive events occur close to one another.  This is done by marking events that fall within a log likelihood of $L<40$ from any other event.  Events with a single other event falling within this threshold are marked as pseudo-bases.  By keeping the information for all events that fall within a cluster, instead of combining them to a single mean point, clustered impulsive source locations become elongated and exclude a larger region of the instrumental exposure.  This is done conservatively to keep anthropogenic background from leaking into the signal region.
+		
+	\subsection{Event Clustering}
+		The final set of signal cuts will provide a set of events that are most likely to be signal.  These events are then clustered with all events tagged as pseudo-bases, and removed from the signal sample if they do.  The remaining events will then be isolated impulsive transients that closely match the simulated radiation from an EAS, and will be the final candidates of the analysis.
 
 
 
