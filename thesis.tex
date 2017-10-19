@@ -50,6 +50,9 @@
 %% Jarreds suggestion
 \usepackage{siunitx}
 
+%% Linking to sections and chapters
+\usepackage{hyperref}
+
 
 %% To time stamp it on all the pages
 \usepackage{fancyhdr}
@@ -100,7 +103,7 @@ Richard Mills
 
 %%% End of preamble
 \begin{document}
-\maketitle
+%\maketitle
 
 \begin{frontmatter}
 
@@ -123,10 +126,10 @@ Richard Mills
 \tableofcontents
 
 %%% Generate list of tables
-%\listoftables
+\listoftables
 
 %%% Generate list of figures
-%\listoffigures
+\listoffigures
 
 \end{frontmatter}
 
@@ -142,7 +145,7 @@ Richard Mills
 %%% Input file for bibliography
 \bibliography{bibliography}
 %% Use this for an alphabetically organized bibliography
-%\bibliographystyle{plain}
+%%%%%%%%\bibliographystyle{plain}
 %% Use this for a reference order organized bibliography
 \bibliographystyle{unsrt}
 

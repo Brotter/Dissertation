@@ -150,7 +150,7 @@
 		The variance in the timing from bin to bin has a strong effect on the measured bandwidth of the system.  Due to the non-periodic nature of the signal, bins that are sampled too far apart will be unable to digitize frequencies that are higher than the Nyquist frequency of the pair.  Similarly, samples spaced closer together than the nominal sampling frequency will act to alias in high frequency noise and dilute the signal.  The nominal sampling variance between the ANITAI and ANITAII flights increased by a factor of 3.5 to 25\%, which reduces the signal power in the high end of the spectrum .  The cause of this change between the ANITAII and ANITAIII flights is unknown, and was the reason for employing several different validation techniques of the measured dT width values.
 		
 		
-	\subsection{Wraparound Time ($\epsilon$)}
+	\subsection{Wraparound Time (\texorpdfstring{$\epsilon$})}
 		The propagation time of the write strobe between the end of the ring SCA and the beginning is larger than a single bin.  As the SCA acts as a ring buffer, and the pulse can occur at any time within the ring, the write strobe must begin its transition back to the first bin before the end of the SCA at bin 256.  The remaining four bins are then used to fill in the "wraparound" time, which has been colloquially called $\epsilon$.  These epsilon values, like the dT bin widths, are dependent on the polarity of the RCO signal, and so each chip receives two $\epsilon$ correction constants. In addition, four dT periods is often longer than the wraparound time, and as such the 260th sample is often treated as a duplicate and discarded.
 		
 		To measure these wraparound values, a sine wave is fit to the bin width corrected and unwrapped samples.  This fit is then used to derive the offsets between the last and first bins in the array.  The results of this analysis are shown in Figure \ref{fig:epsilonValues}
@@ -285,7 +285,7 @@
 		
 \begin{figure}
 	\centering
-	\includegraphics[height=\textheight]{figures/phaseCenterCalib}
+	\includegraphics[width=0.85\textwidth]{figures/phaseCenterCalib}
 	\caption{A diagram showing the process used to calibrate the electrical phase centers of each antenna by comparing waveform arrival times between antenna pairs.  The pulser used was the WAIS divide pulser, which was an azimuthally symmetric autonomous station.  The timing delay was determined by finding the peak correlation of the waveforms, and repeated iteratively for neighboring antenna pairs and all antennas.}
 	\label{fig:phaseCenterDiag}
 \end{figure}	

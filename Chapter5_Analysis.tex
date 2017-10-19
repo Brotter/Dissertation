@@ -2,16 +2,23 @@
 \chapter{Analysis of ANITAIII Flight Data}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ANITAIII Analysis Overview}%1
-	The physics event search analysis detailed in this thesis was designed to find ``cosmic ray like'' events.  As there are already published observations of cosmic rays from previous ANITA flights, the workload of doing a full blind analysis for any impulsive signals can be greatly diminished.  However, this has the consequence of excluding signals that do not fit into a measured and modeled EAS radiation pattern.  This search has the possibility of identifying two separate cosmogenic particle interactions, UHECRs interacting in the atmosphere, and up-going tau neutrino regeneration showers.
+
+	\subsection{Analysis goals}
+	The physics event search analysis detailed in this thesis was designed to find ``cosmic ray like'' events specifically.  The flux and energy spectrum of CRs has been well measured, and there are already published observations of cosmic rays from previous ANITA flights. The blinding requirements and associated drawbacks of doing a full blind analysis for previously unobserved impulsive signals, such as in-ice $\nu_{e}$ and $\nu_{\mu}$ interactions, can be greatly diminished by approaching the analysis in this manner.  This analysis is designed to provide the highest possible exposure to a very specific signal, that of modeled and observed CR EAS impulses.  This has the consequence of reducing sensitivity to signals that do not fit into the expectation provided by measurements and models of CR EAS radiation patterns.
 	
-	Analysis of the data recorded by the ANITAIII flight instrument requires a significant computational effort to extract a meaningful physics result.  The digital values recorded by the instruments on board the payload, when properly calibrated and used in conjunction with one another, can establish whether any electromagnetic signals were traversing the payload at the time that the trigger system latched the digitizers.  The combination of geometric antenna offsets and their corresponding timing delays allows the discrimination of signal versus noise, as well as precision reconstruction of any incident signal.  Using a variety of mathematical methods and an understanding of the expected signal, the nearly 85 million waveforms captured during the flight can be pared down to a manageable number, which can then be looked at more closely.  This chapter details the calculated values, their motivations, and the statistical analyses used to conduct the cosmic ray search.
+	This search is expected to be sensitive to two separate astrophysical particle interactions described in Section \ref{sec:SignalsAndBackgrounds}.  UHECRs interacting in the atmosphere and viewed directly or as a reflection off the continental ice sheet will be detectable by design.  In addition, UHE$\nu_{\tau}$ particles transiting through the Earth will also be uncovered.  Their shower profiles are expected to be very similar~\cite{tauEMShowers}, with the primary difference being absolute polarity of the signal.  An upward traveling UHE$\nu_{\tau}$ observed below the horizon would have radiation measured directly, whereas a UHECR viewed below the horizon would be observable in a reflection.  This reflection would induce a polarity flip in the electric field oriented parallel to the surface of the earth.  Since the observed signal is dominated by geomagnetically induced radiation, which at the poles are primarily vertically aligned, the strongest E-field component would be horizontally polarized.
 	
-	A diagram that depicts the order in which analysis steps are taken is shown in Figure \ref{fig:AnalysisDiagram}. 
+	The results of this analysis will be an accounting of the signals found using this search method and the estimated exposure the ANITA-III instrument had during its flight to this type of astrophysical event.  The polarity of the signals will also be identified, offering a measurement of the UHE$\nu_{\tau}$ flux.  Finally, a background estimate that is novel to the ANITA experiment will be introduced and applied to the data.
+	
+	\subsection{Analysis outline}
+	Analysis of the data recorded by the ANITAIII flight instrument requires a significant computational effort to extract a meaningful physics result.  The digital values recorded by the instruments on-board the payload, when properly calibrated and used in conjunction with one another, can establish whether any electromagnetic signals were traversing the payload at the time that the trigger system latched the digitizers.  The combination of geometric antenna offsets and their corresponding timing delays allows the discrimination of signal versus noise, as well as precision reconstruction of any incident signal.  Using a variety of mathematical methods and an understanding of the expected signal, the nearly 85 million waveforms captured during the flight can be pared down to a handful of likely CR candidates, which can then be examined in greater detail.  This chapter details the calculated values, their motivations, and the methods used to conduct the cosmic ray search.
+	
+	A diagram that depicts the order in which analysis steps are taken, as well as their relavant software packages and intermediate files, is shown in Figure \ref{fig:AnalysisDiagram}. 
 	
 \begin{figure}
 	\centering
 	\includegraphics[height=0.8\textheight]{figures/AnalysisDiagram}
-	\caption{A diagram depicting the order in which analysis steps are taken, the intermediate storage files saved to disk, and the function names and ROOT macros where the code is located.  These steps are described in detail throughout this chapter.  The storage locations of final results are noted with red stars.}
+	\caption{A diagram depicting the order in which analysis steps are taken, the intermediate storage files saved to disk, and the function names and ROOT macros where the bulk of the code is located.  The calculations and algorithms contained within this code-base is described in detail throughout this chapter.  The storage locations of final results are noted with red stars.}
 	\label{fig:AnalysisDiagram}
 \end{figure}	
 		
@@ -327,6 +334,7 @@
 		
 		
 \section{Polarity Estimator}%9
+
 	In order to identify up-going tau neutrino candidates within the detected cosmic ray candidate set, it is important to have a method for determining the sign of the polarity for any particular event.  Since a reflection off the ice will invert the polarity of the electromagnetic field impulse, it is clear that an event with a steep elevation angle but polarization that is inverted from the bulk of the CR candidates will be from an astrophysical particle exiting the continent and creating a shower within the atmosphere.
 	
 	The polarity estimation for this thesis was accomplished by determining whether the absolute value of the peak of the correlation is the maximum or minimum, i.e. if the sign of the peak is negative or positive.  Since detection of a tau neutrino would be both exciting and controversial, the mis-identification of this method is desired to be as small as possible.  The sign of the peak of the correlation is recorded for both the coherently summed and the de-dispersed waveforms.  When this method is applied to the 118,268 tagged WAIS pulser events, which all have the same polarity, only one was identified as the incorrect polarity by using the coherent sum, a misidentification rate of $8.46\times10^{-6}$.  However, using the de-dispersed waveform, 200 events (including the single mis-identified event from the coherent sum) were found, a misidentification rate of $1.69\times10^{-3}$.  This is shown graphically in Figure \ref{fig:waisPolarity}.  To be considered properly identified, the estimates for the dispersed and coherent waveforms are required to be identical.  This yields 1 ($8.46\times10^{-6}$) WAIS event that is mis-identified, and 199 ($1.68\times10^{-3}$) events of indeterminate polarity.
@@ -360,13 +368,10 @@
 	All events taken with the ANITA instrument must first pass basic checks on their ability to be considered in a sample of astrophysical impulses.  ANITAIII does not seem to suffer from significant issues related to the digitization or storage of waveforms, however there are several observed event types that can be identified and removed prior to analysis.
 
 	\subsection{RF Triggered}
-		The first requirement for an impulse to be considered is that the RF trigger must have initiated the readout.  The 2Hz of minimum bias triggers are therefore excluded from the analysis.
+		The first requirement for an impulse to be considered as a CR candidate is that the RF trigger must have initiated the readout.  The 2Hz of minimum bias triggers are therefore excluded from the analysis.
 
 	\subsection{Calibration Pulsers}
-		Accurate tagging of calibration pulsers allows us to remove them from the sample considered in the physics analysis.  This is done using the recorded nanosecond precision trigger time, a knowledge of the time in each second where each pulser fired, and the time of flight between the payload at the event record time and the calibration pusler.
-		
-	\subsection{Major Bases}
-		WAIS Divide and McMurdo Station are, for this analysis, defined as major bases which are removed prior to analysis.  These bases have some of the highest activity on the continent, and the sheer number of events that come from these two bases has the effect of biasing the remainder of the analysis.
+		Accurate tagging of calibration pulsers allows us to remove them from the sample considered in the physics analysis.  This is done using the recorded nanosecond precision trigger time, a knowledge of the time in each second where each pulser fired, and the time of flight between the payload at the event record time and the calibration pusler.  These events are known, do not contribute to either the background or can be considered as signal, and are thus removed.
 
 	\subsection{Payload Blasts}
 		The ANITAIII flight was plagued by high power signals that seem to emanate from the payload.  These events, called payload blasts, have a large amplitude signal in several neighboring phi sectors and tend to happen in rapid succession.  A sample payload blast event can be seen in Figure \ref{fig:payloadBlast}.  The blasts characteristically have high total RF power in the bottom two rings of antennas, but very little signal power in the top ring, suggesting that these events have a source on-board the payload.  Blasts also do not have high interferometric peaks, adding further evidence that they are spherically propagating electromagnetic waves with a source on the payload, and suggesting that they will likely be removed through signal cuts later in the analysis process.
@@ -392,35 +397,66 @@
 	\label{fig:payloadBlastDist}
 \end{figure}
 	
-	\subsection{SURF Saturation}
-		A small fraction of events have recorded voltage values outside the dynamic range of the LABRADOR digitizer.  Though several of these are from extremely high power sources within the field of view, several saturation events are caused by single bit errors in LABRADOR digitization.  These have the characteristic of having a single voltage sample with a value a power of two higher than the remaining points in a waveform.  For simplicity, all events with these bit errors are excluded.
+%	\subsection{SURF Saturation}
+%		A small fraction of events have recorded voltage values outside the dynamic range of the LABRADOR digitizer.  Though several of these are from extremely high power sources within the field of view, several saturation events are caused by single bit errors in LABRADOR digitization.  These have the characteristic of having a single voltage sample with a value a power of two higher than the remaining points in a waveform.  For simplicity, all events with these bit errors are excluded.
 		
 		
-	\subsection{Downward pointing events}
+	\subsection{Downward pointing, above horizontal events}
 		Events that have an interferometric map peak that points upwards cannot be created by any of the astrophysical event types under consideration for this analysis.  ANITAIII floats at the top of the stratosphere, above which there is sparingly small amounts of atmosphere with which a particle can interact.  Even direct CRs will have impulsive signals that emanate from within the atmosphere.  Because of this, all events that have peak elevation angles above zero can be safely discarded.
 		
 	
-	\subsection{Reconstructed angle to hardware trigger angle}
-		The dynamic phi sector masking introduces a class of events in which the waveform ``falls off'' the end of the digitization record, subsequently losing information about the earliest structure in the waveform.  This is caused when impulsive events have a sufficient amount of power to still trigger in channels with antennas in un-masked phi sectors at angles far from their boresight.  The majority of the signal power will still be observed in channels pointing towards incident impulsive source, however the free space propagation time between the masked and unmasked phi sectors delays the trigger formation enough so that the waveform is truncated.  An example of this non-ideality can be seen in Figure \ref{fig:earlyWaveform}.
+	\subsection{Delayed waveforms: reconstructed angle to hardware trigger angle cut}
+		The dynamic phi sector masking introduces a class of events in which the waveform ``falls off'' the end of the digitization record, subsequently losing information about the earliest structure in the waveform.  This is caused when impulsive events hit the payload in a masked phi sector, but have a sufficient amount of power to trigger channels with antennas in un-masked phi sectors, despite the large angles from their peak gain boresight.  The majority of the signal power will still be observed in channels pointing towards the impulsive source, however the free space propagation time between the masked and unmasked phi sectors delay the trigger formation enough so that the waveform is truncated and information is lost.  An example of this non-ideality can be seen in Figure \ref{fig:earlyWaveform}.
 		
-		Since these waveforms are missing important data and can not be included in a final signal sample, they can be removed prior to further analysis.  To ensure that the at least one antenna involved with the coherent sum is included in the reported hardware trigger, this cut is set at $45^\circ$.
+		Since these waveforms are missing important information, and the incident electric field cannot be reliably reconstructed, they can not be included in a final signal sample.  To ensure that the at least one antenna involved with the coherent sum is included in the reported hardware trigger, this cut is set at $45^\circ$.
 		
 \begin{figure}
 	\centering
-	\includegraphics[height=0.9\textheight]{figures/EarlyWaveform}
+	\includegraphics[height=0.85\textheight]{figures/EarlyWaveform}
 	\caption{An example of a waveform where the promptest radiative component has fallen off the record and is not recorded.  The red waveforms note channels which were reported to be involved in the trigger by the hardware.  This event, 5877965, has a difference between the peak map angle and the hardware trigger angle of $77.5^\circ$.} 
 	\label{fig:earlyWaveform}
 \end{figure}		
+
+
 		
+	\subsection{Major Bases}
+		WAIS Divide and McMurdo Station are, for this analysis, defined as major bases which are removed prior to analysis.  These bases have some of the highest activity on the continent, and the sheer number of events that come from these two bases has the effect of biasing the remainder of the analysis.  Any event that reconstructs near either base is excluded.  Nearness is conservatively defined as the map peak being within a geometric angular sum of 6$^circ$ of the geographic coordinates of either base.  This check is only done if the payload is within 700km of either base.  This cut will also exclude any calibration pulsers from either base that are not correctly tagged.
+
+
+	\subsection{Effect of quality cuts on number of events}
+		The quality cuts remove a large fraction of the events recorded by the payload.  The number removed by each cut can be found in Table \ref{tab:qualityCutReason}.  The resulting quality cut event list contains 2,670,191 events. %REVISE
+		
+		\begin{figure}
+		\centering
+		\begin{tabular}[c]{|l|c|c|c|}
+		\hline
+		Cut Parameter & Events Failed  \\
+		 & (Single)  \\
+		\hline
+		LDB Pulser & 342,108 \\
+		WAIS Pulser & 118,458 \\
+		Points to LDB* & 314,438 \\
+		Points to WAIS* & 17,188 \\
+		Above Horizontal & 10,106,687 \\
+		Hardware Trigger Angle & 28,022,208 \\
+		Payload Blast & 733,458 \\
+		Not RF Triggered & 3,571,726 \\
+		\hline
+		\end{tabular}
+		\caption{The number of events removed by each quality cut from the set of events with H-pol triggers.  The cuts remove any event with a single value below those in Table \ref{tab:cutValues}.  Events that are removed by several cuts are double counted, unless denoted by a ``*'', when tagged calibration pulser events are removed prior to determining removed event quantities.}
+		\label{tab:qualityCutReason}
+		\end{figure}
+
+
 
 \section{Analysis Cut Methodology}%12
-	Cut values that separate astrophysical sources from thermal and non-astrophysical anthropogenic background are determined by examining the distributions of various cut values for non-RF triggered events and WAIS calibration pulses.  The most desirable cut value will be one that maximizes the ratio of captured calibration pulser signals to excluded thermally triggered events.  However, in order to extract the events with measured quantities most similar to an expected CR EAS radiation pattern, while preserving information about anthropogenic sources that may produce background events that leak into the signal region, two cuts levels were selected.  
+	Cut values that separate astrophysical sources from thermal and non-astrophysical anthropogenic background are determined by examining the distributions of various cut parameters for triggered events.  The most desirable cut value will be one that maximizes the quantity CR-like while minimizing the number of thermal or anthropogenically triggered events.
 	
-	First, a ``weak'' cut, which I'll refer to as the non-thermal cut, that removes events that are likely to be thermal, but allowing a wide range of passing events with high impulsivity and non-thermal characteristics.  The events included in the non-thermal sample can be used to identify anthropogenic noise sources and develop an understanding of the types of measured signals they create.  
+	First, distributions of values for events that point at known major Antarctic bases are examined to determine a level which would capture weaker bases to high likelihood in order to identify and exclude them.    This first more general ``impulsivity'' cut will capture information about locations on the continent that produce impulsive signal distributions that may leak into the signal. This allows clustering to remove generators of impulsive signals.
 	
-	Secondly, a ``harsh'' cut, which I will call the signal cut, will exclude all events that do not closely match the expectation for a measured EAS impulsive signal.  The events that pass the signal cut and do not cluster with any events in the non-thermal cut will be assumed to be either signal, or part of an irreducible statistical background which will be estimated before examining the measured events.  The correlation cuts are developed so that they can include simulated CR events that are convolved with a thermal noise normalized to a low SNR signal.  The linear polarization cuts are designed to capture a smaller fraction of WAIS events, which assumes that WAIS events have a lower value than true CRs would due to the calibration antenna design.
+	Secondly, WAIS calibration pulses were examined as a representative signal source.  In order to extract the highest number of events with measured quantities most similar to an expected CR EAS radiation pattern, cuts were selected primarily to maximize efficiency on signal, and allow for a maximum exposure for the analysis.  An a posteriori background estimate (discussed later in \autoref{sec:backgroundEstimate}) that examines the underlying localized distributions of events will be performed on all CR candidates in order to further constrain and quantify the background that leaks into the signal region.
 	
-	Five calculated values were considered for the ``weak'' cut.  These are: the peak of the interferometric map (map peak), the peak of the Hilbert envelope of the waveform created from coherently summing waveforms with delays corresponding to the peak of the interferometric map (hilbert peak), the linear polarization fraction, and the template correlation peak value for both the coherently summed and for the de-dispersed waveforms.  Plots of these values for the non-RF triggered events and for the WAIS pulses are shown in Figures \ref{fig:mapPeakCut}, \ref{fig:hilbertCut}, \ref{fig:linPolCut}, \ref{fig:templateCoherCut}, and \ref{fig:templateDeconvCut}.
+	Six calculated values were considered for the cuts.  These are: the peak of the interferometric map (map peak), the peak of the Hilbert envelope of the coherently summed waveform (hilbert peak), the linear polarization fraction of the coherently summed waveform, and the template correlation peak value for both the coherently summed and for the de-dispersed waveforms.  These values, whose calculations are described above, require that the measured signals both are impulsive and have a shape comparable to a CR.  Plots of these values for the non-RF triggered events, for events that point at major bases, and for the WAIS pulses are shown in Figures \ref{fig:mapPeakCut}, \ref{fig:hilbertCut}, \ref{fig:linPolCut}, \ref{fig:templateCoherCut}, and \ref{fig:templateDeconvCut}.  As a note, the template used for the analysis of WAIS pulses was the coherently summed and averaged WAIS pulse, derived from measurements.
 	
 	
 \begin{figure}
@@ -459,31 +495,32 @@
 \end{figure}
 	
 	
-The values for the two cuts are shown in Table \ref{tab:cutValues}.  Signal cut values marked with a hyphen are not raised beyond those set for the non-thermal cut.
+The values for the cuts are shown in Table \ref{tab:cutValues}.  The final signal cut values were set so that 99.9\% of WAIS pulser events are captured.
 
 \begin{figure}
 \begin{tabular}[c]{|l|c|c|}
 \hline
-Quantity Name & Non-thermal Cut value & Signal Cut value \\
+Quantity Name & Impulsivity Cut Value & Signal Cut Value \\
 \hline
-Map Peak & 0.0435 & - \\
-Hilbert Peak & 24 & - \\
-Linear Polarization Fraction & 0.3 & 0.6 \\
-Coherent Template Correlation & 0.5 & 0.75 \\
-Deconvolved Tempalte Correlation & 0.5 & 0.75 \\
+Map Peak & 0.0435 & 0.0435 \\
+Map SNR & 9.05 & 9.05 \\
+Hilbert Peak & 25.0 & 31.1 \\
+Linear Polarization Fraction & 0.50 & 0.60 \\
+Coherent Template Correlation & 0.50 & 0.666 \\
+Deconvolved Tempalte Correlation & 0.50 & 0.666 \\
 \hline
 \end{tabular}
-\caption{Values used for non-thermal and signal cuts.  Non-thermal cuts are derived from efficiency on the WAIS pulser events and exclusion of thermal noise events.  Determinations of the cuts is detailed in the text.}
+\caption{Values used for impulsivity and signal cuts.  Impulsivity cuts are derived from measurements of known major bases, which produce a wide range of anthropogenic signals.  Signal cuts were determined from WAIS pulser measurements.  Determinations of the cuts is detailed in the text.}
 \label{tab:cutValues}
 \end{figure}
 
 
 
 \section{Geographic Clustering}%13
-	After enriching the event sample by removing events with a high probability of being thermal noise or non-impulsive anthropogenic background, geographical clustering of the events can be done to further discriminate against backgrounds. Physics signal events are expected to be isotropically distributed evenly across the continent, as there is no preferred cardinal direction for UHECR or UHE$\nu$ detections.  Human activity, on the other hand, tends to cluster around regions of logistical or scientific interest.  Anthropogenic background sources are thus expected to point at other captured events, which can be used to discriminate against them and further refine the data sample. 
+	After enriching the event sample by removing events with a high probability of being thermal noise or non-impulsive anthropogenic background, geographical clustering of the events can be done to further discriminate against backgrounds. Astrophysical signal events are expected to be isotropically distributed evenly across the continent, as there is no preferred cardinal direction for UHECR or UHE$\nu_{\tau}$ detections.  Human activity, on the other hand, tends to cluster around regions of logistical or scientific interest.  Anthropogenic background sources are thus expected to point at other captured events, which can be used to discriminate against them and further refine the data sample.
 
 	\subsection{Base Clustering}
-		Through communication with various international Antarctic institutions, a list of active camps and other human activity on the continent was compiled for the time frame of the ANITAIII flight.  An image of these bases mapped to the continent can be seen in Figure \ref{fig:BaseMap}.  Determining the validity of this base map is plagued with issues, as they are run an managed by a large collection of different nations and groups, many of whom do not wish or care to make their activities publicly available.  Additionally, camps that are reported by groups may be inactive, or have moved from when they were last reported.  Due to this non-statistical uncertainty, the relationship between any impulsive event and a camp present on the list does not significantly enhance our understanding of the source of such event.  We must employ alternate means to estimate the likelihood that a specific event is anthropogenic or astrophysical in nature.
+		Through communication with various international Antarctic institutions, a list of active camps and other human activity on the continent was compiled for the time frame of the ANITAIII flight.  An image of these bases mapped to the continent can be seen in Figure \ref{fig:BaseMap}.  However these bases are not used to exclude any signal events.  Determining the validity of this base map is plagued with issues, as they are run an managed by a large collection of different nations and groups, many of whom do not wish or care to make their activities publicly available.  Additionally, camps that are reported by groups may be inactive, or have moved from when they were last reported.  Due to this non-statistical and very difficult to model uncertainty, the relationship between any impulsive event and a camp present on the list does not significantly enhance our understanding of the source of such event.  We must therefore employ alternate means to estimate the likelihood that a specific event is anthropogenic or astrophysical in nature.
 		
 \begin{figure}
 	\includegraphics[width=\textwidth]{figures/BaseMap}
@@ -516,8 +553,31 @@ Deconvolved Tempalte Correlation & 0.5 & 0.75 \\
 		\sqrt{\cfrac{\Delta\phi}{\sigma_{phi}(SNR)}^2 + \cfrac{\Delta\theta}{\sigma_{theta}(SNR)}^2}
 		\label{eqn:angularSeparationNormalized}
 	\end{equation}
-		Note that the pointing resolution  of of any single event is a function of the SNR, and thus any clustering analysis must factor this into its calculation.  The pointing resolution as a function of SNR was found from analyzing self triggered WAIS pulses and their subsequent pointing to the known calibration pulser location on the continent.  This was discussed earlier in the Calibration chapter.  Events with SNR values lower than the lowest WAIS pulse, a value of approximately 5.0, are treated as if they had the corresponding pointing uncertainty.
+		Note that the pointing resolution  of of any single event is a function of the SNR, and thus any clustering analysis must factor this into its calculation.  The pointing resolution as a function of SNR was found from analyzing self triggered WAIS pulses and their subsequent pointing to the known calibration pulser location on the continent.  This was discussed earlier in the Calibration chapter.  Events with SNR values lower than the lowest WAIS pulse, a value of approximately 4.0, are treated as if they had the pointing uncertainty of an impulse with an SNR of 4.0.  An inverse relationship between SNR and pointing resolution is assumed based on a fit to the data.  This is shown in Equation \ref{eqn:pointVsSNR}.
 		
+		\begin{gather*}
+		\Delta\theta = \left(\frac{A_{\theta}}{SNR}\right) + B_{\theta} \\
+		\Delta\phi = \left(\frac{A_{\phi}}{SNR}\right) + B_{\phi} \\
+		\label{eqn:pointVsSNR}
+		\end{gather*}
+				
+The values determined from the fit are shown in table \ref{tab:pointVsSNRFit}.
+
+	\begin{figure}
+	\centering
+	\begin{tabular}[c]{|c|c|}
+	\hline
+	$A_{\phi}$ & 0.68726 \\
+	$B_{\phi}$ & 0.338725 \\
+	$A_{\theta}$ & 0.132516 \\
+	$B_{\theta}$ & 0.1557 \\
+	\hline
+	\end{tabular}
+	\caption{Fitted parameters for inverse relationship between SNR and pointing uncertainty.  $\theta$ refers to elevation angle, and $phi$ refers to azimuth angle.}
+	\label{tab:pointVsSNRFit}
+	\end{figure}
+	
+							
 		The figure of merit is then the geometric sum of the pointing uncertainty normalized angular separation from each event observation location, shown in Equation \ref{eqn:LogLikelihood}.
 		
 	\begin{equation}
@@ -526,8 +586,11 @@ Deconvolved Tempalte Correlation & 0.5 & 0.75 \\
 	\end{equation}
 
 
-		Using this equation we can determine the relative ``closeness'' of any two events.  
+		Using this equation we can determine the relative ``closeness'' of any two events, as derived from the measurements and including the systematic uncertainties.
 		
+	
+	\subsection{Distance clustering}
+		Events that reconstruct with steep downward elevation angles will not have high log likelihood values even to events that occur close in physical distance.  To prevent events that may be related physically from avoiding clustering cuts, an additional condition for considering two events to be clustered is that they fall within 50km of each other on the ice.  This is calculated using the great circle distance between the mapped locations of the events onto the ice.
 	
 	\subsection{Impulsive source identification}
 		In order to exclude events that are likely to be anthropogenic background, it is necessary to determine locations on the continent from which impulsive RF transients are produced.  Since events created by Humans are likely to emanate from discrete sources, this can be done by determining locations in which many impulsive events occur close to one another.  This is done by marking events that fall within a log likelihood of $L<40$ from any other event.  Events with a single other event falling within this threshold are marked as pseudo-bases.  By keeping the information for all events that fall within a cluster, instead of combining them to a single mean point, clustered impulsive source locations become elongated and exclude a larger region of the instrumental exposure.  This is done conservatively to keep anthropogenic background from leaking into the signal region.
