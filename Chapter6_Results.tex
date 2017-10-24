@@ -22,7 +22,7 @@
 		Deconvolved Template Correlation & 2318737 & 738	   \\
 		\hline
 		\end{tabular}
-		\caption{The number of events removed by each impulsivity cut from the set of events that has already been reduced with quality cuts, mentioned in Table \ref{tab:qualityCutReason}.  The cuts remove any event with a single value below those in Table \ref{tab:cutValues}.  The column marked Single is the number of events that fail that specific cut parameter if applied to all the data.  The column marked Cumulative is if each cut was taken sequentially, and the event removed if failing, before moving to the next.  The final column is the remaining number of events after each cut.}
+		\caption{The number of events removed by each impulsivity cut from the set of events that has already been reduced with quality cuts, mentioned in Table \ref{tab:qualityCutReason}.  The cuts remove any event with a single value below those in Table \ref{tab:cutValues}.  The column marked Single is the number of events that fail that specific cut parameter if applied to uncut quality data.  The column marked Cumulative is if each cut was taken sequentially, and the event removed if failing, before moving to the next.}
 		\label{tab:weakCutReason}
 		\end{figure}
 		
@@ -54,7 +54,7 @@
 %		\end{figure}	
 
 \section{Results of Signal Analysis Cuts}
-		Making the final CR signal cuts on the weak event list, regardless of clustering status, yields 882 events.  873 of these project onto the continent, and 9 point above the horizon.  Of the nine that point above the horizon, 7 can be removed due to either clustering with events that fall at the horizon, temporal and true azimuth clustering.  These removed events, and the clusters they associate to, can be found in Table \ref{tab:aboveHorizonClustering}. The below horizon CR candidates can be determined by choosing events within this, and results in 18 downward pointing CR candidate events, and 2 events within the atmosphere, for 21 events total.  
+		Making the final CR signal cuts on the weak event list, regardless of clustering status, yields 882 events.  873 of these project onto the continent, and 9 point above the horizon.  Of the nine that point above the horizon, 7 can be removed due to either clustering with events that fall at the horizon, temporal and true azimuth clustering.  These removed events, and the clusters they associate to, can be found in Table \ref{tab:aboveHorizonCluster}. The below horizon CR candidates can be determined by choosing events within this, and results in 18 downward pointing CR candidate events, and 2 events within the atmosphere, for 20 events total.  
 		
 	\begin{figure}
 		\centering
@@ -95,7 +95,7 @@
 		Deconvolved Tempalte Correlation & 4265 & 97\\
 		\hline
 		\end{tabular}
-		\caption{}
+		\caption{The number of events removed by each signal cut from the set of events that has already been reduced with impulsivity cuts, mentioned in Table \ref{tab:weakCutReason}.  The cuts remove any event with a single value below those in Table \ref{tab:cutValues}.  The column marked Single is the number of events that fail that specific cut parameter if applied to the impulsivity data.  The column marked Cumulative is if each cut was taken sequentially, and the event removed if failing, before moving to the next.}
 		\label{tab:signalCutReason}
 		\end{figure}
 		
@@ -112,10 +112,10 @@
 
 \section{Background Estimates}
 	\label{sec:backgroundEstimate}
-	Estimating the number of background events that passed all signal cuts and are present in the final candidate list is import for establishing the confidence in the final result.  The strong cut on the 
+	Estimating the number of background events that passed all signal cuts and are present in the final candidate list is import for establishing the confidence in the final result.  The strong cut on template correlation is expected to eliminate the vast majority of non-astrophysical thermal background signals, however anthropogenic sources may still produce impulsive events that leak into the signal box. This is addressed in several estimates that determine the likelihood of any individual event being anthropogenic.
 
-\section{Diffuse Source Frequentist Background Estimate}
-	 This is accomplished using statistical inference about the probability that non-physics events would satisfy all cut requirements~\cite{ClassicalStatisticalEstimation}.  We attempt to divide the events into two sets, one background and one signal, then use the arithmetic of probability to determine the likelihood that an event from the background set could be found within the signal set.  
+\section{Diffuse Source Background Estimate}
+	 It is possible to determine whether signals look like other observed signals coming from regions of the continent determined to be base-like from the clustering.  This is accomplished using statistical inference about the probability that non-physics events would satisfy all cut requirements~\cite{ClassicalStatisticalEstimation}.  We attempt to divide the events into two sets, one background and one signal, then use the arithmetic of probability to determine the likelihood that an event from the background set could be found within the signal set.  
 
 	In order to relate the measured data to uniform 
 	
@@ -128,15 +128,13 @@
 	
 	Where P(B) is the number of events in the background set
 	
-	
-	Two different philosophies can be referenced for determining what goes into the background set.  The signal set can be defined as either the expected observation rate of UHECR particles during the flight, or as a single count for each measured candidate event individually which is then summed to find the total background probability.
-	
-	\subsection{Frequentist Probability}
-		%I think Abby's suggested method, simply taking the ratio of impulsive events passing cuts and clustering to all clustered events regardless of impulsivity,  is Frequentist for sure, since it relies only on observed transient producing locations.  
+	Two different philosophies can be referenced for determining what goes into the background set.  The signal set can be defined as either the expected observation rate of UHECR particles during the flight, or as a single count for each measured candidate event individually which is then summed to find the total background probability.		
 		
 		
-\section{Local Frequentist Background Estimate}
+\section{Local Source Background Estimate}
+	Another method to determine the likelihood that any particular candidate is generated by a terrestrial source is to compare it to the other events that point to locations nearby.  If a background source generator exists, one that produces events that are non-thermal but do not pass the impulsivity or signal cuts, it should elevate the distributions of the calculated values used to create cuts.  This does not account for background sources that produce single CR-like signals but behave thermal otherwise.  This estimate requires an assumption that such sources are anthropogenic in nature, and that anthropogenic sources do not produce single high powered impulses without an associated amount of detectible background signal.
 	
+%	Using event 11116669 as an example, we can examine the distribution of values for all events that cluster with it, regardless of quality or any other parameter.  The distribution of event projections that cluster with event 11116669 is shown in Figure \ref{fig:exampleBackgroundMap}.
 
 
 
@@ -148,6 +146,79 @@
 
 \section{Cosmic Ray Candidate Results}
 	There were 18 events that passed all signal cuts and did not cluster to any other impulsive event on the continent, and are hereby known as the cosmic ray candidates.  Of these 18, 2 point above the horizon but still within the atmosphere, indicating that they are directly viewed EAS signals that do not reflect off the continent.  The remaining 16 point downwards and project onto the continent.  These events, their waveforms, their locations on the continent, and the distributions of nearby events  are presented in the following section.  A map summarizing the results of the analysis, including the locations of the events on the continent, along with events that cluster and events that pass impulsivity cuts but fail signal cuts, is shown in Figure \ref{fig:allEventsMap}. An overlay of measured horizontally polarized waveforms for all candidates, aligned to their peak correlation and polarity flipped relative to their estimated polarity, is shown in Figure \ref{fig:hPolOverlay}.  The vertically measured waveforms have significantly less signal but are presented with alignment determined through H-Pol correlation in Figure \ref{fig:vPolOverlay}.  Additionally, the coherently summed waveforms are presented side by side in figure \ref{fig:allCandidates_coherent}.
+	
+	Locations of the events traced to the continent, along with the location of ANITA at the time of detection and the elevation angles and true azimuth with respect to north, can be found in Table \ref{tab:eventLocations}.  The calculated cut values of each event is shown in Table \ref{tab:candidateValues}.  Plots of the waveforms and interferometric maps for all the candidates can be seen in Figures \ref{fig:Ev27142546_waveform} through \ref{fig:Ev83877990_map}.
+	
+	\begin{figure}
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|l|}
+	\hline
+	Event &	Event 	&	Event 	&	Event 	&	ANITA &	ANITA &	ANITA &	Elevation &	True \\
+	Number&	Latitude &	Longitude & Alt (m) &	Latitude	&Longitude	&	Alt (m)	&  ($^circ$)	&	Azimuth ($^circ$) \\
+	\hline
+	9097075	 &	-79.8303 &	148.814	&	2131&	-80.0817&	154.602	&	36323.4	&	16.8661	&	-78.8563 \\
+	11116669 &	-81.3294 &	176.136	&	6	&	-81.2609&	146.761	&	36355.2	&	6.43217 &	105.382 \\
+	11989349 &	-82.6084 &	141.396	&	2405&	-81.1009&	140.177	&	35438.7	&	11.8167	&	174.066 \\
+	15717147 &	-81.3986 &	129.016	&	2621&	-81.6109&	126.507	&	35861	&	34.9699	&	61.41 \\
+	16952229 &	-82.676	 &	128.674	&	2742&	-80.8189&	121.333	&	34681.6	&	8.73916	&	154.019 \\
+	19459851 &	-81.189	 &	99.517	&	3544&	-80.6972&	98.2029	&	35995.6	&	28.8256	&	157.821 \\
+	23695286 &	-79.8056 &	70.1918	&	3851&	-79.4478&	65.9819	&	35390.9	&	19.0219	&	117.305 \\
+	27142546 &	  N/A	 &	N/A 	&	N/A &	-79.1585&	50.943	&	35760.8	&	5.5537	&	150.221 \\
+	32907848 &	-79.0226 &	10.1545	&	2891&	-77.9829&	21.1706	&	36263.5	&	8.25657	&	-120.653 \\
+	33484995 &	-79.9982 &	19.3425	&	3089&	-77.9758&	17.7245	&	36873.6	&	9.48746	&	172.1 \\
+	39599205 &	  N/A	 &	 N/A	&	N/A &	-78.2385&	-17.9381&	36120.6	&	3.61121	&	151.327 \\
+	41529195 &	-79.9325 &	-26.977	&	362	&	-78.9955&	-32.116	&	36947.3	&	14.553	&	137.408 \\
+	58592863 &	-76.9118 &	-117.691&	1803&	-76.395	&	-110.151 &	35015.4	&	10.2213	&	-110.165 \\
+	62273732 &	-76.5879 &	-137.478&	1913&	-76.0299&	-131.171 &	35943.1	&	11.632	&	-113.518 \\
+	66313844 &	-75.2196 &	-156.846&	-59	&	-74.815	&	-157.437 &	36484.6	&	37.3596	&	159.579 \\
+	68298837 &	-75.0579 &	-168.67	&	-62	&	-74.6522&	-168.028 &	36419.3	&	36.8965	&	-157.819 \\
+	70013898 &	-74.5006 &	-167.459&	-63	&	-74.3386&	177.572	&	36245.1	&	6.64026	&	99.4938 \\
+	73726742 &	-74.8095 &	153.33	&	2149&	-74.2488&	154.376	&	36291.1	&	26.3685	&	-154.026 \\
+	75277769 &	-74.5808 &	137.642	&	2708&	-73.9239&	138.908	&	34941.4	&	21.6866	&	-152.964 \\
+	83877990 &	-71.5575 &	82.5361	&	2801&	-70.1421&	85.785	&	35007.7	&	10.2116	&	-144.515 \\
+	\hline
+	\end{tabular}
+	\caption{Pointed observation locations for each CR candidate, along with ANITA observation location, elevation, and true azimuth.  Directly observed events do not point to the continent, and so their source hypothesis is undefined without reconstructing the shower vertex.}
+	\label{tab:eventLocations}
+	\end{figure}
+	
+	
+	\begin{figure}
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+	\hline
+	eventNumber	& TemplateCorr	&	Template Corr	&	mapPeak	&	mapSNR	&	LinPolFrac	& HilbPeak \\
+				&	Coherent	&	De-dispersed	&			&			&	Coherent	&	Coherent \\
+	\hline
+	9097075	&	0.848129	&	0.867255	&	0.275075	&	20.6464	&	0.892743	&	119.846 \\
+	11116669	&	0.879512	&	0.888349	&	0.204412	&	21.3007	&	0.842908	&	69.5003 \\
+	11989349	&	0.81368	&	0.851099	&	0.0863109	&	15.0991	&	0.621034	&	50.2824 \\ 
+	15717147	&	0.852206	&	0.83971	&	0.142453	&	13.605	&	0.782663	&	51.9856 \\
+	16952229	&	0.834765	&	0.83505	&	0.102279	&	15.6861	&	0.651961	&	48.931 \\
+	19459851	&	0.822059	&	0.771824	&	0.165427	&	15.8911	&	0.737391	&	67.2559 \\
+	23695286	&	0.85406	&	0.843391	&	0.0781213	&	14.53	&	0.634915	&	39.3999 \\ 
+	27142546	&	0.870272	&	0.858413	&	0.176355	&	20.7221	&	0.834333	&	66.9543 \\
+	32907848	&	0.899383	&	0.891038	&	0.171207	&	19.5985	&	0.644866	&	65.6926 \\
+	33484995	&	0.793178	&	0.805227	&	0.173698	&	20.3076	&	0.802018	&	63.692 \\
+	39599205	&	0.751907	&	0.749293	&	0.16824	&	22.0372	&	0.820529	&	96.5364 \\
+	41529195	&	0.84424	&	0.855839	&	0.120433	&	17.3735	&	0.697294	&	49.7193 \\
+	58592863	&	0.832529	&	0.829167	&	0.148024	&	17.7801	&	0.772304	&	49.8597 \\
+	62273732	&	0.682009	&	0.682559	&	0.198354	&	19.5202	&	0.846162	&	58.9087 \\
+	66313844	&	0.850128	&	0.867374	&	0.150474	&	16.0031	&	0.686217	&	47.5222 \\
+	68298837	&	0.868809	&	0.865949	&	0.092407	&	11.1013	&	0.646708	&	51.914 \\
+	70013898	&	0.800858	&	0.775827	&	0.165466	&	23.1731	&	0.776458	&	76.0259 \\
+	73726742	&	0.85167	&	0.852433	&	0.141211	&	14.8105	&	0.795029	&	44.4288 \\
+	75277769	&	0.887369	&	0.891011	&	0.159072	&	15.9893	&	0.846339	&	67.6613 \\
+	83877990	&	0.827815	&	0.839115	&	0.180813	&	20.301	&	0.783432	&	66.958 \\
+	\hline
+	\end{tabular}
+	\caption{Calculated cut quantities for all events. They are abbreviated for space.  They are, in order, the template correlation fraction between the coherently summed waveform and signal chain convolved simulated EAS impulse, the template correlation fraction between the de-dispersed measured waveform and the simulated E-filed of an EAS pulse, the peak of the interferometric map, the SNR of the interferometric map, the linear polarization fraction of the coherently summed waveform, and the hilbert peak of the coherently summed waveform. }
+	\label{tab:candidateValues}
+	\end{figure}
+
+	
+	
+	
 	
 		\begin{figure}
 			\centering
@@ -180,9 +251,10 @@
 	
 	
 	
-	\subsection{Direct events}
-		There were 2 events that were observed above the horizon, but still within the atmosphere.  Summaries of each of their characteristics are provided below.	
-		\subsubsection{Event 27142546}
+%	\subsection{Direct events}
+%		There were 2 events that were observed above the horizon, but still within the atmosphere.  Summaries of each of their characteristics are provided below.	
+%		\subsubsection{Event 27142546}
+%		Event 27142546
 			\begin{figure}
 			\centering
 				\includegraphics[width=\textwidth]{figures/eventStuff/Ev27142546_waveform}
@@ -197,7 +269,8 @@
 		\label{fig:Ev27142546_map}
 		\end{figure}			
 			
-				\subsubsection{Event 39599205}
+%				\subsubsection{Event 39599205}
+%				Event 39599205
 			\begin{figure}
 			\centering
 				\includegraphics[width=\textwidth]{figures/eventStuff/Ev39599205_waveform}
@@ -212,10 +285,10 @@
 		\label{fig:Ev39599205_map}
 		\end{figure}				
 		
-	\subsection{Reflected events}
-		There were 18 events that traced back to the continent.  Summaries of each of their characteristics are provided below.
+%	\subsection{Reflected events}
+%		There were 18 events that traced back to the continent.  Summaries of each of their characteristics are provided below.
 	
-		\subsubsection{Event 9097075}
+%		\subsubsection{Event 9097075}
 			Event 9097075 
 		
 		\begin{figure}
@@ -232,23 +305,44 @@
 		\label{fig:Ev9097075_map}
 		\end{figure}
 
-
-		\subsubsection{Event 11116669}
+	
+	
+%		\subsubsection{Event 11116669}
+%		Event 11116669
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev11116669_waveform}
 			\caption{Top Coherently summed waveform.  Bottom: De-dispersed waveform} 
 		\label{fig:Ev11116669_waveform}
 		\end{figure}
-		
+			
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/intMap/intMap_ev11116669}
 			\caption{Interferometric maps for event 11116669} 
 		\label{fig:Ev11116669_map}
 		\end{figure}			
+
+
+%		\subsection{Event 11989349}
+%		Event 11989349
+		\begin{figure}
+		\centering
+			\includegraphics[width=\textwidth]{figures/eventStuff/Ev11989349_waveform}
+			\caption{Top Coherently summed waveform.  Bottom: De-dispersed waveform} 
+		\label{fig:Ev11989349_waveform}
+		\end{figure}
+			
+		\begin{figure}
+		\centering
+			\includegraphics[width=\textwidth]{figures/intMap/intMap_ev11989349}
+			\caption{Interferometric maps for event 11989349} 
+		\label{fig:Ev11989349_map}
+		\end{figure}		
 	
-		\subsubsection{Event 15717147}
+		
+%		\subsubsection{Event 15717147}
+%		Event 15717147
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev15717147_waveform}
@@ -263,7 +357,8 @@
 		\label{fig:Ev15717147_map}
 		\end{figure}			
 	
-		\subsubsection{Event 16952229}
+%		\subsubsection{Event 16952229}
+%		Event 16952229
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev16952229_waveform}
@@ -278,7 +373,9 @@
 		\label{fig:Ev16952229_map}
 		\end{figure}			
 	
-		\subsubsection{Event 19459851}
+
+%		\subsubsection{Event 19459851}
+%		Event 19459851
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev19459851_waveform}
@@ -293,7 +390,8 @@
 		\label{fig:Ev19459851_map}
 		\end{figure}	
 	
-		\subsubsection{Event 23695286}
+%		\subsubsection{Event 23695286}
+%		Event 23695286
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev23695286_waveform}
@@ -308,7 +406,8 @@
 		\label{fig:Ev23695286_map}
 		\end{figure}			
 	
-		\subsubsection{Event 32907848}
+%		\subsubsection{Event 32907848}
+%		Event 32907848
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev32907848_waveform}
@@ -323,7 +422,8 @@
 		\label{fig:Ev32907848_map}
 		\end{figure}	
 	
-		\subsubsection{Event 33484995}
+%		\subsubsection{Event 33484995}
+%		Event 33484995
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev33484995_waveform}
@@ -338,7 +438,8 @@
 		\label{fig:Ev33484995_map}
 		\end{figure}			
 	
-		\subsubsection{Event 41529195}
+%		\subsubsection{Event 41529195}
+%		Event 41529195
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev41529195_waveform}
@@ -353,7 +454,8 @@
 		\label{fig:Ev41529195_map}
 		\end{figure}			
 	
-		\subsubsection{Event 58592863}
+%		\subsubsection{Event 58592863}
+%		Event 58592863
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev58592863_waveform}
@@ -367,8 +469,25 @@
 			\caption{Interferometric maps for event 58592863} 
 		\label{fig:Ev58592863_map}
 		\end{figure}			
+
+%		\subsection{Event 62273732}
+%		Event 62273732
+		\begin{figure}
+		\centering
+			\includegraphics[width=\textwidth]{figures/eventStuff/Ev62273732_waveform}
+			\caption{Top Coherently summed waveform.  Bottom: De-dispersed waveform} 
+		\label{fig:Ev62273732_waveform}
+		\end{figure}
+			
+		\begin{figure}
+		\centering
+			\includegraphics[width=\textwidth]{figures/intMap/intMap_ev62273732}
+			\caption{Interferometric maps for event 62273732} 
+		\label{fig:Ev62273732_map}
+		\end{figure}	
 	
-		\subsubsection{Event 66313844}
+%		\subsubsection{Event 66313844}
+%		Event 66313844
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev66313844_waveform}
@@ -383,7 +502,8 @@
 		\label{fig:Ev66313844_map}
 		\end{figure}			
 	
-		\subsubsection{Event 68298837}
+%		\subsubsection{Event 68298837}
+%		Event 68298837
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev68298837_waveform}
@@ -398,7 +518,8 @@
 		\label{fig:Ev68298837_map}
 		\end{figure}			
 	
-		\subsubsection{Event 70013898}
+%		\subsubsection{Event 70013898}
+%		Event 70013898
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev70013898_waveform}
@@ -413,7 +534,8 @@
 		\label{fig:Ev70013898_map}
 		\end{figure}			
 	
-		\subsubsection{Event 73726742}
+%		\subsubsection{Event 73726742}
+%		Event 73726742
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev73726742_waveform}
@@ -428,7 +550,8 @@
 		\label{fig:Ev73726742_map}
 		\end{figure}			
 	
-		\subsubsection{Event 75277769}
+%		\subsubsection{Event 75277769}
+%		Event 75277769
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev75277769_waveform}
@@ -443,7 +566,9 @@
 		\label{fig:Ev75277769_map}
 		\end{figure}			
 	
-		\subsubsection{Event 83877990}
+%		\subsubsection{Event 83877990}
+%		Event 83877990
+		
 		\begin{figure}
 		\centering
 			\includegraphics[width=\textwidth]{figures/eventStuff/Ev83877990_waveform}
