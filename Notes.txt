@@ -437,6 +437,141 @@ Wednesday: Didn't have time to get stuff done before the meeting, slept in I thi
 Thursday: No time to get stuff done at all.  Hung over in the morning, went to the Hilton sales thing, went to lunch, went to The Met (which was really cool and I took some pictures) then walked back through central park and hung out with Joan all night (who is sad and scared for the plane).  Worked a bit at night, made a plot, didn't commit anything.
 
 %%%%%%%%%%%%%%%%%%%%%
+*    Row   * eventNumb * template. * template. * template. * template. * peak[0][0 * peak[0][0 * peak[0][0 *
+
+*        2 *  15717147 *         1 *         1 * 0.8522055 * 0.8397101 * 41.412115 * 34.969854 *           *
 
 
+
+
+%%%%%%%%%%%%%%%%%%%
+
+
+Idea with the K-S test.  Maybe compare the D value of the K-S test between the CR distribution, the local noise distribution, and the pseudo-base distrinbution?  This can only be done for one variable, but we can do it for template correlation.  It is a posteriori, since the CR candidates have a cut associated with them already, but maybe I can show that the noise and pseudo-base distributions are more similar than either to the CR distribution?  I'm not really sure what you do with that though.  I mean, the idea is that "these events do not look thermal"?
+
+I like the idea of the fit and extrapolation, and also the K-S test just comparing the CR distribution and the combined local events.  That would probably be good too, just show that they clearly aren't from the same distribution in a number.
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+
+Garbage about ABCD in case someone wants me to revive it:
+
+	First, a ``weak'' cut, which I'll refer to as the non-thermal cut, that removes events that are likely to be thermal, but allowing a wide range of passing events with high impulsivity and non-thermal characteristics.  The events included in the non-thermal sample can be used to identify anthropogenic noise sources and develop an understanding of the types of measured signals they create.  
+	
+	Secondly, a ``harsh'' cut, which I will call the signal cut, will exclude all events that do not closely match the expectation for a measured EAS impulsive signal.  The events that pass the signal cut and do not cluster with any events in the non-thermal cut will be assumed to be either signal, or part of an irreducible statistical background which will be estimated before examining the measured events.  The correlation cuts are developed so that they can include simulated CR events that are convolved with a thermal noise normalized to a low SNR signal.  The linear polarization cuts are designed to capture a smaller fraction of WAIS events, which assumes that WAIS events have a lower value than true CRs would due to the calibration antenna design.
+	
+	Five calculated values were considered for the ``weak'' cut.  These are: the peak of the interferometric map (map peak), the peak of the Hilbert envelope of the waveform created from coherently summing waveforms with delays corresponding to the peak of the interferometric map (hilbert peak), the linear polarization fraction, and the template correlation peak value for both the coherently summed and for the de-dispersed waveforms.  Plots of these values for the non-RF triggered events and for the WAIS pulses are shown in Figures \ref{fig:mapPeakCut}, \ref{fig:hilbertCut}, \ref{fig:linPolCut}, \ref{fig:templateCoherCut}, and \ref{fig:templateDeconvCut}.
+	
+	
+	
+	
+	
+	
+	This was a fucking waste of time.  I should get a computer to do it.
+			\begin{figure}
+		\begin{tabular}[c]{|l|c|c|c|}
+		\hline
+		Event Number & Time Range & Number of Events & True Azimuth
+		\hline
+		6959672             &  -       & 1 & -90.46$^circ$ \\
+		9095782 - 9272439   & 343 secs & 2 & 107.0$^circ$ \\
+		9944308 - 9945670   &   2 secs & 2 & -52.13$^circ$ \\
+		10386372            &  -       & 1 & 32.09$^circ$ \\
+		12153867 - 12303829 & 275 secs & 2 & 64.55$^circ$ \\
+		13955862            &  -       & 1 & -59.66$^circ$ \\
+		14104731 - 14104777 & 234 secs & 2 & -56.51$^circ$ \\
+		14404311 - 14707655 & 407 secs & 
+		
+		
+		16101012 -53.58
+		22571937 5.29
+		23559916 6.79
+		24071778 8.64
+		31504063 - 31604841 & 210 secs & 2 & 43.12$^circ$\\
+		34509034 - 34925816 & 690 secs & 2 & 58.41$^circ$\\
+		35127102 60.27
+		37070592 82.16
+		38402679 -90.56
+		39599205 151.32
+		41137292 -71.22
+		43686946 137.07
+		46162543 -49.85
+		47365351 -42.28
+		52728566 66.61
+		59124760 -63.93
+		61980676 -52.06
+		64632765            &  -       & 1 & 47.40$^circ$ \\
+		69597155            &  -       & 1 & 79.72$^circ$ \\
+		74694292            &  -       & 1 & 131.2$^circ$ \\
+		74694292 - 74951497 & 51 secs  &   & 131.12$^circ$ \\
+		75726319 - 76097886 & 746 secs & 5 & -62.60$^circ$ \\
+		76405073            &  -       & 1 & -53.98$^circ$ \\
+		77732632 - 77783905 & 166 secs & 
+		79761744            &  -       & 1 & 73.51$^circ$ \\
+		79995831 - 80745194 & 624 secs & 
+		83866871 - 83953166 & 318 secs & 
+
+		\hline
+		\end{tabular}
+		\caption{Temporal and angular clustering of above horizon events}
+		\label{tab:aboveHorizonClustering}
+		\end{figure}
+		
+		
+		
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+October 23rd
+Action Items:
+
+	->Polarity Check
+		Reconstruct with just top, or just top and middle
+		- waveform cut off?
+	 	- flip of antennas mess it up?
+		Make new map with just middle and bottom (not top) since it is flipped
+
+
+		
+	->Background estimate (JP statistic)
+		-distribution for 2.6M events for product of values
+		-normalize to probability by dividing by cumulative distribtuion
+			-remove CRs first, because you don't want to include them as background.
+		
+		-local sub-sample distributions should only be of the 2.6M, not the 42M.  No turds
+		-just the numbers for now
+		
+		-For geomagnetic (which you need), do absolute _perpendicular_ distance from "expected == measured" line (lorentz line).  
+				Probably do like normalized to sigma
+				use rss of 6˚ for the measured (though maybe check this again)
+				see picture of what Peter drew on the board.
+				
+		-probability of getting ONE event (not two or more), so its the probability of getting greater than zero minus the p of getting greater than one.
+				
+		-I can pick any statistic as long as it is normalizable and has a finite support!
+		
+	->Better modeling of off axis response.
+	
+	->K-S test of CR sample vs remaining 6k events (with this JP statistic from above)
+		-no CRs in the final 6k!
+	
+		-my thing: maybe a K-S between my events and the bases?
+	
+	->Get better geomagnetic (Vpol)
+		-try to pull out the vpol
+		-make a better template
+		-look for something at LDB that had better
+		-Sum V-pol and H-pol maps to see if it shifts it, are we pointing at the correct location?
+			-check Cosmin's code on how he does his fitting
+	
+	
+	
+	
+
+		
 
